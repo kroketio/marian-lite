@@ -5,6 +5,7 @@
 #include "common/options.h"
 #include "common/file_stream.h"
 
+
 namespace marian {
 
 class IVocab;
@@ -49,6 +50,11 @@ public:
   Words encode(const std::string& line,
                bool addEOS = true,
                bool inference = false) const;
+  
+  Words encodePreservingSource(const string_view &line, 
+                               std::vector<string_view> &alignments,
+                               bool addEOS=true, 
+                               bool inference=false) const;
 
   // convert sequence of token ids to single line, can perform detokenization
   std::string decode(const Words& sentence,

@@ -31,6 +31,13 @@ public:
   virtual Words encode(const std::string& line,
                        bool addEOS = true,
                        bool inference = false) const = 0;
+  
+  virtual Words encodePreservingSource(const string_view &, 
+                                       std::vector<string_view> &,  
+                                       bool, 
+                                       bool) const {
+    ABORT("encodePreservingSource(...) is not implemented for this VocabType.");
+  }
 
   virtual std::string decode(const Words& sentence,
                              bool ignoreEos = true) const = 0;

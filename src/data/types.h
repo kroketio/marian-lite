@@ -2,12 +2,20 @@
 
 #include "common/definitions.h"
 
+/* absl::string_view is a type used within the generic vocab implementation.
+ * However, currently included from within sentencepiece to avoid an extra
+ * dependency. 
+ */
+
+#include "sentencepiece/third_party/absl/strings/string_view.h"
+
 #include <cstdint>
 #include <cstdlib>
 #include <string>
 #include <unordered_map>
 #include <vector>
 #include <iterator>
+
 
 namespace marian {
 
@@ -54,6 +62,8 @@ const std::string DEFAULT_UNK_STR = "<unk>";
 // alternatively accepted names in Yaml dictionaries for ids 0 and 1, resp.
 const std::string NEMATUS_EOS_STR = "eos";
 const std::string NEMATUS_UNK_STR = "UNK";
+
+typedef absl::string_view string_view;
 
 }  // namespace marian
 
