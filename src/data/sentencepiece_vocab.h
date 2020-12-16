@@ -1,5 +1,11 @@
 #ifdef USE_SENTENCEPIECE
 
+/* This should be the only place this warning is suppressed to get Windows build working. 
+ * Protobuf dependency creates W4100, which cannot be modified.
+ */
+
+#pragma warning(disable : 4100)
+
 #include "sentencepiece/src/sentencepiece_processor.h"
 #include "sentencepiece/src/sentencepiece_trainer.h"
 
