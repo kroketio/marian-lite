@@ -16,7 +16,6 @@
 #include <vector>
 #include <iterator>
 
-
 namespace marian {
 
 // Type for all vocabulary items, based on IndexType

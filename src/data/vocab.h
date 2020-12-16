@@ -5,7 +5,6 @@
 #include "common/options.h"
 #include "common/file_stream.h"
 
-
 namespace marian {
 
 class IVocab;

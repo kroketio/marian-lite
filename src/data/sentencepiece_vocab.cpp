@@ -1,6 +1,5 @@
-#include "data/vocab_base.h"
 #include "sentencepiece_vocab.h"
-
+#include "data/vocab_base.h"
 #include "common/config.h"
 #include "common/options.h"
 #include "common/logging.h"
