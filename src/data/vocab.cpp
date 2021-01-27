@@ -113,11 +113,11 @@ Words Vocab::encode(const std::string& line,
   return vImpl_->encode(line, addEOS, inference);
 }
 
-Words Vocab::encodePreservingSource(const string_view &line,
-        std::vector<string_view> &alignments,
+Words Vocab::encodeWithByteRanges(const string_view &line,
+        std::vector<string_view> &byteRanges,
               bool addEOS,
               bool inference) const {
-  return vImpl_->encodePreservingSource(line, alignments, addEOS, inference);
+  return vImpl_->encodeWithByteRanges(line, byteRanges, addEOS, inference);
 }
 
 // convert sequence of token ids to single line, can perform detokenization

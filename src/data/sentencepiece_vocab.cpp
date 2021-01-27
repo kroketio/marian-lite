@@ -216,20 +216,20 @@ public:
       words.push_back(getEosId());
     return words;
   }
-  
-  Words encodePreservingSource(const string_view& line, 
-                               std::vector<string_view> &alignments,
+
+  Words encodeWithByteRanges(const string_view& line,
+                               std::vector<string_view> &byteRanges,
                                bool addEOS, bool inference) const override {
     sentencepiece::SentencePieceText spt;
     spm_->Encode(line, &spt);
 
-    Words words; 
+    Words words;
     words.reserve(spt.pieces().size() + addEOS);
     for(auto piece: spt.pieces()){
       Word word = Word::fromWordIndex(piece.id());
       words.push_back(word);
-      string_view alignment = line.substr(piece.begin(), piece.end() - piece.begin());
-      alignments.push_back(alignment);
+      string_view byteRange = line.substr(piece.begin(), piece.end() - piece.begin());
+      byteRanges.push_back(byteRange);
     }
 
     if (addEOS){

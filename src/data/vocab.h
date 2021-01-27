@@ -49,11 +49,11 @@ public:
   Words encode(const std::string& line,
                bool addEOS = true,
                bool inference = false) const;
-  
-  Words encodePreservingSource(const string_view &line, 
-                               std::vector<string_view> &alignments,
-                               bool addEOS=true, 
-                               bool inference=false) const;
+
+  Words encodeWithByteRanges(const string_view &line,
+                               std::vector<string_view> &byteRanges,
+                               bool addEOS = true,
+                               bool inference = false) const;
 
   // convert sequence of token ids to single line, can perform detokenization
   std::string decode(const Words& sentence,
