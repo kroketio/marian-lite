@@ -1,9 +1,9 @@
 #include "marian.h"
 
+#include "common/cli_helper.h"
+#include "common/cli_wrapper.h"
 #include "common/definitions.h"
 #include "common/options.h"
-#include "common/cli_wrapper.h"
-#include "common/cli_helper.h"
 #include "data/vocab.h"
 
 #include <iostream>
@@ -12,8 +12,7 @@
 using namespace marian;
 using namespace marian::cli;
 
-
-int main(int argc, char **argv){
+int main(int argc, char **argv) {
   auto options = New<Options>();
 
   YAML::Node config;
@@ -30,29 +29,26 @@ int main(int argc, char **argv){
 
   std::string line;
   bool addEOS{true}, inference{true};
-  while(std::getline(std::cin, line)){
-      std::vector<string_view> alignments;
-      auto words = vocab->encodePreservingSource(line, 
-                                                 alignments, 
-                                                 addEOS, 
-                                                 inference);
-      bool first = true;
+  while(std::getline(std::cin, line)) {
+    std::vector<string_view> byteRanges;
+    auto words = vocab->encodeWithByteRanges(line, byteRanges, addEOS, inference);
+    bool first = true;
 
-      /*
-       * alignments are constructed from ByteRanges. If the ByteRanges coming
-       * out of SentencePiece are correct, expected result is sourceToken that a
-       * word corresponding points to.
-       */
+    // If the ByteRanges coming out of SentencePiece are correct, expected
+    // result is sourceToken that a word corresponding points to. The output
+    // here is compared to an expected output containing unnormalized strings
+    // and matches, test passes. Testing requires a SentencePiece model, and
+    // hence designed as a test-app with tests in marian-regression-tests.
 
-      for(auto sourceView: alignments){ 
-          if(not first){
-              std::cout << " ";
-              first = false;
-          }
-          std::cout << sourceView;
-      } 
-      std::cout << std::endl;
-  } 
+    for(auto &sourceView : byteRanges) {
+      if(not first) {
+        std::cout << " ";
+        first = false;
+      }
+      std::cout << sourceView;
+    }
+    std::cout << std::endl;
+  }
 
-  return 0; 
+  return 0;
 }
