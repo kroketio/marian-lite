@@ -225,7 +225,7 @@ public:
 
     Words words;
     words.reserve(spt.pieces().size() + addEOS);
-    for(auto piece: spt.pieces()){
+    for(auto piece : spt.pieces()) {
       Word word = Word::fromWordIndex(piece.id());
       words.push_back(word);
       string_view byteRange = line.substr(piece.begin(), piece.end() - piece.begin());

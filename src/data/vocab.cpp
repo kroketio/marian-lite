@@ -114,9 +114,9 @@ Words Vocab::encode(const std::string& line,
 }
 
 Words Vocab::encodeWithByteRanges(const string_view &line,
-        std::vector<string_view> &byteRanges,
-              bool addEOS,
-              bool inference) const {
+                                  std::vector<string_view> &byteRanges,
+                                  bool addEOS,
+                                  bool inference) const {
   return vImpl_->encodeWithByteRanges(line, byteRanges, addEOS, inference);
 }
 
