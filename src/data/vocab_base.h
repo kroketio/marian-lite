@@ -32,6 +32,13 @@ public:
                        bool addEOS = true,
                        bool inference = false) const = 0;
 
+  virtual Words encodeWithByteRanges(const string_view & /*line*/,
+                                       std::vector<string_view> & /*byteRanges*/,
+                                       bool /*addEOS*/,
+                                       bool /*inference*/) const {
+    ABORT("encodeWithByteRanges(...) is not implemented for this VocabType.");
+  }
+
   virtual std::string decode(const Words& sentence,
                              bool ignoreEos = true) const = 0;
   virtual std::string surfaceForm(const Words& sentence) const = 0;

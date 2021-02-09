@@ -1,10 +1,5 @@
+#include "sentencepiece_vocab.h"
 #include "data/vocab_base.h"
-
-#ifdef USE_SENTENCEPIECE
-#include "sentencepiece/src/sentencepiece_processor.h"
-#include "sentencepiece/src/sentencepiece_trainer.h"
-#endif
-
 #include "common/config.h"
 #include "common/options.h"
 #include "common/logging.h"
@@ -219,6 +214,28 @@ public:
 
     if(addEOS)
       words.push_back(getEosId());
+    return words;
+  }
+
+  Words encodeWithByteRanges(const string_view& line,
+                               std::vector<string_view> &byteRanges,
+                               bool addEOS, bool inference) const override {
+    sentencepiece::SentencePieceText spt;
+    spm_->Encode(line, &spt);
+
+    Words words;
+    words.reserve(spt.pieces().size() + addEOS);
+    for(auto piece : spt.pieces()) {
+      Word word = Word::fromWordIndex(piece.id());
+      words.push_back(word);
+      string_view byteRange = line.substr(piece.begin(), piece.end() - piece.begin());
+      byteRanges.push_back(byteRange);
+    }
+
+    if (addEOS){
+      words.push_back(getEosId());
+    }
+
     return words;
   }
 

@@ -10,6 +10,7 @@ if(NOT MSVC)
       prod
       cli
       pooling
+      sentencepiece_norm
   )
 
   foreach(test ${APP_TESTS})
