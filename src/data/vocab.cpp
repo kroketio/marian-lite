@@ -120,6 +120,14 @@ Words Vocab::encodeWithByteRanges(const string_view &line,
   return vImpl_->encodeWithByteRanges(line, byteRanges, addEOS, inference);
 }
 
+void Vocab::decodeWithByteRanges(const Words &sentence,
+                                    std::string &line,
+                                    std::vector<string_view> &byteRanges,
+                                    bool ignoreEOS)
+                                    const {
+  vImpl_->decodeWithByteRanges(sentence, line, byteRanges, ignoreEOS);
+}
+
 // convert sequence of token ids to single line, can perform detokenization
 std::string Vocab::decode(const Words& sentence,
                     bool ignoreEOS) const {

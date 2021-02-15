@@ -256,6 +256,30 @@ public:
     return line;
   }
 
+  void decodeWithByteRanges(const Words& sentence,
+                            std::string &decoded,
+                            std::vector<string_view> &byteRanges,
+                            bool ignoreEOS) const override {
+    sentencepiece::SentencePieceText spt;
+
+    std::vector<int> spmSentence;
+    spmSentence.reserve(sentence.size());
+    for(auto&& word : sentence)
+      spmSentence.push_back(word.toWordIndex());
+    spm_->Decode(spmSentence, &spt);
+
+    decoded = spt.text(); // Creates copy of string.
+    string_view decoded_view(decoded);
+    for(auto piece : spt.pieces()) {
+      string_view byteRange = decoded_view.substr(piece.begin(), piece.end() - piece.begin());
+      byteRanges.push_back(byteRange);
+    }
+
+    if(ignoreEOS){
+        byteRanges.pop_back();
+    }
+  }
+
   std::string surfaceForm(const Words& sentence) const override {
     // with SentencePiece, decoded form and surface form are identical
     return decode(sentence, /*ignoreEOS=*/true);

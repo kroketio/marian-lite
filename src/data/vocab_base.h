@@ -39,6 +39,15 @@ public:
     ABORT("encodeWithByteRanges(...) is not implemented for this VocabType.");
   }
 
+  virtual void decodeWithByteRanges(const Words & /*sentence*/,
+                                       std::string & /*line*/,
+                                       std::vector<string_view> & /*byteRanges*/,
+                                       bool /*ignoreEOS*/)
+                                       const {
+    ABORT("decodeWithByteRanges(...) is not implemented for this VocabType.");
+  }
+
+
   virtual std::string decode(const Words& sentence,
                              bool ignoreEos = true) const = 0;
   virtual std::string surfaceForm(const Words& sentence) const = 0;
