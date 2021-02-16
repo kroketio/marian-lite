@@ -113,26 +113,34 @@ Words Vocab::encode(const std::string& line,
   return vImpl_->encode(line, addEOS, inference);
 }
 
+// same as Vocab::encode(...) above, but loads string_views corresponding to
+// each word into byteRanges. string_views refer to line and are valid only if
+// line is alive in scope. Useful in cases where the constituent word or
+// subword units need to be tracked to the source string. e.g: WordAlignments,
+// placing translations back into a structured text like HTML. Absent this
+// functionality, the mapping is lost while normalizing steps in preprocessing.
 Words Vocab::encodeWithByteRanges(const string_view &line,
                                   std::vector<string_view> &byteRanges,
-                                  bool addEOS,
-                                  bool inference) const {
-  return vImpl_->encodeWithByteRanges(line, byteRanges, addEOS, inference);
+                                  bool addEOS, bool inference) const {
+    return vImpl_->encodeWithByteRanges(line, byteRanges, addEOS, inference);
 }
 
-void Vocab::decodeWithByteRanges(const Words &sentence,
-                                    std::string &line,
-                                    std::vector<string_view> &byteRanges,
-                                    bool ignoreEOS)
-                                    const {
-  vImpl_->decodeWithByteRanges(sentence, line, byteRanges, ignoreEOS);
-}
 
 // convert sequence of token ids to single line, can perform detokenization
 std::string Vocab::decode(const Words& sentence,
                     bool ignoreEOS) const {
   return vImpl_->decode(sentence, ignoreEOS);
 }
+
+// same as Vocab::decode(...) above, except moves the decoded string into line
+// and loads the constituent word byteRanges into byteRanges. Useful for
+// converting WordAlignments to point between source and target units.
+
+void Vocab::decodeWithByteRanges(const Words &sentence,
+                                 std::string &line,
+                                 std::vector<string_view> &byteRanges,
+                                 bool ignoreEOS) const {
+    vImpl_->decodeWithByteRanges(sentence, line, byteRanges, ignoreEOS); }
 
 // convert sequence of token its to surface form (incl. removng spaces, applying factors)
 // for in-process BLEU validation
