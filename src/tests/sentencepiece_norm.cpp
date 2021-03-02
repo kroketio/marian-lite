@@ -27,26 +27,52 @@ int main(int argc, char **argv) {
   auto vocab = New<Vocab>(options, batchIndex);
   vocab->load(vocabPath);
 
-  std::string line;
-  bool addEOS{true}, inference{true};
-  while(std::getline(std::cin, line)) {
-    std::vector<string_view> byteRanges;
-    auto words = vocab->encodeWithByteRanges(line, byteRanges, addEOS, inference);
-    bool first = true;
+  auto printAnnotated
+      = [](const std::string &reference, const std::vector<string_view> &byteRanges) {
+          string_view reference_view(reference);
+          const char *p = reference_view.data();
+          for(auto &word : byteRanges) {
+            // Print text before.
+            string_view pre(p, word.data() - p);
+            std::cout << pre;
 
+            // Annotate and print token.
+            std::cout << "[";
+            std::cout << word;
+            std::cout << "]";
+
+            p = word.data() + word.size();
+          }
+
+          // Print tail text.
+          const char *end = reference_view.data() + reference_view.size();
+          string_view tail(p, end - p);
+          std::cout << tail;
+        };
+
+  // Test encode with byteRanges
+  std::string line, decoded;
+  while(std::getline(std::cin, line)) {
     // If the ByteRanges coming out of SentencePiece are correct, expected
     // result is sourceToken that a word corresponding points to. The output
     // here is compared to an expected output containing unnormalized strings
     // and matches, test passes. Testing requires a SentencePiece model, and
     // hence designed as a test-app with tests in marian-regression-tests.
 
-    for(auto &sourceView : byteRanges) {
-      if(not first) {
-        std::cout << " ";
-        first = false;
-      }
-      std::cout << sourceView;
-    }
+    std::vector<string_view> encodedByteRanges;
+    auto words
+        = vocab->encodeWithByteRanges(line, encodedByteRanges, /*addEOS=*/true, /*inference=*/true);
+    std::cout << "Original: ";
+    printAnnotated(line, encodedByteRanges);
+    std::cout << std::endl;
+
+    // Decode with ByteRanges on the same set of words should give a different
+    // expected output onto an input string and string_views that are valid.
+
+    std::vector<string_view> decodedByteRanges;
+    vocab->decodeWithByteRanges(words, decoded, decodedByteRanges, /*ignoreEOS=*/true);
+    std::cout << "Decoded: ";
+    printAnnotated(decoded, decodedByteRanges);
     std::cout << std::endl;
   }
 
