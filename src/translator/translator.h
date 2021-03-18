@@ -59,9 +59,17 @@ public:
     trgVocab_->load(vocabs.back());
     auto srcVocab = corpus_->getVocabs()[0];
 
-    if(options_->hasAndNotEmpty("shortlist"))
-      shortlistGenerator_ = New<data::LexicalShortlistGenerator>(
-          options_, srcVocab, trgVocab_, 0, 1, vocabs.front() == vocabs.back());
+    if(options_->hasAndNotEmpty("shortlist")) {
+      auto slOptions = options_->get<std::vector<std::string>>("shortlist");
+      ABORT_IF(slOptions.empty(), "No path to shortlist file given");
+      std::string filename = slOptions[0];
+      if(data::isBinaryShortlist(filename))
+        shortlistGenerator_ = New<data::BinaryShortlistGenerator>(
+            options_, srcVocab, trgVocab_, 0, 1, vocabs.front() == vocabs.back());
+      else
+          shortlistGenerator_ = New<data::LexicalShortlistGenerator>(
+              options_, srcVocab, trgVocab_, 0, 1, vocabs.front() == vocabs.back());
+    }
 
     auto devices = Config::getDevices(options_);
     numDevices_ = devices.size();
@@ -87,7 +95,6 @@ public:
         auto prec = options_->get<std::vector<std::string>>("precision", {"float32"});
         graph->setDefaultElementType(typeFromString(prec[0]));
         graph->setDevice(device);
-        graph->getBackend()->configureDevice(options_);
         graph->reserveWorkspaceMB(options_->get<size_t>("workspace"));
         graphs_[id] = graph;
 
@@ -211,9 +218,17 @@ public:
     trgVocab_->load(vocabPaths.back());
 
     // load lexical shortlist
-    if(options_->hasAndNotEmpty("shortlist"))
-      shortlistGenerator_ = New<data::LexicalShortlistGenerator>(
-          options_, srcVocabs_.front(), trgVocab_, 0, 1, vocabPaths.front() == vocabPaths.back());
+    if(options_->hasAndNotEmpty("shortlist")) {
+      auto slOptions = options_->get<std::vector<std::string>>("shortlist");
+      ABORT_IF(slOptions.empty(), "No path to shortlist file given");
+      std::string filename = slOptions[0];
+      if(data::isBinaryShortlist(filename))
+        shortlistGenerator_ = New<data::BinaryShortlistGenerator>(
+            options_, srcVocabs_.front(), trgVocab_, 0, 1, vocabPaths.front() == vocabPaths.back());
+      else
+        shortlistGenerator_ = New<data::LexicalShortlistGenerator>(
+            options_, srcVocabs_.front(), trgVocab_, 0, 1, vocabPaths.front() == vocabPaths.back());
+    }
 
     // get device IDs
     auto devices = Config::getDevices(options_);
@@ -226,7 +241,6 @@ public:
       auto precison = options_->get<std::vector<std::string>>("precision", {"float32"});
       graph->setDefaultElementType(typeFromString(precison[0])); // only use first type, used for parameter type in graph
       graph->setDevice(device);
-      graph->getBackend()->configureDevice(options_);
       graph->reserveWorkspaceMB(options_->get<size_t>("workspace"));
       graphs_.push_back(graph);
 
