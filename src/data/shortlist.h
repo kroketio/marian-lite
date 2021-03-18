@@ -5,6 +5,7 @@
 #include "common/file_stream.h"
 #include "data/corpus_base.h"
 #include "data/types.h"
+#include "3rd_party/mio/mio.hpp"
 
 #include <random>
 #include <unordered_map>
@@ -15,6 +16,11 @@
 
 namespace marian {
 namespace data {
+// Magic signature for binary shortlist:
+// ASCII and Unicode text files never start with the following 64 bits
+const uint64_t BINARY_SHORTLIST_MAGIC = 0xF11A48D5013417F5;
+
+bool isBinaryShortlist(const std::string& fileName);
 
 class Shortlist {
 private:
@@ -141,46 +147,8 @@ private:
 
   std::vector<std::unordered_map<WordIndex, float>> data_; // [WordIndex src] -> [WordIndex tgt] -> P_trans(tgt|src) --@TODO: rename data_ accordingly
 
-  void load(const std::string& fname) {
-    io::InputFileStream in(fname);
-
-    std::string src, trg;
-    float prob;
-    while(in >> trg >> src >> prob) {
-      // @TODO: change this to something safer other than NULL
-      if(src == "NULL" || trg == "NULL")
-        continue;
-
-      auto sId = (*srcVocab_)[src].toWordIndex();
-      auto tId = (*trgVocab_)[trg].toWordIndex();
-
-      if(data_.size() <= sId)
-        data_.resize(sId + 1);
-      data_[sId][tId] = prob;
-    }
-  }
-
-  void prune(float threshold = 0.f) {
-    size_t i = 0;
-    for(auto& probs : data_) {
-      std::vector<std::pair<float, WordIndex>> sorter;
-      for(auto& it : probs)
-        sorter.emplace_back(it.second, it.first);
-
-      std::sort(
-          sorter.begin(), sorter.end(), std::greater<std::pair<float, WordIndex>>()); // sort by prob
-
-      probs.clear();
-      for(auto& it : sorter) {
-        if(probs.size() < bestNum_ && it.first > threshold)
-          probs[it.second] = it.first;
-        else
-          break;
-      }
-
-      ++i;
-    }
-  }
+  void load(const std::string& fname);
+  void prune(float threshold = 0.f);
 
 public:
   LexicalShortlistGenerator(Ptr<Options> options,
@@ -188,91 +156,67 @@ public:
                             Ptr<const Vocab> trgVocab,
                             size_t srcIdx = 0,
                             size_t /*trgIdx*/ = 1,
-                            bool shared = false)
-      : options_(options),
-        srcVocab_(srcVocab),
-        trgVocab_(trgVocab),
-        srcIdx_(srcIdx),
-        shared_(shared) {
-    std::vector<std::string> vals = options_->get<std::vector<std::string>>("shortlist");
+                            bool shared = false);
 
-    ABORT_IF(vals.empty(), "No path to filter path given");
-    std::string fname = vals[0];
+  virtual void dump(const std::string& prefix) const override;
+  virtual Ptr<Shortlist> generate(Ptr<data::CorpusBatch> batch) const override;
+};
 
-    firstNum_ = vals.size() > 1 ? std::stoi(vals[1]) : 100;
-    bestNum_ = vals.size() > 2 ? std::stoi(vals[2]) : 100;
-    float threshold = vals.size() > 3 ? std::stof(vals[3]) : 0;
-    std::string dumpPath = vals.size() > 4 ? vals[4] : "";
+class BinaryShortlistGenerator : public ShortlistGenerator {
+private:
+  Ptr<Options> options_;
+  Ptr<const Vocab> srcVocab_;
+  Ptr<const Vocab> trgVocab_;
 
-    LOG(info,
-        "[data] Loading lexical shortlist as {} {} {} {}",
-        fname,
-        firstNum_,
-        bestNum_,
-        threshold);
+  size_t srcIdx_;
+  bool shared_{false};
 
-    // @TODO: Load and prune in one go.
-    load(fname);
-    prune(threshold);
+  uint64_t firstNum_{100};  // baked into binary header
+  uint64_t bestNum_{100};   // baked into binary header
 
-    if(!dumpPath.empty())
-      dump(dumpPath);
+  // shortlist is stored in a skip list
+  // [&shortLists_[wordToOffset_[word]], &shortLists_[wordToOffset_[word+1]])
+  // is a sorted array of word indices in the shortlist for word
+  mio::mmap_source mmapMem_;
+  uint64_t wordToOffsetSize_;
+  uint64_t shortListsSize_;
+  const uint64_t *wordToOffset_;
+  const WordIndex *shortLists_;
+
+  struct Header {
+    uint64_t magic; // BINARY_SHORTLIST_MAGIC
+    uint64_t checksum; // util::hashMem<uint64_t, uint64_t> from &firstNum to end of file.
+    uint64_t firstNum; // Limits used to create the shortlist.
+    uint64_t bestNum;
+    uint64_t wordToOffsetSize; // Length of wordToOffset_ array.
+    uint64_t shortListsSize; // Length of shortLists_ array.
+  };
+
+  void contentCheck();
+  // load shortlist from buffer
+  void load(const void* ptr_void, size_t blobSize, bool check = true);
+  // load shortlist from file
+  void load(const std::string& filename, bool check=true);
+  // import text shortlist from file
+  void import(const std::string& filename, double threshold);
+  // generate blob from vectors
+  std::vector<char> generateBlob() const;
+  void saveBlobToFile(std::vector<char> blob, const std::string& filename) const;
+
+public:
+  BinaryShortlistGenerator(Ptr<Options> options,
+                           Ptr<const Vocab> srcVocab,
+                           Ptr<const Vocab> trgVocab,
+                           size_t srcIdx = 0,
+                           size_t /*trgIdx*/ = 1,
+                           bool shared = false);
+
+  ~BinaryShortlistGenerator(){
+    mmapMem_.unmap();
   }
 
-  virtual void dump(const std::string& prefix) const override {
-    // Dump top most frequent words from target vocabulary
-    LOG(info, "[data] Saving shortlist dump to {}", prefix + ".{top,dic}");
-    io::OutputFileStream outTop(prefix + ".top");
-    for(WordIndex i = 0; i < firstNum_ && i < trgVocab_->size(); ++i)
-      outTop << (*trgVocab_)[Word::fromWordIndex(i)] << std::endl;
-
-    // Dump translation pairs from dictionary
-    io::OutputFileStream outDic(prefix + ".dic");
-    for(WordIndex srcId = 0; srcId < data_.size(); srcId++) {
-      for(auto& it : data_[srcId]) {
-        auto trgId = it.first;
-        outDic << (*srcVocab_)[Word::fromWordIndex(srcId)] << "\t" << (*trgVocab_)[Word::fromWordIndex(trgId)] << std::endl;
-      }
-    }
-  }
-
-  virtual Ptr<Shortlist> generate(Ptr<data::CorpusBatch> batch) const override {
-    auto srcBatch = (*batch)[srcIdx_];
-
-    // add firstNum most frequent words
-    std::unordered_set<WordIndex> indexSet;
-    for(WordIndex i = 0; i < firstNum_ && i < trgVocab_->size(); ++i)
-      indexSet.insert(i);
-
-    // add all words from ground truth
-    // for(auto i : trgBatch->data())
-    //  indexSet.insert(i.toWordIndex());
-
-    // collect unique words form source
-    std::unordered_set<WordIndex> srcSet;
-    for(auto i : srcBatch->data())
-      srcSet.insert(i.toWordIndex());
-
-    // add aligned target words
-    for(auto i : srcSet) {
-      if(shared_)
-        indexSet.insert(i);
-      for(auto& it : data_[i])
-        indexSet.insert(it.first);
-    }
-    //TODO better solution here? This could potentially be very slow
-    WordIndex i = (WordIndex)firstNum_;
-    while (indexSet.size() % 8 != 0) {
-      indexSet.insert(i);
-      i++;
-    }
-
-    // turn into vector and sort (selected indices)
-    std::vector<WordIndex> indices(indexSet.begin(), indexSet.end());
-    std::sort(indices.begin(), indices.end());
-
-    return New<Shortlist>(indices);
-  }
+  virtual Ptr<Shortlist> generate(Ptr<data::CorpusBatch> batch) const override;
+  virtual void dump(const std::string& fileName) const override;
 };
 
 class FakeShortlistGenerator : public ShortlistGenerator {
