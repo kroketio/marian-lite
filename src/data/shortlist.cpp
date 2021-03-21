@@ -296,7 +296,6 @@ Ptr<Shortlist> BinaryShortlistGenerator::generate(Ptr<data::CorpusBatch> batch) 
 void BinaryShortlistGenerator::dump(const std::string& fileName) const {
   ABORT_IF(mmapMem_.is_open(),"No need to dump again");
   LOG(info, "[data] Saving binary shortlist dump to {}", fileName);
-//  std::vector<char> blob = generateBlob();
   saveBlobToFile(fileName);
 }
 
@@ -341,8 +340,8 @@ void BinaryShortlistGenerator::import(const std::string& filename, double thresh
   shortListsSize_ = shortListsSize;
 
   // Generate a binary blob
-  blob.resize(sizeof(Header) + wordToOffsetSize_ * sizeof(uint64_t) + shortListsSize_ * sizeof(WordIndex));
-  struct Header* pHeader = (struct Header *)blob.data();
+  blob_.resize(sizeof(Header) + wordToOffsetSize_ * sizeof(uint64_t) + shortListsSize_ * sizeof(WordIndex));
+  struct Header* pHeader = (struct Header *)blob_.data();
   pHeader->magic = BINARY_SHORTLIST_MAGIC;
   pHeader->firstNum = firstNum_;
   pHeader->bestNum = bestNum_;
@@ -366,7 +365,8 @@ void BinaryShortlistGenerator::import(const std::string& filename, double thresh
   for(int i = 1; i < wordToOffsetSize_; i++) {
     std::sort(&shortLists[wordToOffset[i-1]], &shortLists[wordToOffset[i]]);
   }
-  pHeader->checksum = (uint64_t)util::hashMem<uint64_t>((uint64_t *)blob.data()+2, blob.size()/sizeof(uint64_t)-2);
+  pHeader->checksum = (uint64_t)util::hashMem<uint64_t>((uint64_t *)blob_.data()+2,
+                                                        blob_.size()/sizeof(uint64_t)-2);
 
   wordToOffset_ = wordToOffset;
   shortLists_ = shortLists;
@@ -374,7 +374,7 @@ void BinaryShortlistGenerator::import(const std::string& filename, double thresh
 
 void BinaryShortlistGenerator::saveBlobToFile(const std::string& fileName) const {
   io::OutputFileStream outTop(fileName);
-  outTop.write(blob.data(), blob.size());
+  outTop.write(blob_.data(), blob_.size());
 }
 
 }  // namespace data

@@ -181,6 +181,7 @@ private:
   uint64_t shortListsSize_;
   const uint64_t *wordToOffset_;
   const WordIndex *shortLists_;
+  std::vector<char> blob_;  // binary blob
 
   struct Header {
     uint64_t magic; // BINARY_SHORTLIST_MAGIC
@@ -198,9 +199,7 @@ private:
   void load(const std::string& filename, bool check=true);
   // import text shortlist from file
   void import(const std::string& filename, double threshold);
-  // generate blob from vectors
-  std::vector<char> blob;
-
+  // save blob to file (called by dump)
   void saveBlobToFile(const std::string& filename) const;
 
 public:
