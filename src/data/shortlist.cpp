@@ -147,8 +147,12 @@ Ptr<Shortlist> LexicalShortlistGenerator::generate(Ptr<data::CorpusBatch> batch)
 void BinaryShortlistGenerator::contentCheck() {
   bool failFlag = 0;
   // The offset table has to be within the size of shortlists.
-  for(int i = 0; i < wordToOffsetSize_; i++)
+  for(int i = 0; i < wordToOffsetSize_-1; i++)
     failFlag |= wordToOffset_[i] >= shortListsSize_;
+
+  // The last element of wordToOffset_ must equal shortListsSize_
+  failFlag |= wordToOffset_[wordToOffsetSize_-1] != shortListsSize_;
+
   // The vocabulary indices have to be within the vocabulary size.
   size_t vSize = trgVocab_->size();
   for(int j = 0; j < shortListsSize_; j++)
@@ -292,8 +296,8 @@ Ptr<Shortlist> BinaryShortlistGenerator::generate(Ptr<data::CorpusBatch> batch) 
 void BinaryShortlistGenerator::dump(const std::string& fileName) const {
   ABORT_IF(mmapMem_.is_open(),"No need to dump again");
   LOG(info, "[data] Saving binary shortlist dump to {}", fileName);
-  std::vector<char> blob = generateBlob();
-  saveBlobToFile(blob,fileName);
+//  std::vector<char> blob = generateBlob();
+  saveBlobToFile(fileName);
 }
 
 void BinaryShortlistGenerator::import(const std::string& filename, double threshold) {
@@ -317,27 +321,38 @@ void BinaryShortlistGenerator::import(const std::string& filename, double thresh
   }
 
   // Create priority queue and count
-  std::vector<std::priority_queue<std::pair<double, WordIndex>>> vpq;
-  uint64_t shortListSize = 0;
+  std::vector<std::priority_queue<std::pair<float, WordIndex>>> vpq;
+  uint64_t shortListsSize = 0;
 
   vpq.resize(srcTgtProbTable.size());
   for(WordIndex sId = 0; sId < srcTgtProbTable.size(); sId++) {
-    uint64_t shortListSizeCurrent = 0;
+    uint64_t shortListsSizeCurrent = 0;
     for(auto entry : srcTgtProbTable[sId]) {
       if (entry.first>=threshold) {
         vpq[sId].push(std::make_pair(entry.second, entry.first));
-        if(shortListSizeCurrent < bestNum_)
-          shortListSizeCurrent++;
+        if(shortListsSizeCurrent < bestNum_)
+          shortListsSizeCurrent++;
       }
     }
-    shortListSize += shortListSizeCurrent;
+    shortListsSize += shortListsSizeCurrent;
   }
 
-  uint64_t wordToOffsetSize = vpq.size()+1;
-  uint64_t* wordToOffset = new uint64_t[wordToOffsetSize];
-  WordIndex* shortLists = new WordIndex[shortListSize];
-  WordIndex shortlistIdx = 0;
-  for(size_t i=0; i< wordToOffsetSize -1; i++) {
+  wordToOffsetSize_ = vpq.size() + 1;
+  shortListsSize_ = shortListsSize;
+
+  // Generate a binary blob
+  blob.resize(sizeof(Header) + wordToOffsetSize_ * sizeof(uint64_t) + shortListsSize_ * sizeof(WordIndex));
+  struct Header* pHeader = (struct Header *)blob.data();
+  pHeader->magic = BINARY_SHORTLIST_MAGIC;
+  pHeader->firstNum = firstNum_;
+  pHeader->bestNum = bestNum_;
+  pHeader->wordToOffsetSize = wordToOffsetSize_;
+  pHeader->shortListsSize = shortListsSize_;
+  uint64_t* wordToOffset = (uint64_t*)((char *)pHeader + sizeof(Header));
+  WordIndex* shortLists = (WordIndex*)((char*)wordToOffset + wordToOffsetSize_*sizeof(uint64_t));
+
+  uint64_t shortlistIdx = 0;
+  for (size_t i = 0; i < wordToOffsetSize_ - 1; i++) {
     wordToOffset[i] = shortlistIdx;
     for(int popcnt = 0; popcnt < bestNum_ && !vpq[i].empty(); popcnt++) {
       shortLists[shortlistIdx] = vpq[i].top().second;
@@ -345,49 +360,19 @@ void BinaryShortlistGenerator::import(const std::string& filename, double thresh
       vpq[i].pop();
     }
   }
-  wordToOffset[wordToOffsetSize-1] = shortlistIdx;
+  wordToOffset[wordToOffsetSize_-1] = shortlistIdx;
 
   // Sort word indices for each shortlist
-  for(int i = 1; i < wordToOffsetSize; i++) {
+  for(int i = 1; i < wordToOffsetSize_; i++) {
     std::sort(&shortLists[wordToOffset[i-1]], &shortLists[wordToOffset[i]]);
   }
+  pHeader->checksum = (uint64_t)util::hashMem<uint64_t>((uint64_t *)blob.data()+2, blob.size()/sizeof(uint64_t)-2);
 
   wordToOffset_ = wordToOffset;
   shortLists_ = shortLists;
-  wordToOffsetSize_ = wordToOffsetSize;
-  shortListsSize_ = shortListSize;
 }
 
-std::vector<char> BinaryShortlistGenerator::generateBlob() const{
-  // Build the body
-  std::vector<char> body;
-  body.insert(body.end(), (char *)&firstNum_, (char *)&firstNum_ + sizeof(uint64_t));
-  body.insert(body.end(), (char *)&bestNum_, (char *)&bestNum_ + sizeof(uint64_t));
-  body.insert(body.end(), (char *)&wordToOffsetSize_, (char *)&wordToOffsetSize_ + sizeof(uint64_t));
-  body.insert(body.end(), (char *)&shortListsSize_, (char *)&shortListsSize_ + sizeof(uint64_t));
-  body.insert(body.end(),
-              (char *)wordToOffset_,
-              (char *)wordToOffset_ + wordToOffsetSize_ * sizeof(uint64_t));
-  body.insert(body.end(),
-              (char *)shortLists_,
-              (char *)shortLists_ + shortListsSize_ * sizeof(uint32_t));
-
-  // Compute the checksum
-  uint64_t bodySize = body.size();
-  uint64_t checksum
-      = (uint64_t)util::hashMem<uint64_t>((uint64_t *)body.data(), bodySize / sizeof(uint64_t));
-
-  // Produce the blob with the header and the body
-  std::vector<char> blob;
-  blob.insert(blob.end(), (char *)&BINARY_SHORTLIST_MAGIC, (char *)&BINARY_SHORTLIST_MAGIC + sizeof(uint64_t));
-  blob.insert(blob.end(), (char *)&checksum, (char *)&checksum + sizeof(uint64_t));
-  blob.insert(blob.end(), body.begin(), body.end());
-
-  return blob;
-}
-
-void BinaryShortlistGenerator::saveBlobToFile(std::vector<char> blob,
-                                              const std::string& fileName) const {
+void BinaryShortlistGenerator::saveBlobToFile(const std::string& fileName) const {
   io::OutputFileStream outTop(fileName);
   outTop.write(blob.data(), blob.size());
 }

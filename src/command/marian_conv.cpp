@@ -35,8 +35,8 @@ int main(int argc, char** argv) {
   }
 
   // shortlist conversion example:
-  // ./ marian-cov --shortlist lex.esen.s2t 100 100 0
-  //               --dump lex.esen.bin
+  // ./ marian-conv --shortlist lex.esen.s2t 100 100 0 \
+  //               --dump lex.esen.bin \
   //               --vocabs vocab.esen.spm vocab.esen.spm
   if(options->hasAndNotEmpty("shortlist")){
     auto vocabPaths = options->get<std::vector<std::string>>("vocabs");

@@ -40,7 +40,6 @@ public:
     else
       return -1;                                          // return -1 if not found
   }
-
 };
 
 class ShortlistGenerator {
@@ -200,8 +199,9 @@ private:
   // import text shortlist from file
   void import(const std::string& filename, double threshold);
   // generate blob from vectors
-  std::vector<char> generateBlob() const;
-  void saveBlobToFile(std::vector<char> blob, const std::string& filename) const;
+  std::vector<char> blob;
+
+  void saveBlobToFile(const std::string& filename) const;
 
 public:
   BinaryShortlistGenerator(Ptr<Options> options,
