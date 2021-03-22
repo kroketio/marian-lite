@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   and translation with options --tsv and --tsv-fields n.
 - Internal optional parameter in n-best list generation that skips empty hypotheses.
 - Quantized training (fixed point or log-based quantization) with --quantize-bits N command
+- Support for loading lexical shortlist from a binary blob
+- Integrate a shortlist converter (which can convert a text lexical shortlist to a binary shortlist) into marian-conv with --shortlist option
 
 ### Fixed
 - Segfault of spm_train when compiled with -DUSE_STATIC_LIBS=ON seems to have gone away with update to newer SentencePiece version.
