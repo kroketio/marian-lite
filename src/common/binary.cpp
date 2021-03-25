@@ -58,32 +58,34 @@ void loadItems(const void* current, std::vector<io::Item>& items, bool mapped) {
   get<char>(current, offset);
 
   for(int i = 0; i < numHeaders; ++i) {
-    if(items[i].mapped) { // memory-mapped, hence only set pointer
-      ABORT_IF(isIntgemm(items[i].type), "mmap format not supported for intgemm matrices");
-      items[i].ptr = get<char>(current, headers[i].dataLength);
-    } else { // reading into item data
-      uint64_t len = headers[i].dataLength;
-      items[i].bytes.resize(len);
-      const char* ptr = get<char>(current, len);
-      if (matchType<intgemm8>(items[i].type)) {
-        if (items[i].name.find("Wemb") != std::string::npos) { //HACK HACK HACK THAT HACKS WEMB QUANTIZATION
-          items[i].type = Type::float32;
-          items[i].bytes.resize(items[i].shape.elements()*sizeof(float)); // We should have an extra float at the back but that requires a different format, due to allocator work
-          cpu::integer::unquantizeWemb<Type::int8>(items[i], ptr);
-        } else {
-          cpu::integer::prepareAndTransposeB<Type::int8>(items[i], ptr);
-        }
-      } else if (matchType<intgemm16>(items[i].type)) {
-        if (items[i].name.find("Wemb") != std::string::npos) { //HACK HACK HACK THAT HACKS WEMB QUANTIZATION
-          items[i].type = Type::float32;
-          items[i].bytes.resize(items[i].shape.elements()*sizeof(float)); // We should have an extra float at the back but that requires a different format, due to allocator work
-          cpu::integer::unquantizeWemb<Type::int16>(items[i], ptr);
-        } else {
-          cpu::integer::prepareAndTransposeB<Type::int16>(items[i], ptr);
-        }
+    //if(items[i].mapped && !isIntgemm(items[i].type)) { // memory-mapped, hence only set pointer. At the moment it intgemm matrices can't be used without processing
+    //  items[i].ptr = get<char>(current, headers[i].dataLength);
+    //} else { // reading into item data
+    items[i].mapped = false;  // Completely disable MMAP support for any models. We do not use it in bergamot and we hijack this codepath for binary model loading.
+                              // If this is not set, we trigger node_initializers.cpp:186. This one just assigns the memory ptr to the tensor if set to true, but at the moment
+                              // We are preparing some things on demand (the bottom portion of this code). Once we stop doing that, we can use the full mmap codepath
+                              // Also when using the full mmap codepath, we need to uncomment expression_graph.h:582
+    uint64_t len = headers[i].dataLength;
+    items[i].bytes.resize(len);
+    const char* ptr = get<char>(current, len);
+    if (matchType<intgemm8>(items[i].type)) {
+      if (items[i].name.find("Wemb") != std::string::npos) { // Since Wemb need to be dequantised, we have a special case for them
+        items[i].type = Type::float32;
+        items[i].bytes.resize(items[i].shape.elements()*sizeof(float)); // We should have an extra float at the back but that requires a different format, due to allocator work
+        cpu::integer::unquantizeWemb<Type::int8>(items[i], ptr);
       } else {
-        std::copy(ptr, ptr + len, items[i].bytes.begin());
+        cpu::integer::prepareAndTransposeB<Type::int8>(items[i], ptr);
       }
+    } else if (matchType<intgemm16>(items[i].type)) {
+      if (items[i].name.find("Wemb") != std::string::npos) { // Since Wemb need to be dequantised, we have a special case for them
+        items[i].type = Type::float32;
+        items[i].bytes.resize(items[i].shape.elements()*sizeof(float)); // We should have an extra float at the back but that requires a different format, due to allocator work
+        cpu::integer::unquantizeWemb<Type::int16>(items[i], ptr);
+      } else {
+        cpu::integer::prepareAndTransposeB<Type::int16>(items[i], ptr);
+      }
+    } else {
+      std::copy(ptr, ptr + len, items[i].bytes.begin());
     }
   }
 }
