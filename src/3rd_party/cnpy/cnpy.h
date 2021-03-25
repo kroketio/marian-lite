@@ -5,7 +5,7 @@
 #ifndef LIBCNPY_H_
 #define LIBCNPY_H_
 
-#if !defined(WASM)
+#if !defined(WASM_COMPATIBLE_SOURCE)
 #include "3rd_party/zlib/zlib.h"
 #endif
 
@@ -135,7 +135,7 @@ namespace cnpy {
 
     template<typename T> void npz_save(std::string zipname, std::string fname, const T* data, const unsigned int* shape, const unsigned int ndims, std::string mode = "w")
     {
-#if defined(WASM)
+#if defined(WASM_COMPATIBLE_SOURCE)
         throw std::runtime_error("npz_save() not supported in WASM builds");
 #else
         //first, append a .npy to the fname
@@ -271,7 +271,7 @@ namespace cnpy {
     static inline
     void npz_save(std::string zipname, const std::vector<NpzItem>& items)
     {
-#if defined(WASM)
+#if defined(WASM_COMPATIBLE_SOURCE)
         throw std::runtime_error("npz_save() not supported in WASM builds");
 #else
         auto tmpname = zipname + "$$"; // TODO: add thread id or something

@@ -254,7 +254,7 @@ template Ptr<NodeInitializer> range<IndexType>(IndexType begin, IndexType end, I
 }  // namespace marian
 
 
-#if BLAS_FOUND && !WASM
+#if BLAS_FOUND && !WASM_COMPATIBLE_SOURCE
 #include "faiss/VectorTransform.h"
 
 namespace marian {

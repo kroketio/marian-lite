@@ -221,7 +221,7 @@ namespace marian {
 
       // this option is only set in the decoder
       if(!lsh_ && options_->hasAndNotEmpty("output-approx-knn")) {
-#ifdef WASM
+#ifdef WASM_COMPATIBLE_SOURCE
         ABORT("LSH is not supported in wasm builds of marian.");
 #else
         auto k     = opt<std::vector<int>>("output-approx-knn")[0];
@@ -281,7 +281,7 @@ namespace marian {
         if(lsh_) {
           ABORT_IF( transA, "Transposed query not supported for LSH");
           ABORT_IF(!transB, "Untransposed indexed matrix not supported for LSH");
-#ifdef WASM
+#ifdef WASM_COMPATIBLE_SOURCE
           ABORT("LSH is not supported in wasm builds of marian.");
 #else
           return lsh_->apply(x, W, b); // knows how to deal with undefined bias

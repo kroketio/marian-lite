@@ -935,7 +935,7 @@ Path Path::exe()
 
   std::string str = utf16_to_utf8(buf);
   return Path(str);
-#elif defined(WASM)
+#elif defined(WASM_COMPATIBLE_SOURCE)
   throw(std::runtime_error("Path::exe() not supported in WASM builds"));
 #else
 #error Unsupported platform.

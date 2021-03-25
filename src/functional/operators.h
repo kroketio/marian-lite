@@ -265,7 +265,7 @@ struct Ops<float32x4> {
 
   // @TODO: get rid of loop4 with proper intrisics
   static inline float32x4 sgn(const float32x4& x)  { return loop4(Ops<float>::sgn, x); }
-#ifndef WASM
+#ifndef WASM_COMPATIBLE_SOURCE
   static inline float32x4 round(const float32x4& x)  { return _mm_round_ps(x, _MM_FROUND_TO_NEAREST_INT); }
   static inline float32x4 floor(const float32x4& x)  { return _mm_floor_ps(x); }
   static inline float32x4 ceil(const float32x4& x)   { return _mm_ceil_ps(x); }

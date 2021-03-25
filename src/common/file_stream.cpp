@@ -23,7 +23,7 @@ InputFileStream::InputFileStream(const std::string &file)
     : std::istream(NULL) {
   // the special syntax "command |" starts command in a sh shell and reads out its result
   if (marian::utils::endsWith(file, "|")) {
-#if defined(__unix__) && !defined(WASM)
+#if defined(__unix__) && !defined(WASM_COMPATIBLE_SOURCE)
     auto command = file.substr(0, file.size() - 1);
     // open as a pipe
     pipe_ = popen(command.c_str(), "r");
@@ -45,7 +45,7 @@ InputFileStream::InputFileStream(const std::string &file)
 
   // insert .gz decompression
   if(marian::utils::endsWith(file, ".gz")) {
-#if defined(WASM)
+#if defined(WASM_COMPATIBLE_SOURCE)
     ABORT(".gz file decompression not supported in WASM builds of Marian: {}", file);
 #else
     streamBuf2_ = std::move(streamBuf1_);
@@ -98,7 +98,7 @@ OutputFileStream::OutputFileStream(const std::string &file)
   ABORT_IF(ret != streamBuf1_.get(), "Return value is not equal to streambuf pointer, that is weird");
 
   if(file_.extension() == marian::filesystem::Path(".gz")) {
-#if defined(WASM)
+#if defined(WASM_COMPATIBLE_SOURCE)
     ABORT(".gz file decompression not supported in WASM builds of Marian: {}", file);
 #else
     streamBuf2_.reset(new zstr::ostreambuf(streamBuf1_.get()));
