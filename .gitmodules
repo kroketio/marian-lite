@@ -6,7 +6,7 @@
 	url = https://github.com/marian-nmt/marian-regression-tests
 [submodule "src/3rd_party/sentencepiece"]
 	path = src/3rd_party/sentencepiece
-	url = https://github.com/marian-nmt/sentencepiece
+	url = https://github.com/browsermt/sentencepiece
 [submodule "src/3rd_party/nccl"]
 	path = src/3rd_party/nccl
 	url = https://github.com/marian-nmt/nccl
@@ -16,7 +16,10 @@
 	branch = master
 [submodule "src/3rd_party/intgemm"]
 	path = src/3rd_party/intgemm
-	url = https://github.com/kpu/intgemm/
+	url = https://github.com/kpu/intgemm
 [submodule "src/3rd_party/simple-websocket-server"]
 	path = src/3rd_party/simple-websocket-server
 	url = https://github.com/marian-nmt/Simple-WebSocket-Server
+[submodule "src/3rd_party/onnxjs"]
+	path = src/3rd_party/onnxjs
+	url = https://github.com/abhi-agg/onnxjs.git

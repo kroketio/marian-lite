@@ -573,28 +573,31 @@ public:
     // Deal with default parameter set object that might not be a mapped object.
     // This gets assigned during ExpressionGraph::setDevice(...) and by default 
     // would contain allocated tensors. Here we replace it with a mmapped version.
-    auto it = paramsByElementType_.find(defaultElementType_);
-    if(it != paramsByElementType_.end()) {
-      // there is parameter object for that type
-      auto defaultParams = std::dynamic_pointer_cast<MappedParameters>(it->second);
-      if(!defaultParams) {
-        // but it's not mapped, so delete it and replace it with a mapped version
-        defaultParams = New<MappedParameters>(defaultElementType_);
-        defaultParams->init(backend_);
-        paramsByElementType_[defaultElementType_] = defaultParams;
-      }
-    }
-
-
-    // pre-populate parameters by type
-    for(auto& item : items) {
-      auto it1 = paramsByElementType_.find(item.type);
-      if(it1 == paramsByElementType_.end()) {
-        auto params = New<MappedParameters>(item.type);
-        params->init(backend_);
-        paramsByElementType_.insert({item.type, params});
-      }
-    }
+    /* This codepath makes MMAP loading work. However, We  are hijacking this codepath to load binary models
+     * Without mmap'ing them. AS a result we break the hidden mmap support.
+     *auto it = paramsByElementType_.find(defaultElementType_);
+     *if(it != paramsByElementType_.end()) {
+     * // there is parameter object for that type
+     * auto defaultParams = std::dynamic_pointer_cast<MappedParameters>(it->second);
+     * if(!defaultParams) {
+     *   // but it's not mapped, so delete it and replace it with a mapped version
+     *   defaultParams = New<MappedParameters>(defaultElementType_);
+     *   defaultParams->init(backend_);
+     *   paramsByElementType_[defaultElementType_] = defaultParams;
+     * }
+     * }
+     *
+     *
+     * // pre-populate parameters by type
+     *for(auto& item : items) {
+     * auto it1 = paramsByElementType_.find(item.type);
+     * if(it1 == paramsByElementType_.end()) {
+     *   auto params = New<MappedParameters>(item.type);
+     *   params->init(backend_);
+     *   paramsByElementType_.insert({item.type, params});
+     * }
+     *}
+     */
 
     load(items, markReloaded);
   }

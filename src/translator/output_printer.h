@@ -99,11 +99,15 @@ private:
   std::string getWordScores(const Hypothesis::PtrType& hyp);
 
   float getAlignmentThreshold(const std::string& str) {
+#if WITHOUT_EXCEPTIONS
+    return str.size() == 0 ? 0.f : std::max(std::stof(str), 0.f);
+#else
     try {
       return std::max(std::stof(str), 0.f);
     } catch(...) {
       return 0.f;
     }
+#endif // WITHOUT_EXCEPTIONS
   }
 };
 }  // namespace marian

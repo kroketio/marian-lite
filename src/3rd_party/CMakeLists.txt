@@ -2,14 +2,20 @@
 include_directories(.)
 
 add_subdirectory(./yaml-cpp)
-add_subdirectory(./SQLiteCpp)
+if(NOT COMPILE_WASM)
+  add_subdirectory(./SQLiteCpp)
+  add_subdirectory(./zlib)
+  add_subdirectory(./faiss)
+  include_directories(./faiss)
+endif()
 add_subdirectory(./pathie-cpp)
-add_subdirectory(./zlib)
-add_subdirectory(./faiss)
-include_directories(./faiss)
 
 set(INTGEMM_DONT_BUILD_TESTS ON CACHE BOOL "Disable intgemm tests")
 add_subdirectory(./intgemm)
+
+if(USE_WASM_COMPATIBLE_BLAS)
+  add_subdirectory(./onnxjs)
+endif(USE_WASM_COMPATIBLE_BLAS)
 
 if(USE_FBGEMM)
   # @TODO: find out if this is somehow harmful. This is supppressing CMake warnings for CMAKE_SUPPRESS_DEVELOPER_WARNINGS
@@ -78,7 +84,6 @@ if(USE_SENTENCEPIECE)
 
   add_subdirectory(./sentencepiece)
   include_directories(./sentencepiece)
-
   set_target_properties(spm_encode spm_decode spm_train spm_normalize spm_export_vocab
     PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
@@ -123,12 +128,14 @@ include_directories(./CLI)
 include_directories(./pathie-cpp/include)
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  if(NOT COMPILE_WASM)
   #set_target_properties(SQLiteCpp PROPERTIES COMPILE_FLAGS
   set_property(TARGET SQLiteCpp APPEND_STRING PROPERTY COMPILE_FLAGS
     " -Wno-parentheses-equality -Wno-unused-value")
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 9.0)
     set_property(TARGET SQLiteCpp APPEND_STRING PROPERTY COMPILE_FLAGS
       " -Wno-implicit-int-float-conversion")
+  endif()
   endif()
   set_property(TARGET libyaml-cpp APPEND_STRING PROPERTY COMPILE_FLAGS
     " -fPIC -Wno-unused-value")
