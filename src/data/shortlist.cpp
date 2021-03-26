@@ -251,6 +251,8 @@ BinaryShortlistGenerator::BinaryShortlistGenerator(const void *ptr_void,
       trgVocab_(trgVocab),
       srcIdx_(srcIdx),
       shared_(shared) {
+
+  LOG(info, "[data] Loading binary shortlist from buffer with check={}", check);
   load(ptr_void, blobSize, check);
 }
 

@@ -217,7 +217,7 @@ public:
                            Ptr<const Vocab> trgVocab,
                            size_t srcIdx = 0,
                            size_t /*trgIdx*/ = 1,
-                           bool shared = false,
+                           bool shared = false, // Kept there for backward compatibility
                            bool check = true);
 
   ~BinaryShortlistGenerator(){
