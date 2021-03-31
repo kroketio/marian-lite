@@ -29,21 +29,24 @@ option(USE_STATIC_LIBS "Link statically against non-system libs" OFF)
 option(GENERATE_MARIAN_INSTALL_TARGETS "Generate Marian install targets (requires CMake 3.12+)" OFF)
 option(M32_BINARIES "Generate 32bit binaries even when building outside of WASM. Useful for testing some WASM specific functionality without the need for the compiling to WASM." OFF)
 option(COMPILE_WASM "Compile (wasm compatible) marian for WASM target" OFF)
-option(USE_WASM_COMPATIBLE_MARIAN "Enable those marian sources that compile to wasm. Useful for debugging wasm failures by building same sources natively" OFF)
+option(USE_WASM_COMPATIBLE_SOURCE "Enable the minimal marian sources that compile to wasm. Useful for debugging wasm failures by building same sources natively" OFF)
 
-# cmake options that are dependent on USE_WASM_COMPATIBLE_MARIAN cmake option
+# cmake options that are dependent on USE_WASM_COMPATIBLE_SOURCE cmake option
 CMAKE_DEPENDENT_OPTION(USE_THREADS "Compile with multi-threading support" OFF
-                       "USE_WASM_COMPATIBLE_MARIAN" ON)
+                       "USE_WASM_COMPATIBLE_SOURCE" ON)
 CMAKE_DEPENDENT_OPTION(USE_WASM_COMPATIBLE_BLAS "Compile with wasm compatible blas" ON
-                       "USE_WASM_COMPATIBLE_MARIAN" OFF)
+                       "USE_WASM_COMPATIBLE_SOURCE" OFF)
 CMAKE_DEPENDENT_OPTION(COMPILE_WITHOUT_EXCEPTIONS "Compile without exceptions" ON
-                       "USE_WASM_COMPATIBLE_MARIAN" OFF)
+                       "USE_WASM_COMPATIBLE_SOURCE" OFF)
 
-if (USE_WASM_COMPATIBLE_MARIAN)
-  add_compile_definitions(WASM)
+if (USE_WASM_COMPATIBLE_SOURCE)
+  add_compile_definitions(WASM_COMPATIBLE_SOURCE)
+  # Setting USE_SSE2 definition to enable SSE2 specific code in "3rd_party/sse_mathfun.h" for wasm builds
+  add_compile_definitions(USE_SSE2)
 endif()
 
 if (COMPILE_WASM)
+  add_compile_definitions(WASM)
   set(WORMHOLE ON CACHE BOOL "Use WASM wormhole in intgemm https://bugzilla.mozilla.org/show_bug.cgi?id=1672160")
 endif()
 
@@ -243,9 +246,6 @@ else(MSVC)
   endif(CMAKE_COMPILER_IS_GNUCC)
 
   if(COMPILE_WASM)
-    # Setting USE_SSE2 definition to enable SSE2 specific code in "3rd_party/sse_mathfun.h" for wasm builds
-    add_compile_definitions(USE_SSE2)
-
     set(PTHREAD_FLAG "-pthread")
     set(DISABLE_PTHREAD_MEMGROWTH_WARNING -Wno-error=pthreads-mem-growth)
     set(CMAKE_CXX_FLAGS                 "-std=c++11 ${PTHREAD_FLAG} ${CMAKE_GCC_FLAGS} -fPIC ${DISABLE_GLOBALLY} ${INTRINSICS}")

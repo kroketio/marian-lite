@@ -37,7 +37,7 @@ jobs:
           -DUSE_SENTENCEPIECE=on \
           -DUSE_STATIC_LIBS=on \
           -DUSE_MKL=off \
-          -DUSE_WASM_COMPATIBLE_MARIAN=on \
+          -DUSE_WASM_COMPATIBLE_SOURCE=on \
           -DCOMPILE_WASM=on ../
 
     - name: Compile
