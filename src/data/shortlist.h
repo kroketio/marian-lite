@@ -210,6 +210,16 @@ public:
                            size_t /*trgIdx*/ = 1,
                            bool shared = false);
 
+  // construct directly from buffer
+  BinaryShortlistGenerator(const void* ptr_void,
+                           const size_t blobSize,
+                           Ptr<const Vocab> srcVocab,
+                           Ptr<const Vocab> trgVocab,
+                           size_t srcIdx = 0,
+                           size_t /*trgIdx*/ = 1,
+                           bool shared = false, // Kept there for backward compatibility
+                           bool check = true);
+
   ~BinaryShortlistGenerator(){
     mmapMem_.unmap();
   }

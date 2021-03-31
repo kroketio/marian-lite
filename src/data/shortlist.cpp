@@ -239,6 +239,23 @@ BinaryShortlistGenerator::BinaryShortlistGenerator(Ptr<Options> options,
   }
 }
 
+BinaryShortlistGenerator::BinaryShortlistGenerator(const void *ptr_void,
+                                                   const size_t blobSize,
+                                                   Ptr<const Vocab> srcVocab,
+                                                   Ptr<const Vocab> trgVocab,
+                                                   size_t srcIdx /*= 0*/,
+                                                   size_t /*trgIdx = 1*/,
+                                                   bool shared /*= false*/,
+                                                   bool check /*= true*/)
+    : srcVocab_(srcVocab),
+      trgVocab_(trgVocab),
+      srcIdx_(srcIdx),
+      shared_(shared) {
+
+  LOG(info, "[data] Loading binary shortlist from buffer with check={}", check);
+  load(ptr_void, blobSize, check);
+}
+
 Ptr<Shortlist> BinaryShortlistGenerator::generate(Ptr<data::CorpusBatch> batch) const {
   auto srcBatch = (*batch)[srcIdx_];
   size_t srcVocabSize = srcVocab_->size();
