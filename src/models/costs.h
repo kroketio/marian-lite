@@ -320,6 +320,12 @@ public:
       : encdec_(encdec), cost_(cost) {}
 
   virtual void load(Ptr<ExpressionGraph> graph,
+                    const std::vector<io::Item>& items,
+                    bool markedReloaded = true) override {
+    encdec_->load(graph, items, markedReloaded);
+  }
+
+  virtual void load(Ptr<ExpressionGraph> graph,
                     const std::string& name,
                     bool markedReloaded = true) override {
     encdec_->load(graph, name, markedReloaded);
