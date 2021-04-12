@@ -36,7 +36,8 @@ private:
 
   size_t numDevices_;
 
-  std::vector<mio::mmap_source> mmaps_;
+  std::vector<mio::mmap_source> model_mmaps_; // map
+  std::vector<std::vector<io::Item>> model_items_; // non-mmap
 
 public:
   Translate(Ptr<Options> options)
@@ -75,11 +76,17 @@ public:
     scorers_.resize(numDevices_);
     graphs_.resize(numDevices_);
 
+    auto models = options->get<std::vector<std::string>>("models");
     if(options_->get<bool>("model-mmap")) {
-      auto models = options->get<std::vector<std::string>>("models");
       for(auto model : models) {
         ABORT_IF(!io::isBin(model), "Non-binarized models cannot be mmapped");
-        mmaps_.push_back(std::move(mio::mmap_source(model)));
+        model_mmaps_.push_back(std::move(mio::mmap_source(model)));
+      }
+    }
+    else {
+      for(auto model : models) {
+        auto items = io::loadItems(model);
+        model_items_.push_back(std::move(items));
       }
     }
 
@@ -96,10 +103,10 @@ public:
 
         std::vector<Ptr<Scorer>> scorers;
         if(options_->get<bool>("model-mmap")) {
-          scorers = createScorers(options_, mmaps_);
+          scorers = createScorers(options_, model_mmaps_);
         }
         else {
-          scorers = createScorers(options_);
+          scorers = createScorers(options_, model_items_);
         }
 
         for(auto scorer : scorers) {
