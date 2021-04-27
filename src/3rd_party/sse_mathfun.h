@@ -36,6 +36,9 @@
 #ifdef _MSC_VER /* visual c++ */
 # define ALIGN16_BEG __declspec(align(16))
 # define ALIGN16_END 
+#ifndef USE_SSE2 // MSVC doesn't allow us to compile MME anyways
+# define USE_SSE2 // so just hardcore disable it
+#endif
 #else /* gcc or icc */
 # define ALIGN16_BEG
 # define ALIGN16_END __attribute__((aligned(16)))
