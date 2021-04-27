@@ -133,7 +133,8 @@ if(MSVC)
   # C4310: cast truncates constant value
   # C4324: 'marian::cpu::int16::`anonymous-namespace'::ScatterPut': structure was padded due to alignment specifier
   # C4702: unreachable code; note it is also disabled globally in the VS project file
-  set(DISABLE_GLOBALLY "/wd\"4310\" /wd\"4324\" /wd\"4702\"")
+  # C4100: unferenced formal parameter at 3rd_party/cnpy/cnpy.h:272
+  set(DISABLE_GLOBALLY "/wd\"4310\" /wd\"4324\" /wd\"4702\" /wd\"4100\"")
 
   # set(INTRINSICS "/arch:AVX")
   add_definitions(-DUSE_SSE2=1)
