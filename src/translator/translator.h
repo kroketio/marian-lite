@@ -263,7 +263,6 @@ public:
       model_items_.push_back(std::move(items));
     }
 
-
     // initialize scorers
     for(auto device : devices) {
       auto graph = New<ExpressionGraph>(true);
