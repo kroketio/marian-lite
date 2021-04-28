@@ -77,7 +77,7 @@ public:
     graphs_.resize(numDevices_);
 
     auto models = options->get<std::vector<std::string>>("models");
-    if(options_->get<bool>("model-mmap")) {
+    if(options_->get<bool>("model-mmap", false)) {
       for(auto model : models) {
         ABORT_IF(!io::isBin(model), "Non-binarized models cannot be mmapped");
         model_mmaps_.push_back(std::move(mio::mmap_source(model)));
@@ -102,7 +102,7 @@ public:
         graphs_[id] = graph;
 
         std::vector<Ptr<Scorer>> scorers;
-        if(options_->get<bool>("model-mmap")) {
+        if(options_->get<bool>("model-mmap", false)) {
           scorers = createScorers(options_, model_mmaps_);
         }
         else {
