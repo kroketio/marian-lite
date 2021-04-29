@@ -24,7 +24,6 @@ public:
 
   // from IVocab:
   virtual size_t load(const std::string& factoredVocabPath, size_t maxSizeUnused = 0) override final;
-  virtual size_t loadFromSerialized(absl::string_view serialized) override final { ABORT("[data] Load Serialized FactoredVocab vocabulary not supported"); }
   virtual void create(const std::string& vocabPath, const std::vector<std::string>& trainPaths, size_t maxSize) override final { vocabPath, trainPaths, maxSize; ABORT("Factored vocab cannot be created on the fly"); }
   virtual const std::string& canonicalExtension() const override final { return suffixes()[0]; }
   virtual const std::vector<std::string>& suffixes() const override final;

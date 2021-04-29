@@ -72,7 +72,7 @@ size_t Vocab::load(const std::string& vocabPath, size_t maxSize) {
   return vImpl_->load(vocabPath, (int)maxSize);
 }
 
-size_t Vocab::loadFromSerialized(absl::string_view serialized) {
+size_t Vocab::loadFromSerialized(const string_view& serialized) {
   if (!vImpl_)
     vImpl_ = createSentencePieceVocab("vocab.spm", options_, batchIndex_); // currently only support SentencePieceVocab
   return vImpl_->loadFromSerialized(serialized);

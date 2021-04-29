@@ -306,7 +306,7 @@ public:
     return spm_->GetPieceSize();
   }
 
-  size_t loadFromSerialized(absl::string_view serialized) override {
+  size_t loadFromSerialized(const string_view& serialized) override {
     LOG(info, "[data] Loading SentencePiece vocabulary from buffer");
 
     spm_.reset(new sentencepiece::SentencePieceProcessor());
