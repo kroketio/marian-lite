@@ -135,6 +135,10 @@ public:
     return std::max(id2str_.size(), maxSize);
   }
 
+  virtual size_t loadFromSerialized(absl::string_view serialized) override {
+    ABORT("[data] Load Serialized DefaultVocabulary not supported");
+  }
+
   // for fakeBatch()
   virtual void createFake() override {
     eosId_ = insertWord(Word::DEFAULT_EOS_ID, DEFAULT_EOS_STR);

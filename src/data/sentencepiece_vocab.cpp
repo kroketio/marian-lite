@@ -306,6 +306,20 @@ public:
     return spm_->GetPieceSize();
   }
 
+  size_t loadFromSerialized(absl::string_view serialized) override {
+    LOG(info, "[data] Loading SentencePiece vocabulary from buffer");
+
+    spm_.reset(new sentencepiece::SentencePieceProcessor());
+    const auto status = spm_->LoadFromSerializedProto(serialized);
+
+    ABORT_IF(!status.ok(),
+             "SentencePiece vocabulary error: {}",
+             status.ToString());
+
+    return spm_->GetPieceSize();
+
+  }
+
   std::string toUpper(const std::string& line) const override { return utils::utf8ToUpper(line); }
   std::string toEnglishTitleCase(const std::string& line) const override { return utils::toEnglishTitleCase(line); }
 };

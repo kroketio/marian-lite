@@ -10,6 +10,7 @@ namespace marian {
 class IVocab {
 public:
   virtual size_t load(const std::string& vocabPath, size_t maxSize = 0) = 0;
+  virtual size_t loadFromSerialized(absl::string_view serialized) = 0;
 
   virtual void create(const std::string& vocabPath,
                       const std::vector<std::string>& trainPaths,
