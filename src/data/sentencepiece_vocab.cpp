@@ -306,6 +306,9 @@ public:
     return spm_->GetPieceSize();
   }
 
+  // loadFromSerialized() is based on `absl::string_view` which does *not* own the
+  // memory to which it points. So be sure that the underlying memory is alive during
+  // loading (and no copy will be generated)
   size_t loadFromSerialized(const string_view& serialized) override {
     LOG(info, "[data] Loading SentencePiece vocabulary from buffer");
 
