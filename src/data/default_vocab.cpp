@@ -134,7 +134,7 @@ public:
 
     return std::max(id2str_.size(), maxSize);
   }
-
+  
   // for fakeBatch()
   virtual void createFake() override {
     eosId_ = insertWord(Word::DEFAULT_EOS_ID, DEFAULT_EOS_STR);

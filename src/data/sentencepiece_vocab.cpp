@@ -306,6 +306,23 @@ public:
     return spm_->GetPieceSize();
   }
 
+  // loadFromSerialized() is based on `absl::string_view` which does *not* own the
+  // memory to which it points. So be sure that the underlying memory is alive during
+  // loading (and no copy will be generated)
+  size_t loadFromSerialized(const string_view& serialized) override {
+    LOG(info, "[data] Loading SentencePiece vocabulary from buffer");
+
+    spm_.reset(new sentencepiece::SentencePieceProcessor());
+    const auto status = spm_->LoadFromSerializedProto(serialized);
+
+    ABORT_IF(!status.ok(),
+             "SentencePiece vocabulary error: {}",
+             status.ToString());
+
+    return spm_->GetPieceSize();
+
+  }
+
   std::string toUpper(const std::string& line) const override { return utils::utf8ToUpper(line); }
   std::string toEnglishTitleCase(const std::string& line) const override { return utils::toEnglishTitleCase(line); }
 };
