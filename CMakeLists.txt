@@ -5,6 +5,11 @@ if (POLICY CMP0074)
   cmake_policy(SET CMP0074 NEW) # CMake 3.12
 endif ()
 
+# Pass down cmake flags from above even on the first build.
+if (POLICY CMP0077)
+  cmake_policy(SET CMP0077 NEW)
+endif()
+
 project(marian CXX C)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
