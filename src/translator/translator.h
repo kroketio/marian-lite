@@ -19,12 +19,7 @@
 #include "translator/scorers.h"
 
 // currently for diagnostics only, will try to mmap files ending in *.bin suffix when enabled.
-// @TODO: add this as an actual feature.
-#define MMAP 0
-
-#if MMAP
 #include "3rd_party/mio/mio.hpp"
-#endif
 
 namespace marian {
 
@@ -41,9 +36,8 @@ private:
 
   size_t numDevices_;
 
-#if MMAP
-  std::vector<mio::mmap_source> mmaps_;
-#endif
+  std::vector<mio::mmap_source> model_mmaps_; // map
+  std::vector<std::vector<io::Item>> model_items_; // non-mmap
 
 public:
   Translate(Ptr<Options> options)
@@ -82,15 +76,19 @@ public:
     scorers_.resize(numDevices_);
     graphs_.resize(numDevices_);
 
-#if MMAP
     auto models = options->get<std::vector<std::string>>("models");
-    for(auto model : models) {
-      marian::filesystem::Path modelPath(model);
-      ABORT_IF(modelPath.extension() != marian::filesystem::Path(".bin"),
-              "Non-binarized models cannot be mmapped");
-      mmaps_.push_back(std::move(mio::mmap_source(model)));
+    if(options_->get<bool>("model-mmap", false)) {
+      for(auto model : models) {
+        ABORT_IF(!io::isBin(model), "Non-binarized models cannot be mmapped");
+        model_mmaps_.push_back(mio::mmap_source(model));
+      }
     }
-#endif
+    else {
+      for(auto model : models) {
+        auto items = io::loadItems(model);
+        model_items_.push_back(std::move(items));
+      }
+    }
 
     size_t id = 0;
     for(auto device : devices) {
@@ -103,11 +101,14 @@ public:
         graph->reserveWorkspaceMB(options_->get<size_t>("workspace"));
         graphs_[id] = graph;
 
-#if MMAP
-        auto scorers = createScorers(options_, mmaps_);
-#else
-        auto scorers = createScorers(options_);
-#endif
+        std::vector<Ptr<Scorer>> scorers;
+        if(options_->get<bool>("model-mmap", false)) {
+          scorers = createScorers(options_, model_mmaps_);
+        }
+        else {
+          scorers = createScorers(options_, model_items_);
+        }
+
         for(auto scorer : scorers) {
           scorer->init(graph);
           if(shortlistGenerator_)
@@ -254,6 +255,14 @@ public:
     auto devices = Config::getDevices(options_);
     numDevices_ = devices.size();
 
+    // preload models
+    std::vector<std::vector<io::Item>> model_items_;
+    auto models = options->get<std::vector<std::string>>("models");
+    for(auto model : models) {
+      auto items = io::loadItems(model);
+      model_items_.push_back(std::move(items));
+    }
+
     // initialize scorers
     for(auto device : devices) {
       auto graph = New<ExpressionGraph>(true);
@@ -265,7 +274,7 @@ public:
       graph->reserveWorkspaceMB(options_->get<size_t>("workspace"));
       graphs_.push_back(graph);
 
-      auto scorers = createScorers(options_);
+      auto scorers = createScorers(options_, model_items_);
       for(auto scorer : scorers) {
         scorer->init(graph);
         if(shortlistGenerator_)
