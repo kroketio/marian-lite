@@ -260,8 +260,10 @@ else(MSVC)
   endif(CMAKE_COMPILER_IS_GNUCC)
 
   if(COMPILE_WASM)
-    set(PTHREAD_FLAG "-pthread")
-    set(DISABLE_PTHREAD_MEMGROWTH_WARNING -Wno-error=pthreads-mem-growth)
+    if(USE_THREADS)
+      set(PTHREAD_FLAG "-pthread")
+      set(DISABLE_PTHREAD_MEMGROWTH_WARNING -Wno-error=pthreads-mem-growth)
+    endif(USE_THREADS)
     set(CMAKE_CXX_FLAGS                 "-std=c++11 ${PTHREAD_FLAG} ${CMAKE_GCC_FLAGS} -fPIC ${DISABLE_GLOBALLY} ${INTRINSICS}")
     set(CMAKE_CXX_FLAGS_RELEASE         "-O3 -s WASM=1 -s ASSERTIONS=0 -s DISABLE_EXCEPTION_CATCHING=1 -s LLD_REPORT_UNDEFINED -s FORCE_FILESYSTEM=1 -s ALLOW_MEMORY_GROWTH=1 -g2 ${DISABLE_PTHREAD_MEMGROWTH_WARNING} -funroll-loops")
     # Disabling Pthreads + memory growth warning to be an error
