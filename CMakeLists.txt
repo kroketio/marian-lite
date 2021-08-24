@@ -57,6 +57,7 @@ endif()
 
 if (COMPILE_WASM)
   add_compile_definitions(WASM)
+  set(SPM_BUILD_LIBRARY_ONLY ON CACHE BOOL "Build only sentencepiece library (skip building executables)")
   set(WORMHOLE ON CACHE BOOL "Use WASM wormhole in intgemm https://bugzilla.mozilla.org/show_bug.cgi?id=1672160")
 endif()
 
