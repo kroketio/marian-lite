@@ -50,6 +50,7 @@ CMAKE_DEPENDENT_OPTION(COMPILE_WITHOUT_EXCEPTIONS "Compile without exceptions" O
                        "USE_WASM_COMPATIBLE_SOURCE" OFF)
 
 if (USE_WASM_COMPATIBLE_SOURCE)
+  set(SPM_BUILD_LIBRARY_ONLY ON CACHE BOOL "Build only sentencepiece library (skip building executables)")
   add_compile_definitions(WASM_COMPATIBLE_SOURCE)
   # Setting USE_SSE2 definition to enable SSE2 specific code in "3rd_party/sse_mathfun.h" for wasm builds
   add_compile_definitions(USE_SSE2)
@@ -57,7 +58,6 @@ endif()
 
 if (COMPILE_WASM)
   add_compile_definitions(WASM)
-  set(SPM_BUILD_LIBRARY_ONLY ON CACHE BOOL "Build only sentencepiece library (skip building executables)")
   set(WORMHOLE ON CACHE BOOL "Use WASM wormhole in intgemm https://bugzilla.mozilla.org/show_bug.cgi?id=1672160")
 endif()
 
