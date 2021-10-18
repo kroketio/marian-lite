@@ -30,9 +30,20 @@ bool shifted_;
 
   NodeOps forwardOps() override {
 #ifdef COMPILE_CPU
-    return {NodeOp(
+    return { [=]() {
       quantMult_ = *child(1)->val()->data();
-      typedef typename intgemm_<vtype>::type Integer;
+  #if defined(WASM)
+      ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm16,
+        "Int16::PrepareA is not implemented for wasm.");
+      ABORT_IF(!shifted_, "Int8::PrepareA is not implemented for wasm. Please use shifted version.");
+      int8PrepareA(child(0)->val()->data(), // input
+                  *child(1)->val()->data(), // Scale
+                  0, // zero point
+                  rows(child(0)->val()),
+                  cols(child(0)->val()),
+                  val_->data<int8_t>() /*output*/);
+  #else
+    typedef typename intgemm_<vtype>::type Integer;
       if (!shifted_) {
         intgemm_<vtype>::width::PrepareA(child(0)->val()->data(), /*input*/
                                       val_->data<Integer>(), /*output*/
@@ -46,7 +57,8 @@ bool shifted_;
                                       rows(child(0)->val()),
                                       cols(child(0)->val()));
       }
-    )};
+  #endif
+  }};
 #else
     return {NodeOp()};
 #endif
@@ -77,19 +89,30 @@ float quantMult_;
 
   NodeOps forwardOps() override {
 #ifdef COMPILE_CPU
-   return {NodeOp(
+   return { [=]() {
       quantMult_ = *child(1)->val()->data();
-      typedef typename intgemm_<vtype>::type Integer;
       if (isIntgemm(child(0)->value_type())) {
         val_ = child(0)->val();
       } else {
+#if defined(WASM)
+        ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm16,
+                "Int16::PrepareB is not implemented for wasm.");
+        int8PrepareB(child(0)->val()->data(), //input
+                    *child(1)->val()->data(), //Scale
+                    0, //Zero point
+                    rows(child(0)->val()), // width
+                    cols(child(0)->val()), // cols_B
+                    val_->data<int8_t>() /*output*/);
+#else
+        typedef typename intgemm_<vtype>::type Integer;
         intgemm_<vtype>::width::PrepareB(child(0)->val()->data(), /*input*/
                                       val_->data<Integer>(), /*output*/
                                       *child(1)->val()->data(), /*Quant Mult*/
                                       rows(child(0)->val()),
                                       cols(child(0)->val()));
+#endif
       }
-    )};
+    }};
 #else
    return {NodeOp()};
 #endif
@@ -123,7 +146,7 @@ public:
 
   NodeOps forwardOps() override {
 #ifdef COMPILE_CPU
-    return {NodeOp(
+    return { [=]() {
       //We get the quantization multiplier from a PrepareB or directly from the input
       if (child(0)->type() == "intgemmPrepareB") {
         auto bPreppedNode = std::static_pointer_cast<PrepareBNodeOp<vtype> >(child(0));
@@ -133,6 +156,17 @@ public:
         quantMult_ = *(reinterpret_cast<float *>(reinterpret_cast<Integer *>(child(0)->val()->data()) + child(0)->val()->shape().elements()));
       }
       auto input = child(0)->val();
+  #if defined(WASM)
+      ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm16,
+                "Int16::SelectColumnsB is not implemented for wasm.");
+      Index num_cols = std::distance(indices_.begin(), indices_.end());
+      int8SelectColumnsOfB(reinterpret_cast<int8_t *>(input->data()),
+                    rows(input),
+                    cols(input),
+                    &*indices_.begin(),
+                    num_cols,
+                    val_->data<int8_t>());
+  #else
       typedef typename intgemm_<vtype>::type Integer;
       intgemm_<vtype>::width::SelectColumnsB(
                     reinterpret_cast<Integer *>(input->data()),
@@ -140,7 +174,8 @@ public:
                     rows(input),
                     &*indices_.begin(),
                     &*indices_.end());
-    )};
+  #endif
+    }};
 #else
     return {NodeOp()};
 #endif
@@ -258,7 +293,7 @@ public:
     //std::cerr << "TrueBias: " << child(0)->name() << " type: " << child(0)->type() << " bQuantMult: " << this->child(3)->val()->data()[0] <<  " aQuantMult: " << this->child(2)->val()->data()[0] << std::endl;
     //std::cerr << "Bias name and val: " << child(0)->name() << " " << child(0)->val()->data()[0] << std::endl;
 #ifdef COMPILE_CPU
-    return {NodeOp(
+    return { [=]() {
       if (alreadyPrepared_) {
         //God Knows why trying to assign the bias tensor to this node causes a crash, the second time it's referenced
         //even though it's supposed to work fine. We use a memory copy instead.
@@ -272,9 +307,13 @@ public:
         auto quant_mult_b = this->child(3)->val();
 
         float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
+    #if defined(WASM)
+        int8PrepareBias((const int8_t *)b->data(), unquant_mult, 0.0, rows(b), cols(b), bias->data(), val_->data());
+    #else
         intgemm::Int8Shift::PrepareBias((const int8_t *)b->data(), rows(b), cols(b), intgemm::callbacks::UnquantizeAndAddBiasAndWrite(unquant_mult, bias->data(), val_->data()));
+    #endif
       }
-      )};
+    }};
 #else
     return {NodeOps()};
 #endif
@@ -297,14 +336,18 @@ public:
   NodeOps forwardOps() override {
     //std::cerr << "FakeBias: " << child(0)->name() << " bQuantMult: " << this->child(2)->val()->data()[0] << " aQuantMult: " << this->child(1)->val()->data()[0] << std::endl;
 #ifdef COMPILE_CPU
-    return {NodeOp(
+    return { [=]() {
     auto b = this->child(0)->val();
     auto quant_mult_a = this->child(1)->val();
     auto quant_mult_b = this->child(2)->val();
 
     float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
+  #if defined(WASM)
+    int8PrepareBias((const int8_t *)b->data(), unquant_mult, 0.0, rows(b), cols(b), nullptr/*input_bias*/, val_->data());
+  #else
     intgemm::Int8Shift::PrepareBias((const int8_t *)b->data(), rows(b), cols(b), intgemm::callbacks::UnquantizeAndWrite(unquant_mult, val_->data()));
-    )};
+  #endif
+    }};
 #else
     return {NodeOp()};
 #endif
@@ -332,7 +375,7 @@ public:
 
   NodeOps forwardOps() override {
 #ifdef COMPILE_CPU
-    return {NodeOp(
+    return { [=]() {
           float aQuantMult = std::static_pointer_cast<PrepareANodeOp<vtype> >(child(0))->quantMult_;
           float bQuantMult;
           if (child(1)->type() == "intgemmSelectColumnsB") {
@@ -346,6 +389,12 @@ public:
           float unquant_mult = 1.0f/(aQuantMult*bQuantMult);
 
           unquant_mult = unquant_mult*scalar_;
+      #if defined(WASM)
+          ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm16,
+              "Int16::Multiply is not implemented for wasm.");
+          ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm8,
+              "Int8::Multiply is not implemented for wasm.");
+      #else
           typedef typename intgemm_<vtype>::type Integer;
           intgemm_<vtype>::width::Multiply(reinterpret_cast<Integer *>(child(0)->val()->data()), /*A*/
                                            reinterpret_cast<Integer *>(child(1)->val()->data()), /*B*/
@@ -353,7 +402,8 @@ public:
                                            cols(child(0)->val()),
                                            cols(child(1)->val()),
                                            intgemm::callbacks::UnquantizeAndWrite(unquant_mult, val_->data()));
-    )};
+      #endif
+    }};
 #else
     return {NodeOp()};
 #endif
@@ -387,7 +437,7 @@ public:
 
   NodeOps forwardOps() override {
 #ifdef COMPILE_CPU
-    return {NodeOp(
+    return { [=]() {
           float aQuantMult = std::static_pointer_cast<PrepareANodeOp<vtype> >(child(0))->quantMult_;
           float bQuantMult;
           if (child(1)->type() == "intgemmSelectColumnsB") {
@@ -401,6 +451,23 @@ public:
           float unquant_mult = 1.0f/(aQuantMult*bQuantMult);
 
           unquant_mult = unquant_mult*scalar_;
+      #if defined(WASM)
+          ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm16,
+            "Int16::Multiply is not implemented for wasm.");
+          ABORT_IF(!shifted_, "Int8::Multiply is not implemented for wasm.");
+
+          int8MultiplyAndAddBias(reinterpret_cast<int8_t *>(child(0)->val()->data()), /*A*/
+                                unquant_mult, /*Scale of A*/
+                                0, /*zero point of A*/
+                                reinterpret_cast<int8_t *>(child(1)->val()->data()), /*B*/
+                                1, /*Scale of B*/
+                                0, /*zero point of B*/
+                                child(2)->val()->data(), /*child(2) is bias*/
+                                rows(child(0)->val()),
+                                cols(child(0)->val()),
+                                cols(child(1)->val()),
+                                val_->data());
+      #else
           typedef typename intgemm_<vtype>::type Integer;
           if (!shifted_) {
             intgemm_<vtype>::width::Multiply(reinterpret_cast<Integer *>(child(0)->val()->data()), /*A*/
@@ -417,7 +484,8 @@ public:
                                   cols(child(1)->val()),                                          /*child(2) is bias*/
                                   intgemm::callbacks::UnquantizeAndAddBiasAndWrite(unquant_mult, child(2)->val()->data(), val_->data()));
           }
-    )};
+      #endif
+    }};
 #else
     return {NodeOp()};
 #endif

@@ -27,3 +27,15 @@ sed -i.bak 's/var result = WebAssembly.instantiateStreaming(response, info);/var
 sed -i.bak 's/return WebAssembly.instantiate(binary, info);/return WebAssembly.instantiate(binary, info, {simdWormhole:true});/g' marian-decoder.js
 sed -i.bak 's/var module = new WebAssembly.Module(bytes);/var module = new WebAssembly.Module(bytes, {simdWormhole:true});/g' marian-decoder.js
 echo "SUCCESS"
+
+echo "Polyfill the fallback integer (8-bit) gemm implementation from the main module"
+sed -i.bak 's/asmLibraryArg,/asmLibraryArg,"wasm_gemm":{\
+    "int8_prepare_a": (...a) => Module["asm"].int8PrepareAFallback(...a),\
+    "int8_prepare_b": (...a) => Module["asm"].int8PrepareBFallback(...a),\
+    "int8_prepare_b_from_transposed": (...a) => Module["asm"].int8PrepareBFromTransposedFallback(...a),\
+    "int8_prepare_b_from_quantized_transposed": (...a) => Module["asm"].int8PrepareBFromQuantizedTransposedFallback(...a),\
+    "int8_prepare_bias": (...a) => Module["asm"].int8PrepareBiasFallback(...a),\
+    "int8_multiply_and_add_bias": (...a) => Module["asm"].int8MultiplyAndAddBiasFallback(...a),\
+    "int8_select_columns_of_b": (...a) => Module["asm"].int8SelectColumnsOfBFallback(...a),\
+    },/g' marian-decoder.js
+echo "SUCCESS"
