@@ -67,6 +67,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix loading the binary model on 32-bit builds and for wasm platform
 
 ### Changed
+- Updated intgemm repository to version f1f59bb3b32aad5686eeb41c742279d47be71ce8 from https://github.com/kpu/intgemm.
 - Updated intgemm repository to version 1a176394bb0c2d243c42fe574e063924a92aa120 from https://github.com/kpu/intgemm.
 - Changed SentencePiece repository from https://github.com/google/sentencepiece to the version 3ffdc0065a03cadd9d0e5e123aaf9b6ea7ffb05d of https://github.com/browsermt/sentencepiece.
 - Updated SentencePiece repository to version 8336bbd0c1cfba02a879afe625bf1ddaf7cd93c5 from https://github.com/google/sentencepiece. 
