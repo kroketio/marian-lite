@@ -306,10 +306,12 @@ public:
         auto quant_mult_a = this->child(2)->val();
         auto quant_mult_b = this->child(3)->val();
 
-        float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
     #if defined(WASM)
-        int8PrepareBias((const int8_t *)b->data(), unquant_mult, 0.0, rows(b), cols(b), bias->data(), val_->data());
+        float scale_a = *quant_mult_a->data();
+        float scale_b = *quant_mult_b->data();
+        int8PrepareBias((const int8_t *)b->data(), scale_a, 0.0 /*zero_point_a*/, scale_b, 0.0 /*zero_point_b*/, rows(b), cols(b), bias->data(), val_->data());
     #else
+        float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
         intgemm::Int8Shift::PrepareBias((const int8_t *)b->data(), rows(b), cols(b), intgemm::callbacks::UnquantizeAndAddBiasAndWrite(unquant_mult, bias->data(), val_->data()));
     #endif
       }
@@ -341,10 +343,12 @@ public:
     auto quant_mult_a = this->child(1)->val();
     auto quant_mult_b = this->child(2)->val();
 
-    float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
   #if defined(WASM)
-    int8PrepareBias((const int8_t *)b->data(), unquant_mult, 0.0, rows(b), cols(b), nullptr/*input_bias*/, val_->data());
+    float scale_a = *quant_mult_a->data();
+    float scale_b = *quant_mult_b->data();
+    int8PrepareBias((const int8_t *)b->data(), scale_a, 0.0 /*zero_point_a*/, scale_b, 0.0 /*zero_point_b*/, rows(b), cols(b), nullptr/*input_bias*/, val_->data());
   #else
+    float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
     intgemm::Int8Shift::PrepareBias((const int8_t *)b->data(), rows(b), cols(b), intgemm::callbacks::UnquantizeAndWrite(unquant_mult, val_->data()));
   #endif
     }};
@@ -457,12 +461,13 @@ public:
           ABORT_IF(!shifted_, "Int8::Multiply is not implemented for wasm.");
 
           int8MultiplyAndAddBias(reinterpret_cast<int8_t *>(child(0)->val()->data()), /*A*/
-                                unquant_mult, /*Scale of A*/
+                                aQuantMult, /*Scale of A*/
                                 0, /*zero point of A*/
                                 reinterpret_cast<int8_t *>(child(1)->val()->data()), /*B*/
-                                1, /*Scale of B*/
+                                bQuantMult, /*Scale of B*/
                                 0, /*zero point of B*/
                                 child(2)->val()->data(), /*child(2) is bias*/
+                                scalar_,
                                 rows(child(0)->val()),
                                 cols(child(0)->val()),
                                 cols(child(1)->val()),

@@ -169,8 +169,11 @@ int8PrepareA(const float* input_A,
  *
  * @param[in]   input_B_prepared    An array representing the prepared B matrix.
  *                                  Size of the array = `width` * `cols_B`.
- * @param[in]   scale               The scaling factor (for quantization)
- * @param[in]   zero_point          The zero point (for quantization)
+ * @param[in]   scale_A             The scaling factor (for quantization) of A
+ * @param[in]   zero_point_A        The zero point (for quantization) of A
+ * @param[in]   scale_B             The scaling factor (for quantization) of B
+ * @param[in]   zero_point_B        The zero point (for quantization) of B
+ *                                  factor that is prepared from `scale_A` and `scale_B`.
  * @param[in]   width               No. of rows of Input matrix B (unquantized & non-transposed).
  *                                  It should be a multiple of 64.
  * @param[in]   cols_B              No. of columns of Input matrix B (unquantized & non-transposed)
@@ -181,8 +184,10 @@ int8PrepareA(const float* input_A,
  */
 extern "C" void __attribute__((import_module("wasm_gemm"), import_name("int8_prepare_bias")))
 int8PrepareBias(const int8_t* input_B_prepared,
-                float scale,
-                float zero_point,
+                float scale_A,
+                float zero_point_A,
+                float scale_B,
+                float zero_point_B,
                 Index width,
                 Index cols_B,
                 const float* input_bias,
@@ -212,6 +217,8 @@ int8PrepareBias(const int8_t* input_B_prepared,
  * @param[in]   input_bias_prepared    An array representing the prepared bias.
  *                                     This must be obtained by using `int8PrepareBias` function.
  *                                     Size of the array = `cols_B`
+ * @param[in]   unquant_multiplier     A value that will be multiplied to the final unquantization
+ *                                     factor that is prepared from `scale_A` and `scale_B`.
  * @param[in]   rows_A                 No. of rows of Input matrix A. No restriction on its size.
  * @param[in]   width                  No. of columns of Input matrix A (same as no. of columns of
  *                                     Input matrix B). It should be a multiple of 64.
@@ -228,6 +235,7 @@ extern "C" void
                            float scale_B,
                            float zero_point_B,
                            const float* input_bias_prepared,
+                           float unquant_multiplier,
                            Index rows_A,
                            Index width,
                            Index cols_B,
