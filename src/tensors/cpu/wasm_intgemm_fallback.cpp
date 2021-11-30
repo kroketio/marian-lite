@@ -44,7 +44,7 @@ extern "C" void int8PrepareBFromTransposedFallback(const float* input_B_transpos
                                                    Index width,
                                                    Index cols_B,
                                                    int8_t* output) {
-  ABORT("Unimplemented int8PrepareBFromTransposedFallback");
+  intgemm::Int8::PrepareBTransposed(input_B_transposed, scale, zero_point, width, cols_B, output);
 }
 
 extern "C" void int8PrepareBFromQuantizedTransposedFallback(const int8_t* input_B_quant_transposed,
