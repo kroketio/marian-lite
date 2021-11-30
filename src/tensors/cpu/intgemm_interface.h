@@ -109,14 +109,14 @@ bool transposed_; /*This is only used for the output layer which has a different
                       0, //Zero point
                       rows(child(0)->val()), // width
                       cols(child(0)->val()), // cols_B
-                      val_->data<int8_t>() /*output*/);
+                      val_->data<int8_t>()); /*output*/
         } else {
           int8PrepareBFromTransposed(child(0)->val()->data(), //input
                                *child(1)->val()->data(), //Scale,
                                0, //Zero point
                                cols(child(0)->val(),
                                rows(child(0)->val(),
-                               val_->data<int8_t>() /*output*/);
+                               val_->data<int8_t>()); /*output*/
         }
 #else
         if (!transposed_) {
