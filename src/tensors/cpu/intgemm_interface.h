@@ -103,12 +103,21 @@ bool transposed_; /*This is only used for the output layer which has a different
 #if defined(WASM)
         ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm16,
                 "Int16::PrepareB is not implemented for wasm.");
-        int8PrepareB(child(0)->val()->data(), //input
-                    *child(1)->val()->data(), //Scale
-                    0, //Zero point
-                    rows(child(0)->val()), // width
-                    cols(child(0)->val()), // cols_B
-                    val_->data<int8_t>() /*output*/);
+        if (!transposed_) {
+          int8PrepareB(child(0)->val()->data(), //input
+                      *child(1)->val()->data(), //Scale
+                      0, //Zero point
+                      rows(child(0)->val()), // width
+                      cols(child(0)->val()), // cols_B
+                      val_->data<int8_t>() /*output*/);
+        } else {
+          int8PrepareBFromTransposed(child(0)->val()->data(), //input
+                               *child(1)->val()->data(), //Scale,
+                               0, //Zero point
+                               cols(child(0)->val(),
+                               rows(child(0)->val(),
+                               val_->data<int8_t>() /*output*/);
+        }
 #else
         if (!transposed_) {
           typedef typename intgemm_<vtype>::type Integer;
