@@ -76,15 +76,21 @@ template<Type vtype>
 struct PrepareBNodeOp : public NaryNodeOp {
 float clipValue_;
 float quantMult_;
+bool transposed_; /*This is only used for the output layer which has a different layout from
+                   *all other matrices in the code. By default we shouldn't do an extra transpose.*/
 
-  PrepareBNodeOp(Expr input, Expr quant_mult, float clipValue)
-      : NaryNodeOp({input, quant_mult}, input->shape(), intgemm_<vtype>::intgemmType), clipValue_(clipValue) {
+  PrepareBNodeOp(Expr input, Expr quant_mult, float clipValue, bool transposed=false)
+      : NaryNodeOp({input, quant_mult}, newShape(input, transposed), intgemm_<vtype>::intgemmType), clipValue_(clipValue), transposed_(transposed) {
 
     set_name(input->name());
     // Check if arguments are not null
     ABORT_IF(child(0) == nullptr, "A cannot be null");
     ABORT_IF(child(1) == nullptr, "Quant mult of B cannot be null");
-    ABORT_IF(input->shape()[-1] %8 != 0, "Columns of matrix: " + input->type() + " must be multiple of 8.");
+    if (!transposed_) {
+      ABORT_IF(input->shape()[-1] %8 != 0, "Columns of matrix: " + input->type() + " must be multiple of 8.");
+    } else {
+      ABORT_IF((input->shape().elements()/input->shape()[-1]) %8 != 0, "Rows of matrix: " + input->type() + " must be multiple of 8.");
+    }
   }
 
   NodeOps forwardOps() override {
@@ -104,12 +110,21 @@ float quantMult_;
                     cols(child(0)->val()), // cols_B
                     val_->data<int8_t>() /*output*/);
 #else
-        typedef typename intgemm_<vtype>::type Integer;
-        intgemm_<vtype>::width::PrepareB(child(0)->val()->data(), /*input*/
+        if (!transposed_) {
+          typedef typename intgemm_<vtype>::type Integer;
+          intgemm_<vtype>::width::PrepareB(child(0)->val()->data(), /*input*/
+                                        val_->data<Integer>(), /*output*/
+                                        *child(1)->val()->data(), /*Quant Mult*/
+                                        rows(child(0)->val()),
+                                        cols(child(0)->val()));
+        } else {
+          typedef typename intgemm_<vtype>::type Integer;
+          intgemm_<vtype>::width::PrepareBTransposed(child(0)->val()->data(), /*input*/
                                       val_->data<Integer>(), /*output*/
                                       *child(1)->val()->data(), /*Quant Mult*/
-                                      rows(child(0)->val()),
-                                      cols(child(0)->val()));
+                                      cols(child(0)->val()), /*Cols and rows need to be swapped*/
+                                      rows(child(0)->val())); /*Cols and rows need to be swapped*/
+        }
 #endif
       }
     }};
@@ -124,6 +139,17 @@ float quantMult_;
   }
 
   const std::string type() override { return "intgemmPrepareB"; }
+
+  static Shape newShape(Expr input, bool transposed) {
+    Shape ret = input->shape();
+    if (transposed) {
+      ret.set(0, input->shape()[-1]);
+      ret.set(1, input->shape()[0]);
+    } else {
+      ret = input->shape();
+    }
+    return ret;
+  }
 };
 
 template<Type vtype>
@@ -515,8 +541,8 @@ static inline Expr prepareA(Expr a, Expr quantMult, float clipValue, bool shifte
 }
 
 template<Type vtype>
-static inline Expr prepareB(Expr b, Expr quantMult, float clipValue) {
-  return Expression<PrepareBNodeOp<vtype> >(b, quantMult, clipValue);
+static inline Expr prepareB(Expr b, Expr quantMult, float clipValue, bool transposed=false) {
+  return Expression<PrepareBNodeOp<vtype> >(b, quantMult, clipValue, transposed);
 }
 
 template<Type vtype>
@@ -578,10 +604,9 @@ static inline Expr affine(Expr a, Expr b, Expr bias, bool transA, bool transB, f
   if (isIntgemm(bElementType)) {
     //This is the case where we already run SelectColumnB or we loaded a prepacked model.
     //We ignore a transpose argument here, because we do not support it.
-    ABORT_IF(transB, "Transpose on prepareB not currently supported");
     bQuant = b;
   } else {
-    bQuant = prepareB<vtype>(transB ? transpose(b) : b, bQuantMult, scale);
+    bQuant = prepareB<vtype>(b, bQuantMult, scale, transB);
   }
   if (bias && precomputedAlphas && bias->name() == "none") {
     // This is the case of the preprocessed bias. It's hacky but otherwise node caching is broken.
