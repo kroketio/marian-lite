@@ -612,7 +612,6 @@ static inline Expr affine(Expr a, Expr b, Expr bias, bool transA, bool transB, f
   Expr bQuant = nullptr;
   if (isIntgemm(bElementType)) {
     //This is the case where we already run SelectColumnB or we loaded a prepacked model.
-    //We ignore a transpose argument here, because we do not support it.
     bQuant = b;
   } else {
     bQuant = prepareB<vtype>(b, bQuantMult, scale, transB);
