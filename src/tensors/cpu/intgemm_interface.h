@@ -44,14 +44,15 @@ bool shifted_;
                   val_->data<int8_t>() /*output*/);
   #else
     typedef typename intgemm_<vtype>::type Integer;
+      auto input = child(0)->val();
       if (!shifted_) {
-        intgemm_<vtype>::width::PrepareA(child(0)->val()->data(), /*input*/
+        intgemm_<vtype>::width::PrepareA(input->data(), /*input*/
                                       val_->data<Integer>(), /*output*/
                                       *child(1)->val()->data(), /*Quant Mult*/
                                       rows(child(0)->val()),
                                       cols(child(0)->val()));
       } else {
-        intgemm::Int8Shift::PrepareA(child(0)->val()->data(), /*input*/
+        intgemm::Int8Shift::PrepareA(input->data(), /*input*/
                                       val_->data<int8_t>(), /*output*/
                                       *child(1)->val()->data(), /*Quant Mult*/
                                       rows(child(0)->val()),
@@ -207,8 +208,8 @@ public:
                     reinterpret_cast<Integer *>(input->data()),
                     val_->data<Integer>(),
                     rows(input),
-                    &*indices_.begin(),
-                    &*indices_.end());
+                    indices_.data(),
+                    indices_.data()+indices_.size());
   #endif
     }};
 #else
@@ -274,7 +275,8 @@ struct QuantMultNodeOp : public UnaryNodeOp {
           std::cerr << "Name: " << name() << " MeanAbs: " << meanstd.mean << " stddevAbs: " << meanstd.stddev << " Mean: " << meanstd2.mean << " stddev: "
           << meanstd2.stddev << " MaxAbs: " << intgemm::MaxAbsolute(child(0)->val()->data(), child(0)->val()->data() + child(0)->val()->shape().elements()) << std::endl;
         }
-        *val_->data() = 127.0f / intgemm::MaxAbsolute(child(0)->val()->data(), child(0)->val()->data() + child(0)->val()->shape().elements());
+        auto input = child(0)->val();
+        *val_->data() = 127.0f / intgemm::MaxAbsolute(input->data(), input->data() + input->size());
       }
     )};
 #else
