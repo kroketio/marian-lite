@@ -208,8 +208,8 @@ public:
                     reinterpret_cast<Integer *>(input->data()),
                     val_->data<Integer>(),
                     rows(input),
-                    &*indices_.begin(),
-                    &indices_.back()+1);
+                    indices_.data(),
+                    indices_.data()+indices_.size());
   #endif
     }};
 #else
