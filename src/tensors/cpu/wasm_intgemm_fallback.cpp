@@ -64,18 +64,18 @@ extern "C" void int8PrepareBiasFallback(const int8_t* input_B_prepared,
                                         const float* input_bias,
                                         float* output) {
   float unquant_factor = (-1) * ((127.0f / scale_A) * (127.0f / scale_B)) / (127.0f);
-  if (input_bias == nullptr) {
-    intgemm::Int8Shift::PrepareBias(
-        input_B_prepared,
-        width,
-        cols_B,
-        intgemm::callbacks::UnquantizeAndWrite(unquant_factor, output));
-  } else {
+  if (input_bias) {
     intgemm::Int8Shift::PrepareBias(
         input_B_prepared,
         width,
         cols_B,
         intgemm::callbacks::UnquantizeAndAddBiasAndWrite(unquant_factor, input_bias, output));
+  } else {
+    intgemm::Int8Shift::PrepareBias(
+        input_B_prepared,
+        width,
+        cols_B,
+        intgemm::callbacks::UnquantizeAndWrite(unquant_factor, output));
   }
 }
 
