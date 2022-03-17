@@ -102,7 +102,6 @@ private:
       int totalSize = (int)graphs_[0]->params()->vals()->size();
       int shardSize = (int)ceil(totalSize / (float)graphs_.size());
 
-      int pos = 0;
       for(auto graph : graphs_) {
         int __size__ = std::min(shardSize, totalSize);
 
@@ -117,7 +116,6 @@ private:
         tmpTensors_.push_back(tmp);
 
         // move to next shard
-        pos += __size__;
         totalSize -= __size__;
       }
     }
