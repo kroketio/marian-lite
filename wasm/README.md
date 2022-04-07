@@ -6,10 +6,10 @@
 For docker based builds, please refer [Docker Compilation Steps](#Docker-Compilation)
 
 1. Download and Install Emscripten using following instructions (skip this step if emsdk tool chain is already installed)
-    * Get the latest sdk: `git clone https://github.com/emscripten-core/emsdk.git`
+    * Get the sdk: `git clone https://github.com/emscripten-core/emsdk.git`
     * Enter the cloned directory: `cd emsdk`
-    * Install the lastest sdk tools: `./emsdk install latest`
-    * Activate the latest sdk tools: `./emsdk activate latest`
+    * Install the sdk tools: `./emsdk install 3.1.8`
+    * Activate the sdk tools: `./emsdk activate 3.1.8`
     * Activate path variables: `source ./emsdk_env.sh`
 
     `EMSDK` environment variable will point to the valid emsdk repo after executing the instructions above.

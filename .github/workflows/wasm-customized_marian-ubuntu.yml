@@ -13,9 +13,9 @@ jobs:
 
     steps:
     - name: Setup Emscripten toolchain
-      uses: mymindstorm/setup-emsdk@v9
+      uses: mymindstorm/setup-emsdk@v11
       with:
-          version: 2.0.9
+          version: 3.1.8
 
     - name: Verify Emscripten setup
       run: emcc -v
