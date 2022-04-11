@@ -171,7 +171,7 @@ public:
       : UnaryNodeOp(input, newShape(input, indices), intgemm_<vtype>::intgemmType), clipValue_(clipValue), indices_(indices) {
 
     set_name(input->name());
-    setMemoize(false); // Enabling memoization leads to a massive memory leak. Instead use special "midterm" memory.
+    setMemoize(false); // Enabling memoization leads to a massive memory leak. 
                        // Still, I don't understand why setMemoize(true) still leaks.
     // Check if arguments are not null
     ABORT_IF(child(0) == nullptr, "B cannot be null");
