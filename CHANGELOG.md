@@ -40,6 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Enable loading SentencePiece vocabs from protobuf
 - Added a target-agnostic matrix multiply interface for wasm builds
 - Use target-agnostic matrix multiply interface for wasm builds and allow importing an implementation of this interface from separate wasm modules.
+- Upgraded emsdk version to 3.1.8
 
 ### Fixed
 - Fix AVX2 detection on macOS
