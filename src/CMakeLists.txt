@@ -10,6 +10,8 @@ list(FILTER SRCS EXCLUDE REGEX "sentencepiece/")
 list(FILTER HDRS EXCLUDE REGEX "sentencepiece/")
 list(FILTER SRCS EXCLUDE REGEX "faiss/")
 list(FILTER HDRS EXCLUDE REGEX "faiss/")
+list(FILTER SRCS EXCLUDE REGEX "intgemm/")
+list(FILTER HDRS EXCLUDE REGEX "intgemm/")
 
 # define CMake library target(s)
 # compile both static, shared based on -DSTATIC, -DSHARED options
