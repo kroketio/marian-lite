@@ -1,4 +1,4 @@
-marian-lite (0.1) unstable; urgency=medium
+libmarian-lite (0.1) unstable; urgency=medium
 
   * Initial debian packaging
 

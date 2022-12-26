@@ -1,4 +1,4 @@
-Source: marian-lite
+Source: libmarian-lite
 Section: x11
 Priority: extra
 Maintainer: Sander <sander@kroket.io>
@@ -21,7 +21,7 @@ Vcs-Git: https://github.com/maemo-leste/marian-lite/
 Vcs-Browser: https://github.com/maemo-leste/marian-lite/
 
 
-Package: marian-lite
+Package: libmarian-lite
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends},
     libopenblas-dev,
