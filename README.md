@@ -1,17 +1,19 @@
 Marian-lite
 ======
 
-[Kroket.io](https://kroket.io/)'s fork of [/browsermt/marian-dev](https://github.com/browsermt/marian-dev) that is easier to compile, made specifically for [kotki](https://github.com/kroketio/kotki).
+Our fork of [browsermt/marian-dev](https://github.com/browsermt/marian-dev) made for [kotki](https://github.com/kroketio/kotki) and [maemo-leste](https://maemo-leste.github.io/).
+
+- Easier/faster to compile
+- Easier to package/distribute
 
 ### Changes
 
 - Rewritten and simplified CMake build system
-- Use system deps where possible (removed almost all vendored libs)
+- Use system dependencies where possible (removed *almost* all vendored libs)
 - Removed support for proprietary stuff like CUDA, Intel MKL
 - Removed code related to the training of translation models
-- Removed examples, unit tests, WASM support
-- Removed support for Apple and Microsoft
-- Removed WASM support
+- Removed examples, unit tests
+- Removed support for Apple, Microsoft, WASM
 - 100% FOSS
 
 # Credits
