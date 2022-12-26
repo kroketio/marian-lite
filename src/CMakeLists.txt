@@ -4,10 +4,8 @@ file(GLOB_RECURSE SRCS *.cpp *.cc *.cp)  # rly
 file(GLOB_RECURSE HDRS *.h *.hpp)
 
 # filter some files from the glob recurse
-list(FILTER SRCS EXCLUDE REGEX "SQLiteCpp/tests/")
-list(FILTER HDRS EXCLUDE REGEX "SQLiteCpp/tests/")
-list(FILTER SRCS EXCLUDE REGEX "SQLiteCpp/examples/")
-list(FILTER HDRS EXCLUDE REGEX "SQLiteCpp/examples/")
+list(FILTER SRCS EXCLUDE REGEX "SQLiteCpp/")
+list(FILTER HDRS EXCLUDE REGEX "SQLiteCpp/")
 list(FILTER SRCS EXCLUDE REGEX "sentencepiece/")
 list(FILTER HDRS EXCLUDE REGEX "sentencepiece/")
 list(FILTER SRCS EXCLUDE REGEX "faiss/")
