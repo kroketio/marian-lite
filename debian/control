@@ -5,6 +5,7 @@ Maintainer: Sander <sander@kroket.io>
 Build-Depends: debhelper (>= 10),
     cmake,
     ccache,
+    pkg-config,
     libopenblas-dev,
     libyaml-cpp-dev,
     libpathie-cpp,

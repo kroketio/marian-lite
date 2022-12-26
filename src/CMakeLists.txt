@@ -27,11 +27,14 @@ target_link_libraries(marian-lite PRIVATE
         dl
         BLAS::BLAS
 #        CLI11::CLI11
+        proto
+        protobuf::libprotobuf-lite
         ${PCRE2_LIBRARIES}
         ${SENTENCEPIECE_LIBRARIES}
+        ${PATHIE_LIBRARY}
         )
 
-target_link_libraries(marian-lite PUBLIC faiss pathie)
+target_link_libraries(marian-lite PUBLIC faiss proto)
 
 target_compile_definitions(marian-lite PRIVATE _USE_TF_STRING_VIEW=1)
 target_include_directories(marian-lite PRIVATE ${SENTENCEPIECE_LIBRARY_DIRS})

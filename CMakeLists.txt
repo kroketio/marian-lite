@@ -28,6 +28,7 @@ find_package(YamlCpp REQUIRED)
 find_package(SQLite3 REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(PCRE2 REQUIRED)
+find_package(Protobuf REQUIRED)
 #find_package(CLI11 REQUIRED)  # vendored for now...
 # set(BLA_SIZEOF_INTEGER ...)  # TODO: maybe specifically force 32/64 bit
 set(BLA_VENDOR "OpenBLAS")
