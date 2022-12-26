@@ -8,7 +8,8 @@ set(CMAKE_CXX_STANDARD 17)
 include(GNUInstallDirs)
 
 option(COMPILE_CPU "Compile CPU version" ON)
-option(STATIC "Produce static binaries" OFF)
+option(STATIC "Produce static binary" OFF)
+option(SHARED "Produce shared binary" ON)
 set(BUILD_ARCH native CACHE STRING "Compile for this CPU architecture.")
 
 if(STATIC)
