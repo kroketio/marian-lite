@@ -106,7 +106,6 @@ CorpusBase::CorpusBase(Ptr<Options> options, bool translate)
             "The value '{}' could not be converted to an unsigned integer.",
             options_->get<std::string>("guided-alignment"));
       }
-      LOG(info, "[data] Using word alignments from TSV field no. {}", alignFileIdx_);
     }
 
     if(useDataWeighting) {
@@ -118,7 +117,6 @@ CorpusBase::CorpusBase(Ptr<Options> options, bool translate)
             "The value '{}' could not be converted to an unsigned integer.",
             options_->get<std::string>("data-weighting"));
       }
-      LOG(info, "[data] Using weights from TSV field no. {}", weightFileIdx_);
     }
 
     // check for identical or too large indices
@@ -199,13 +197,6 @@ CorpusBase::CorpusBase(Ptr<Options> options, bool translate)
 
       if(maxVocabs.size() < paths_.size())
         maxVocabs.resize(paths_.size(), 0);
-
-      LOG(info,
-          "[data] No vocabulary files given, trying to find or build based on training data.");
-      if(!tsv_)
-        LOG(info, "[data] Vocabularies will be built separately for each file.");
-      else
-        LOG(info, "[data] A joint vocabulary will be built from the TSV file.");
 
       std::vector<int> vocabDims(numStreams, 0);
       std::vector<std::string> vocabPaths1(numStreams);
@@ -289,11 +280,6 @@ CorpusBase::CorpusBase(Ptr<Options> options, bool translate)
           ABORT_IF(groupedPaths.size() > 1, "There should not be multiple TSV input files!");
 
           tsvTempFile.reset(new io::TemporaryFile(options_->get<std::string>("tempdir"), false));
-          LOG(info,
-              "[data] Cutting field(s) {} from {} into a temporary file {}",
-              utils::join(vocabDetails.streams, ", "),
-              groupedPaths[0],
-              tsvTempFile->getFileName());
 
           fileutils::cut(groupedPaths[0],  // Index 0 because there is only one TSV file
                          tsvTempFile,
@@ -363,7 +349,6 @@ CorpusBase::CorpusBase(Ptr<Options> options, bool translate)
       auto path = options_->get<std::string>("guided-alignment");
 
       ABORT_IF(!filesystem::exists(path), "Alignment file does not exist");
-      LOG(info, "[data] Using word alignments from file {}", path);
 
       alignFileIdx_ = (int)paths_.size();
       paths_.emplace_back(path);
@@ -376,7 +361,6 @@ CorpusBase::CorpusBase(Ptr<Options> options, bool translate)
       auto path = options_->get<std::string>("data-weighting");
 
       ABORT_IF(!filesystem::exists(path), "Weight file does not exist");
-      LOG(info, "[data] Using weights from file {}", path);
 
       weightFileIdx_ = (int)paths_.size();
       paths_.emplace_back(path);
@@ -548,13 +532,6 @@ void SentenceTuple::setWeights(const std::vector<float>& weights) {
     auto numWeights = weights.size();
     auto numTrgWords = back().size();
     // word-level weights may or may not contain a weight for EOS tokens
-    if(numWeights != numTrgWords && numWeights != numTrgWords - 1)
-      LOG(warn,
-          "[warn] "
-          "Number of weights ({}) does not match the number of target words ({}) in line #{}",
-          numWeights,
-          numTrgWords,
-          id_);
   }
   weights_ = weights;
 }
@@ -576,8 +553,6 @@ std::vector<float> SubBatch::crossMaskWithInlineFixSourceSuppressed() const
 
   auto m = mask(); // default return value, which we will modify in-place below in case we need to
   if (hasInlineFixFactors || hasInlineFixTags) {
-    LOG_ONCE(info, "[data] Suppressing cross-attention into inline-fix source tokens");
-
     // example: force French translation of name "frank" to always be "franck"
     //  - hasInlineFixFactors: "frank|is franck|it", "frank|is" cannot be cross-attended to
     //  - hasInlineFixTags:    "<IOPEN> frank <IDELIM> franck <ICLOSE>", "frank" and all tags cannot be cross-attended to

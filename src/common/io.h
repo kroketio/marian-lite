@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3rd_party/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 #include "common/io_item.h"
 
 #include <string>

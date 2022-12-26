@@ -3,6 +3,7 @@
 #include "data/types.h"
 #include "hypothesis.h"
 
+#include <cmath>
 #include <queue>
 
 namespace marian {

@@ -9,7 +9,7 @@
 
 /* Function for soft heap */
 
-#include <faiss/utils/Heap.h>
+#include "utils/Heap.h"
 
 
 namespace faiss {

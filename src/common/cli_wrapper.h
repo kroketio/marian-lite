@@ -1,8 +1,9 @@
 #pragma once
 
-#include "3rd_party/CLI/CLI.hpp"
+#include "CLI/CLI.hpp"
+#include "CLI/TypeTools.hpp"
 #include "3rd_party/any_type.h"
-#include "3rd_party/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 #include "common/definitions.h"
 
 #include <iostream>
@@ -16,6 +17,12 @@ namespace marian {
 class Options;
 
 namespace cli {
+
+// `is_vector` backported from CLI11 1.6.1:
+/// Check to see if something is a vector (fail check by default)
+template <typename T> struct cli_is_vector { static const bool value = false; };
+/// Check to see if something is a vector (true if actually a vector)
+template <class T, class A> struct cli_is_vector<std::vector<T, A>> { static bool const value = true; };
 
 // Option priority
 enum struct OptionPriority : int { DefaultValue = 0, ConfigFile = 1, CommandLine = 2 };
@@ -242,7 +249,7 @@ public:
 private:
   template <typename T,
             // options with numeric and string-like values
-            CLI::enable_if_t<!CLI::is_bool<T>::value && !CLI::is_vector<T>::value,
+            CLI::enable_if_t<!CLI::is_bool<T>::value && !cli::cli_is_vector<T>::value,
                              CLI::detail::enabler> = CLI::detail::dummy>
   CLI::Option *addOption(const std::string &key,
                          const std::string &args,
@@ -290,7 +297,7 @@ private:
 
   template <typename T,
             // options with vector values
-            CLI::enable_if_t<CLI::is_vector<T>::value, CLI::detail::enabler> = CLI::detail::dummy>
+            CLI::enable_if_t<cli::cli_is_vector<T>::value, CLI::detail::enabler> = CLI::detail::dummy>
   CLI::Option *addOption(const std::string &key,
                          const std::string &args,
                          const std::string &help,

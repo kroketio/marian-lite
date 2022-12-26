@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <climits>
 
 #include "common/hash.h"
 #include "common/logging.h"

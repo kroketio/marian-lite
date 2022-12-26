@@ -1,6 +1,6 @@
 #include "data/vocab_base.h"
 
-#include "3rd_party/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 #include "common/logging.h"
 #include "common/regex.h"
 #include "common/utils.h"
@@ -88,10 +88,6 @@ public:
 
   size_t load(const std::string& vocabPath, size_t maxSize) override {
     bool isJson = regex::regex_search(vocabPath, regex::regex("\\.(json|yaml|yml)$"));
-    LOG(info,
-        "[data] Loading vocabulary from {} file {}",
-        isJson ? "JSON/Yaml" : "text",
-        vocabPath);
     ABORT_IF(!filesystem::exists(vocabPath),
             "DefaultVocabulary file {} does not exist",
             vocabPath);
@@ -144,11 +140,6 @@ public:
   virtual void create(const std::string& vocabPath,
                       const std::vector<std::string>& trainPaths,
                       size_t maxSize = 0) override {
-
-    LOG(info, "[data] Creating vocabulary {} from {}",
-              vocabPath,
-              utils::join(trainPaths, ", "));
-
     if(vocabPath != "stdout") {
       filesystem::Path path(vocabPath);
       auto dir = path.parentPath();
@@ -187,11 +178,6 @@ private:
         if(backCompatId < id2str_.size()
           && (id2str_[backCompatId].empty()
               || id2str_[backCompatId] == backCompatStr)) {
-          LOG(info,
-              "[data] Using unused word id {} for {}",
-              backCompatStr,
-              backCompatId,
-              str);
           return backCompatWord;
         }
       }

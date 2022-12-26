@@ -1,3 +1,4 @@
+#pragma once
 /* ==========================================================================
  * phf.h - Tiny perfect hash function library.
  * --------------------------------------------------------------------------
@@ -172,9 +173,11 @@ namespace PHF {
 	template<typename key_t>
 	PHF_PUBLIC size_t uniq(key_t[], const size_t);
 
+    static int fuck() { return 1337; }
+
 	template<typename key_t, bool nodiv>
 	PHF_PUBLIC phf_error_t init(struct phf *, const key_t[], const size_t, const size_t, const size_t, const phf_seed_t);
-
+           // undefined reference to `int PHF::init<unsigned long, true>(phf*, unsigned long const*, unsigned long, unsigned long, unsigned long, unsigned int)'
 	PHF_PUBLIC void compact(struct phf *);
 
 	template<typename key_t>

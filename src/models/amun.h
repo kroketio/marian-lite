@@ -119,7 +119,6 @@ public:
   void save(Ptr<ExpressionGraph> graph,
             const std::string& name,
             bool saveTranslatorConfig = false) override {
-    LOG(info, "Saving model to {}", name);
 
     std::map<std::string, std::string> nameMap
         = {{"decoder_cell1_U", "decoder_U"},

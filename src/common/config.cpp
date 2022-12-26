@@ -18,7 +18,7 @@ size_t Config::seed = (size_t)time(0);
 
 
 Config::Config(ConfigParser const& cp) {
-  initialize(cp);
+
 }
 
 Config::Config(int argc, char** argv, cli::mode mode, bool validate /*= true*/)
@@ -27,125 +27,9 @@ Config::Config(int argc, char** argv, cli::mode mode, bool validate /*= true*/)
 Config::Config(const Config& other) : config_(YAML::Clone(other.config_)) {}
 Config::Config(const Options& options) : config_(options.cloneToYamlNode()) {}
 
-void Config::initialize(ConfigParser const& cp) {
-  config_ = YAML::Clone(cp.getConfig());
-  cli::mode mode = cp.getMode();
-
-  createLoggers(this);
-
-  // echo version and command line
-  LOG(info, "[marian] Marian {}", buildVersion());
-  std::string cmdLine = cp.cmdLine();
-  std::string hostname; int pid; std::tie
-  (hostname, pid) = utils::hostnameAndProcessId();
-  LOG(info, "[marian] Running on {} as process {} with command line:", hostname, pid);
-  LOG(info, "[marian] {}", cmdLine);
-
-  // set random seed
-  if(get<size_t>("seed") == 0) {
-    seed = (size_t)time(0);
-  } else {
-    seed = get<size_t>("seed");
-  }
-
-  // load model parameters
-  bool loaded = false;
-  if(mode == cli::mode::translation || mode == cli::mode::server) {
-    auto model = get<std::vector<std::string>>("models")[0];
-    try {
-      if(!get<bool>("ignore-model-config"))
-        loaded = loadModelParameters(model);
-    } catch(std::runtime_error& ) {
-      LOG(info, "[config] No model configuration found in model file");
-    }
-  }
-  // if cli::mode::training or cli::mode::scoring
-  else {
-    auto model = get<std::string>("model");
-    if(filesystem::exists(model) && !get<bool>("no-reload")) {
-      try {
-        if(!get<bool>("ignore-model-config"))
-          loaded = loadModelParameters(model);
-      } catch(std::runtime_error&) {
-        LOG(info, "[config] No model configuration found in model file");
-      }
-    }
-  }
-
-  // guess --tsv-fields, i.e. the number of fields in a TSV input, if not set
-  if(get<bool>("tsv") && get<size_t>("tsv-fields") == 0) {
-    size_t tsvFields = 0;
-
-    // use the length of --input-types if given
-    auto inputTypes = get<std::vector<std::string>>("input-types");
-    if(!inputTypes.empty()) {
-      tsvFields = inputTypes.size();
-    } else {
-      if(loaded) {
-        // model.npz has properly set vocab dimensions in special:model.yml,
-        // so we may use them to determine the number of streams
-        for(auto dim : get<std::vector<size_t>>("dim-vocabs"))
-          if(dim != 0)  // language models have a fake extra vocab
-            ++tsvFields;
-        // For translation there is no target stream
-        if((mode == cli::mode::translation || mode == cli::mode::server) && tsvFields > 1)
-          --tsvFields;
-      } else {
-        // If parameters from model.npz special:model.yml were not loaded,
-        // guess the number of inputs and outputs based on the model type name.
-        // TODO: This is very britle, find a better solution
-        auto modelType = get<std::string>("type");
-
-        tsvFields = 1;
-        if(modelType.find("multi-", 0) != std::string::npos)  // is a dual-source model
-          tsvFields += 1;
-        if(mode == cli::mode::training || mode == cli::mode::scoring)
-          if(modelType.rfind("lm", 0) != 0)  // unless it is a language model
-            tsvFields += 1;
-      }
-
-      // count fields with guided-alignment or data-weighting too
-      if(mode == cli::mode::training) {
-        if(has("guided-alignment") && get<std::string>("guided-alignment") != "none")
-          tsvFields += 1;
-        if(has("data-weighting") && !get<std::string>("data-weighting").empty())
-          tsvFields += 1;
-      }
-    }
-
-    config_["tsv-fields"] = tsvFields;
-  }
-
-  // echo full configuration
-  log();
-
-  // Log version of Marian that has been used to create the model.
-  //
-  // Key "version" is present only if loaded from model parameters and is not
-  // related to --version flag
-  if(has("version")) {
-    auto version = get<std::string>("version");
-
-    if(mode == cli::mode::training && version != buildVersion())
-      LOG(info,
-          "[config] Loaded model has been created with Marian {}, "
-          "will be overwritten with current version {} at saving",
-          version,
-          buildVersion());
-    else
-      LOG(info, "[config] Loaded model has been created with Marian {}", version);
-
-    // Remove "version" from config to make it consistent among different start-up scenarios
-    config_.remove("version");
-  }
-  // If this is a newly started training
-  else if(mode == cli::mode::training) {
-    LOG(info, "[config] Model is being created with Marian {}", buildVersion());
-  }
-}
-
 bool Config::has(const std::string& key) const {
-  return config_[key];
+  if(config_[key]) return true;
+  return false;
 }
 
 YAML::Node Config::operator[](const std::string& key) const {
@@ -196,8 +80,6 @@ void Config::log() {
 
   // print YAML prepending each line with [config]
   auto lines = utils::split(configString, "\n");
-  for(auto& line : lines)
-    LOG(info, "[config] {}", line);
 }
 
 // Parse the device-spec parameters (--num-devices, --devices, --cpu-threads) into an array of
@@ -305,7 +187,7 @@ std::vector<DeviceId> Config::getDevices(Ptr<Options> options,
 Ptr<Options>
 parseOptions(int argc, char** argv, cli::mode mode, bool validate){
   ConfigParser cp(mode);
-  return cp.parseOptions(argc, argv, validate);
+  throw std::runtime_error("error");
 }
 
 std::ostream& operator<<(std::ostream& out, const Config& config) {

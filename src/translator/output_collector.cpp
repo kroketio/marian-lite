@@ -24,9 +24,6 @@ void OutputCollector::Write(long sourceId,
                             bool nbest) {
   std::lock_guard<std::mutex> lock(mutex_);
   if(sourceId == nextId_) {
-    if(printing_->shouldBePrinted(sourceId))
-      LOG(info, "Best translation {} : {}", sourceId, best1);
-
     if(outStrm_) {
       if(nbest)
         *outStrm_ << bestn << std::endl;
@@ -44,8 +41,6 @@ void OutputCollector::Write(long sourceId,
       if(currId == nextId_) {
         // 1st element in the map is the next
         const auto& currOutput = iter->second;
-        if(printing_->shouldBePrinted(currId))
-          LOG(info, "Best translation {} : {}", currId, currOutput.first);
 
         if(outStrm_) {
           if(nbest)
@@ -85,8 +80,7 @@ void StringCollector::add(long sourceId,
                           const std::string& best1,
                           const std::string& bestn) {
   std::lock_guard<std::mutex> lock(mutex_);
-  if(!quiet_)
-    LOG(info, "Best translation {} : {}", sourceId, best1);
+
   outputs_[sourceId] = std::make_pair(best1, bestn);
   if(maxId_ <= sourceId)
     maxId_ = sourceId;

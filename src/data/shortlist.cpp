@@ -72,12 +72,6 @@ LexicalShortlistGenerator::LexicalShortlistGenerator(Ptr<Options> options,
   bestNum_ = vals.size() > 2 ? std::stoi(vals[2]) : 100;
   float threshold = vals.size() > 3 ? std::stof(vals[3]) : 0;
   std::string dumpPath = vals.size() > 4 ? vals[4] : "";
-  LOG(info,
-      "[data] Loading lexical shortlist as {} {} {} {}",
-      fname,
-      firstNum_,
-      bestNum_,
-      threshold);
 
   // @TODO: Load and prune in one go.
   load(fname);
@@ -89,7 +83,6 @@ LexicalShortlistGenerator::LexicalShortlistGenerator(Ptr<Options> options,
 
 void LexicalShortlistGenerator::dump(const std::string& prefix) const {
   // Dump top most frequent words from target vocabulary
-  LOG(info, "[data] Saving shortlist dump to {}", prefix + ".{top,dic}");
   io::OutputFileStream outTop(prefix + ".top");
   for(WordIndex i = 0; i < firstNum_ && i < trgVocab_->size(); ++i)
     outTop << (*trgVocab_)[Word::fromWordIndex(i)] << std::endl;
@@ -184,7 +177,6 @@ void BinaryShortlistGenerator::load(const void* ptr_void, size_t blobSize, bool 
 
   firstNum_ = header.firstNum;
   bestNum_ = header.bestNum;
-  LOG(info, "[data] Lexical short list firstNum {} and bestNum {}", firstNum_, bestNum_);
 
   wordToOffsetSize_ = header.wordToOffsetSize;
   shortListsSize_ = header.shortListsSize;
@@ -226,15 +218,12 @@ BinaryShortlistGenerator::BinaryShortlistGenerator(Ptr<Options> options,
 
   if(isBinaryShortlist(fname)){
     bool check = vals.size() > 1 ? std::stoi(vals[1]) : 1;
-    LOG(info, "[data] Loading binary shortlist as {} {}", fname, check);
     load(fname, check);
   }
   else{
     firstNum_ = vals.size() > 1 ? std::stoi(vals[1]) : 100;
     bestNum_ = vals.size() > 2 ? std::stoi(vals[2]) : 100;
     float threshold = vals.size() > 3 ? std::stof(vals[3]) : 0;
-    LOG(info, "[data] Importing text lexical shortlist as {} {} {} {}",
-        fname, firstNum_, bestNum_, threshold);
     import(fname, threshold);
   }
 }
@@ -252,7 +241,6 @@ BinaryShortlistGenerator::BinaryShortlistGenerator(const void *ptr_void,
       srcIdx_(srcIdx),
       shared_(shared) {
 
-  LOG(info, "[data] Loading binary shortlist from buffer with check={}", check);
   load(ptr_void, blobSize, check);
 }
 
@@ -312,7 +300,6 @@ Ptr<Shortlist> BinaryShortlistGenerator::generate(Ptr<data::CorpusBatch> batch) 
 
 void BinaryShortlistGenerator::dump(const std::string& fileName) const {
   ABORT_IF(mmapMem_.is_open(),"No need to dump again");
-  LOG(info, "[data] Saving binary shortlist dump to {}", fileName);
   saveBlobToFile(fileName);
 }
 

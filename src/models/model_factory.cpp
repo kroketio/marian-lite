@@ -159,7 +159,6 @@ Ptr<IModel> createBaseModelByType(std::string type, usage use, Ptr<Options> opti
       res->push_back(models::encoder(newOptions->with("index", 1)).construct(graph));
       res->push_back(New<SimPooler>(graph, newOptions->with("type", "sim-pooler")));
     } else if(trainEmbedderRank) {
-      LOG(info, "Using {} input fields for embedder ranking training", fields);
       for(int i = 0; i < fields; ++i)
         res->push_back(models::encoder(newOptions->with("index", i)).construct(graph));
       res->push_back(New<SimPooler>(graph, newOptions->with("type", "sim-pooler")));

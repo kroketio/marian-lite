@@ -8,7 +8,7 @@
 // -*- c++ -*-
 
 #include "Index.h"
-#include "common/logging.h"
+#include "logging.h"
 #include <cstring>
 
 namespace faiss {

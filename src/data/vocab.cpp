@@ -36,20 +36,11 @@ size_t Vocab::loadOrCreate(const std::string& vocabPath,
     // as trainPaths[0] + canonical suffix.
     // Only search based on first path, maybe disable this at all?
 
-    LOG(info,
-        "No vocabulary path given; "
-        "trying to find default vocabulary based on data path {}",
-        trainPaths[0]);
-
     vImpl_ = createDefaultVocab();
     size = vImpl_->findAndLoad(trainPaths[0], maxSize);
 
     if(size == 0) {
       auto newVocabPath = trainPaths[0] + vImpl_->canonicalExtension();
-      LOG(info,
-          "No vocabulary path given; "
-          "trying to create vocabulary based on data paths {}",
-          utils::join(trainPaths, ", "));
       create(newVocabPath, trainPaths, maxSize);
       size = load(newVocabPath, maxSize);
     }
@@ -62,7 +53,6 @@ size_t Vocab::loadOrCreate(const std::string& vocabPath,
     // Vocabulary path exists, attempting to load
     size = load(vocabPath, maxSize);
   }
-  LOG(info, "[data] Setting vocabulary size for input {} to {}", batchIndex_, utils::withCommas(size));
   return size;
 }
 

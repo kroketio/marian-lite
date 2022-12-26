@@ -7,7 +7,10 @@
 namespace marian {
 
 bool ConfigValidator::has(const std::string& key) const {
-  return config_[key];
+  if(config_[key]){
+      return true;
+  }
+  return false;
 }
 
 ConfigValidator::ConfigValidator(const YAML::Node& config)

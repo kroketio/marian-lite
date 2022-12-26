@@ -36,11 +36,6 @@ public:
 
   void reserve(size_t bytes = 0) {
     auto mult = bytes / GROW + 1;
-    LOG(info,
-        "[memory] Extending reserved space to {} MB (device {})",
-        mult * CHUNK,
-        allocator_->getDeviceId());
-
     allocator_->reserve(mult * GROW);
   }
 
@@ -53,18 +48,7 @@ public:
 
   void reserveExact(size_t bytes = 0) {
     size_t mbytes = bytes / MBYTE;
-    if(mbytes == 0) {
-      LOG(info,
-          "[memory] Reserving {} B, device {}",
-          bytes,
-          allocator_->getDeviceId());
-    } else {
-      LOG(info,
-          "[memory] Reserving {} MB, device {}",
-          mbytes,
-          allocator_->getDeviceId());
-    }
-    allocator_->reserve(bytes);
+    allocator_->getDeviceId();
   }
 
   void clear() { allocator_->clear(); }

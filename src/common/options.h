@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 #include "common/definitions.h"
-#include "3rd_party/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 
 #ifdef FASTOPT
 #include "common/fastopt.h"

@@ -27,7 +27,7 @@
 
 #include <stdint.h>
 
-#include <faiss/utils/Heap.h>
+#include "utils/Heap.h"
 
 #ifdef _MSC_VER
 #include <intrin.h>  // needed for some intrinsics in <memory>
@@ -239,6 +239,6 @@ hamdis_t hamming (
 
 // inlined definitions of HammingComputerXX and GenHammingComputerXX
 
-#include <faiss/utils/hamming-inl.h>
+#include "utils/hamming-inl.h"
 
 #endif /* FAISS_hamming_h */

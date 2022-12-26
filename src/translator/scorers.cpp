@@ -20,8 +20,6 @@ Ptr<Scorer> scorerByType(const std::string& fname,
   auto encdec = models::createModelFromOptions(
       options, skipCost ? models::usage::raw : models::usage::translation);
 
-  LOG(info, "Loading scorer of type {} as feature {}", type, fname);
-
   return New<ScorerWrapper>(encdec, fname, weight, items);
 }
 
@@ -41,8 +39,6 @@ Ptr<Scorer> scorerByType(const std::string& fname,
   bool skipCost = options->get<bool>("skip-cost");
   auto encdec = models::createModelFromOptions(
       options, skipCost ? models::usage::raw : models::usage::translation);
-
-  LOG(info, "Loading scorer of type {} as feature {}", type, fname);
 
   return New<ScorerWrapper>(encdec, fname, weight, ptr);
 }
@@ -65,11 +61,10 @@ std::vector<Ptr<Scorer>> createScorers(Ptr<Options> options, const std::vector<s
       YAML::Node modelYaml;
       io::getYamlFromModel(modelYaml, "special:model.yml", items);
       if(!modelYaml.IsNull()) {
-        LOG(info, "Loaded model config");
         modelOptions->merge(modelYaml, true);
       }
       else {
-        LOG(warn, "No model settings found in model file");
+        std::cerr << "No model settings found in model file\n";
       }
     }
 
@@ -121,11 +116,7 @@ std::vector<Ptr<Scorer>> createScorers(Ptr<Options> options, const std::vector<c
       YAML::Node modelYaml;
       io::getYamlFromModel(modelYaml, "special:model.yml", items);
       if(!modelYaml.IsNull()) {
-        LOG(info, "Loaded model config");
         modelOptions->merge(modelYaml, true);
-      }
-      else {
-        LOG(warn, "No model settings found in model file");
       }
     }
 

@@ -17,7 +17,7 @@
 #include <vector>
 #include <stdint.h>
 
-#include <faiss/Index.h>
+#include "Index.h"
 #ifdef __APPLE__
 #include <x86intrin.h>
 #endif

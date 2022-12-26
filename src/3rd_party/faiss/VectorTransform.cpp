@@ -7,15 +7,16 @@
 
 // -*- c++ -*-
 
-#include <faiss/VectorTransform.h>
+#include <VectorTransform.h>
 
 #include <cstdio>
 #include <cmath>
 #include <cstring>
+#include <cassert>
 #include <memory>
 
-#include <faiss/utils/random.h>
-#include "common/logging.h"
+#include "utils/random.h"
+#include "logging.h"
 
 using namespace faiss;
 

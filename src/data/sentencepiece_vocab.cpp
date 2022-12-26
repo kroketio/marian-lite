@@ -1,4 +1,4 @@
-#include "sentencepiece_vocab.h"
+#include "data/sentencepiece_vocab.h"
 #include "data/vocab_base.h"
 #include "common/config.h"
 #include "common/options.h"
@@ -66,8 +66,6 @@ private:
   size_t reservoirSamplingAll(io::TemporaryFile& temp,
                              const std::vector<std::string>& trainPaths,
                              size_t maxLines, size_t maxBytes) {
-    LOG(info, "[SentencePiece] Sampling at most {} lines from {}", maxLines, utils::join(trainPaths, ", "));
-
     std::vector<std::string> sample;
     size_t seenLines = 0;
     for(const auto& trainPath : trainPaths)
@@ -77,7 +75,6 @@ private:
     for(const auto& line : sample)
         temp << line << std::endl;
 
-    LOG(info, "[SentencePiece] Selected {} lines", sample.size());
     return sample.size();
   }
 
@@ -85,8 +82,6 @@ private:
   size_t dumpAll(io::TemporaryFile& temp,
                  const std::vector<std::string>& trainPaths,
                  size_t maxBytes) {
-    LOG(info, "[SentencePiece] Selecting all lines from {}", utils::join(trainPaths, ", "));
-
     size_t seenLines = 0;
     std::string line;
     for(const auto& trainPath : trainPaths) {
@@ -99,7 +94,6 @@ private:
       }
     }
 
-    LOG(info, "[SentencePiece] Selected {} lines", seenLines);
     return seenLines;
   }
 
@@ -115,12 +109,6 @@ public:
         alpha_ = 0.f;
       else
         alpha_ = alphas[batchIndex_];
-
-      if(alpha_ > 0)
-        LOG(debug,
-            "Setting SentencePiece vocabulary sampling factor to {} for input {}",
-            alpha_,
-            batchIndex_);
     }
   }
 
@@ -142,17 +130,13 @@ public:
     size_t maxLines = options_->get<size_t>("sentencepiece-max-lines");
     size_t maxBytes = 2048;
 
-    LOG(info, "[SentencePiece] Training SentencePiece vocabulary {}", vocabPath);
-
     if(maxSize == 0) {
-      LOG(info, "[SentencePiece] Vocabulary size is undefined (set with --dim-vocabs ...) - setting to {}", defaultMaxSize);
       maxSize = defaultMaxSize;
     }
 
     // Create temporary file to hold the sample for the SentencePiece trainer
     io::TemporaryFile temp(options_->get<std::string>("tempdir"), false);
     std::string tempFileName = temp.getFileName();
-    LOG(info, "[SentencePiece] Creating temporary file {}", tempFileName);
 
     size_t seenLines = 0;
     if(maxLines == 0)
@@ -177,12 +161,10 @@ public:
              "SentencePiece vocabulary error: {}",
              status.ToString());
 
-    LOG(info, "[SentencePiece] Removing {}", vocabPath + ".vocab");
     ABORT_IF(remove((vocabPath + ".vocab").c_str()) != 0,
              "Could not remove {}",
              vocabPath + ".vocab");
 
-    LOG(info, "[SentencePiece] Renaming {} to {}", vocabPath + ".model", vocabPath);
     ABORT_IF(rename((vocabPath + ".model").c_str(), vocabPath.c_str()) != 0,
              "Could not rename {} to {}",
              vocabPath + ".model", vocabPath);
@@ -290,8 +272,6 @@ public:
   }
 
   size_t load(const std::string& vocabPath, size_t /*maxSize*/) override {
-    LOG(info, "[data] Loading SentencePiece vocabulary from file {}", vocabPath);
-
     ABORT_IF(!filesystem::exists(vocabPath),
              "SentencePiece vocabulary file {} does not exist",
              vocabPath);
@@ -310,8 +290,6 @@ public:
   // memory to which it points. So be sure that the underlying memory is alive during
   // loading (and no copy will be generated)
   size_t loadFromSerialized(const string_view& serialized) override {
-    LOG(info, "[data] Loading SentencePiece vocabulary from buffer");
-
     spm_.reset(new sentencepiece::SentencePieceProcessor());
     const auto status = spm_->LoadFromSerializedProto(serialized);
 

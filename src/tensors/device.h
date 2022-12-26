@@ -88,7 +88,7 @@ static inline Ptr<Device> DispatchDevice(DeviceId deviceId,
     return New<cpu::Device>(deviceId, alignment);
 #else
   if(deviceId.type == DeviceType::gpu)
-    ABORT("CUDA support not compiled into marian");
+    ABORT("CUDA support not compiled into marian")
   else
     return New<cpu::Device>(deviceId, alignment);
 #endif

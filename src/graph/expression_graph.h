@@ -350,7 +350,6 @@ private:
 
     // create parameter node (adds to tape)
     p = Expression<ParamNode>(shared_from_this(), shape, init, elementType, fixed);
-    LOG(debug, "Created parameter {} with shape {} and type {}", name, shape, elementType);
 
     // set name and id and add to list of parameters
     p->set_name(name);
@@ -523,13 +522,11 @@ public:
   }
 
   void load(const std::string& name, bool markReloaded = true) {
-    LOG(info, "Loading model from {}", name);
     auto items = io::loadItems(name);
     load(items, markReloaded);
   }
 
   void load(const void* ptr, bool markReloaded = true) {
-    LOG(info, "Loading model from buffer at {}", ptr);
     auto items = io::loadItems(ptr);
     load(items, markReloaded);
   }
@@ -538,7 +535,6 @@ public:
     ABORT_IF(backend_->getDeviceId().type != DeviceType::cpu || !inferenceOnly_,
              "Memory mapping only supported for CPU inference mode");
 
-    LOG(info, "Memory mapping model at {}", ptr);
     auto items = io::mmapItems(ptr);
 
     // Deal with default parameter set object that might not be a mapped object.

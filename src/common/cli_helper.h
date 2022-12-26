@@ -1,8 +1,9 @@
 #pragma once
 
 #include <string>
+#include <functional>
 
-#include "3rd_party/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 #include "common/logging.h"
 
 namespace marian {

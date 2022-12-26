@@ -28,7 +28,6 @@ Expr LSH::search(Expr query, Expr values) {
     int dim = values->shape()[-1];
 
     if(!index_ || indexHash_ != values->hash()) {
-      LOG(info, "Building LSH index for vector dim {} and with hash size {} bits", dim, nbits_);
       index_.reset(new faiss::IndexLSH(dim, nbits_, 
                                        /*rotate=*/dim != nbits_, 
                                        /*train_thesholds*/false));

@@ -4,7 +4,7 @@
 #include "common/signal_handling.h"
 #include "data/batch_stats.h"
 #include "data/rng_engine.h"
-#include "training/training_state.h"
+//#include "training/training_state.h"
 #include "data/iterator_facade.h"
 #include "3rd_party/threadpool.h"
 
@@ -228,9 +228,6 @@ private:
       totalLabels += (double)b->words(-1);
     }
     auto totalDenom = tempBatches.empty() ? 1 : tempBatches.size(); // (make 0/0 = 0)
-    LOG(debug, "[data] fetched {} batches with {} sentences. Per batch: {} sentences, {} labels.",
-        tempBatches.size(), numSentencesRead,
-        (double)totalSent / (double)totalDenom, (double)totalLabels / (double)totalDenom);
     return tempBatches;
   }
 
@@ -314,26 +311,26 @@ public:
 
   // Used to restore the state of a BatchGenerator after
   // an interrupted and resumed training.
-  bool restore(Ptr<TrainingState> state) {
-    if(state->epochs == 1 && state->batchesEpoch == 0)
-      return false;
-
-    LOG(info,
-        "[data] Restoring the corpus state to epoch {}, batch {}",
-        state->epochs,
-        state->batches);
-
-    if(state->epochs > 1) {
-      data_->restore(state);
-      setRNGState(state->seedBatch);
-    }
-
-    prepare();
-    for(size_t i = 0; i < state->batchesEpoch; ++i)
-      next();
-
-    return true;
-  }
+//  bool restore(Ptr<TrainingState> state) {
+//    if(state->epochs == 1 && state->batchesEpoch == 0)
+//      return false;
+//
+//    LOG(info,
+//        "[data] Restoring the corpus state to epoch {}, batch {}",
+//        state->epochs,
+//        state->batches);
+//
+//    if(state->epochs > 1) {
+//      data_->restore(state);
+//      setRNGState(state->seedBatch);
+//    }
+//
+//    prepare();
+//    for(size_t i = 0; i < state->batchesEpoch; ++i)
+//      next();
+//
+//    return true;
+//  }
 
   // this is needed for dynamic MB scaling. Returns 0 if size is not known in words.
   size_t estimateTypicalTrgBatchWords() const {
@@ -348,18 +345,18 @@ public:
   }
 };
 
-class CorpusBatchGenerator : public BatchGenerator<CorpusBase>,
-                             public TrainingObserver {
-public:
-  CorpusBatchGenerator(Ptr<CorpusBase> data,
-                       Ptr<Options> options,
-                       Ptr<BatchStats> stats = nullptr)
-      : BatchGenerator(data, options, stats) {}
-
-  void actAfterEpoch(TrainingState& state) override {
-    state.seedBatch = getRNGState();
-    state.seedCorpus = data_->getRNGState();
-  }
-};
+//class CorpusBatchGenerator : public BatchGenerator<CorpusBase>,
+//                             public TrainingObserver {
+//public:
+//  CorpusBatchGenerator(Ptr<CorpusBase> data,
+//                       Ptr<Options> options,
+//                       Ptr<BatchStats> stats = nullptr)
+//      : BatchGenerator(data, options, stats) {}
+//
+////  void actAfterEpoch(TrainingState& state) override {
+////    state.seedBatch = getRNGState();
+////    state.seedCorpus = data_->getRNGState();
+////  }
+//};
 }  // namespace data
 }  // namespace marian

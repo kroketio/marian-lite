@@ -24,15 +24,15 @@
  * (Byte,Short,Long) and therefore should be signed for 2-bytes and 4-bytes
 */
 
-#include <faiss/utils/hamming.h>
+#include "utils/hamming.h"
 
 #include <vector>
 #include <memory>
 #include <stdio.h>
 #include <math.h>
 
-#include <faiss/utils/Heap.h>
-#include "common/logging.h"
+#include "utils/Heap.h"
+#include "logging.h"
 #include "misc.h"
 
 static const size_t BLOCKSIZE_QUERY = 8192;

@@ -22,8 +22,8 @@
 #  endif
 #endif
 
-#include "3rd_party/pathie-cpp/include/path.hpp"  // @TODO: update to latest Pathie
-#include "3rd_party/pathie-cpp/include/errors.hpp"
+#include <pathie/path.hpp>
+#include <pathie/errors.hpp>
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop

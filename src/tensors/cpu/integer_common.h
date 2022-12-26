@@ -4,7 +4,7 @@
 #include "tensors/tensor_operators.h"
 #include "tensors/cpu/aligned.h"
 #include "common/io_item.h"
-#include "3rd_party/intgemm/intgemm/intgemm.h"
+#include "3rd_party/intgemm/intgemm.h"
 #if defined(WASM)
 #include "wasm_intgemm_interface.h"
 #endif

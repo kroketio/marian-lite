@@ -7,7 +7,7 @@
  * dependency. 
  */
 
-#include "sentencepiece/third_party/absl/strings/string_view.h"
+#include <sentencepiece_processor.h>
 
 #include <cstdint>
 #include <cstdlib>

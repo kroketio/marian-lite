@@ -163,8 +163,6 @@ void EncoderDecoder::save(Ptr<ExpressionGraph> graph,
                           const std::string& name,
                           bool saveTranslatorConfig) {
   // ignore config for now
-  LOG(info, "Saving model weights and runtime parameters to {}", name);
-
   graph->save(name, getModelParametersAsString());
 
   if(saveTranslatorConfig)

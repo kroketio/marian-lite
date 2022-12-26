@@ -36,7 +36,7 @@ public:
 
   void reset() override;
 
-  void restore(Ptr<TrainingState>) override {}
+  //void restore(Ptr<TrainingState>) override {}
 
   iterator begin() override { return iterator(this); }
 

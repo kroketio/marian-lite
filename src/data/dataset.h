@@ -5,7 +5,7 @@
 #include "data/batch.h"
 #include "data/rng_engine.h"
 #include "data/vocab.h"
-#include "training/training_state.h"
+//#include "training/training_state.h"
 
 namespace marian {
 namespace data {
@@ -42,7 +42,7 @@ public:
 
   virtual void reset() {}
   virtual void prepare() {}
-  virtual void restore(Ptr<TrainingState>) {}
+  //virtual void restore(Ptr<TrainingState>) {}
 
   // @TODO: remove after cleaning traininig/training.h
   virtual Ptr<Options> options() { return options_; }

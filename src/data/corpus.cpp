@@ -28,20 +28,12 @@ Corpus::Corpus(std::vector<std::string> paths,
 void Corpus::preprocessLine(std::string& line, size_t streamId) {
   if (allCapsEvery_ != 0 && pos_ % allCapsEvery_ == 0 && !inference_) {
     line = vocabs_[streamId]->toUpper(line);
-    if (streamId == 0)
-      LOG_ONCE(info, "[data] Source all-caps'ed line to: {}", line);
-    else
-      LOG_ONCE(info, "[data] Target all-caps'ed line to: {}", line);
   }
   else if (titleCaseEvery_ != 0 && pos_ % titleCaseEvery_ == 1 && !inference_ && streamId == 0) {
     // Only applied to stream 0 (source) since this feature is aimed at robustness against
     // title case in the source (and not at translating into title case).
     // Note: It is user's responsibility to not enable this if the source language is not English.
     line = vocabs_[streamId]->toEnglishTitleCase(line);
-    if (streamId == 0)
-      LOG_ONCE(info, "[data] Source English-title-case'd line to: {}", line);
-    else
-      LOG_ONCE(info, "[data] Target English-title-case'd line to: {}", line);
   }
 }
 
@@ -170,13 +162,11 @@ void Corpus::reset() {
     }
 }
 
-void Corpus::restore(Ptr<TrainingState> ts) {
-  setRNGState(ts->seedCorpus);
-}
+//void Corpus::restore(Ptr<TrainingState> ts) {
+//  setRNGState(ts->seedCorpus);
+//}
 
 void Corpus::shuffleData(const std::vector<std::string>& paths) {
-  LOG(info, "[data] Shuffling data");
-
   ABORT_IF(tsv_ && (paths[0] == "stdin" || paths[0] == "-"),
            "Shuffling training data from STDIN is not supported. Add --no-shuffle or provide "
            "training sets with --train-sets");
@@ -214,7 +204,6 @@ void Corpus::shuffleData(const std::vector<std::string>& paths) {
     }
     files_.clear();
     numSentences = corpus[0].size();
-    LOG(info, "[data] Done reading {} sentences", utils::withCommas(numSentences));
   }
 
   // randomize sequence ids, and remember them
@@ -225,7 +214,6 @@ void Corpus::shuffleData(const std::vector<std::string>& paths) {
   if (shuffleInRAM_) {
     // when shuffling in RAM, we keep no files_, instead but the data itself
     corpusInRAM_ = std::move(corpus);
-    LOG(info, "[data] Done shuffling {} sentences (cached in RAM)", utils::withCommas(numSentences));
   }
   else {
     // create temp files that contain the data in randomized order
@@ -246,7 +234,6 @@ void Corpus::shuffleData(const std::vector<std::string>& paths) {
       inputStream->setbufsize(10000000);
       files_[i] = std::move(inputStream);
     }
-    LOG(info, "[data] Done shuffling {} sentences to temp files", utils::withCommas(numSentences));
   }
   pos_ = 0;
 }

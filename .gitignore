@@ -2,6 +2,7 @@
 src/common/project_version.h
 src/common/git_revision.h
 src/common/build_info.cpp
+src/3rd_party/intgemm/intgemm_config.h
 
 *.vcxproj.user
 /vs/x64

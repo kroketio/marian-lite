@@ -144,8 +144,6 @@ public:
       outputs.push_back(cosine);
     } else { // compute outputs for embedding similarity ranking
       if(vecs.size() == 2) { // implies we are sampling negative examples from the batch, since otherwise there is nothing to train
-        LOG_ONCE(info, "Sampling negative examples from batch");
-
         auto src = vecs[0];
         auto trg = vecs[1];
 
@@ -170,8 +168,6 @@ public:
         auto negative2 = transpose(negative1);  // get negative examples for trg -> src via transpose so they are located in a row
         outputs.push_back(transpose(negative2));
       } else {
-        LOG_ONCE(info, "Using provided {} negative examples", vecs.size() - 2);
-
         // For inference and training with given set of negative examples provided in additional streams.
         // Assuming that enc0 is query, enc1 is positive example and remaining encoders are optional negative examples. Here we only use column vectors [dimBatch, 1]
         auto positive = scalar_product(vecs[0], vecs[1], /*axis*/-1);

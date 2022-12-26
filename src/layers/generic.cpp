@@ -21,7 +21,6 @@ namespace marian {
   // This function assumes that the object holds one or more factor logits.
   // It applies the supplied loss function to each, and then returns the aggregate loss over all factors.
   Expr Logits::applyLossFunction(const Words& labels, const std::function<Expr(Expr/*logits*/, Expr/*indices*/)>& lossFn) const {
-    LOG_ONCE(info, "[logits] Applying loss function for {} factor(s)", logits_.size());
     ABORT_IF(empty(), "Attempted to read out logits on empty Logits object");
 
     auto firstLogits = logits_.front()->loss();
@@ -236,7 +235,6 @@ namespace marian {
       factoredVocab_ = FactoredVocab::tryCreateAndLoad(options_->get<std::string>("vocab", ""));
       if (factoredVocab_) {
         numOutputClasses = (int)factoredVocab_->factorVocabSize();
-        LOG_ONCE(info, "[embedding] Factored outputs enabled");
       }
 
       if(tiedParam_) {
@@ -364,7 +362,6 @@ namespace marian {
           }
           /*const*/ int lemmaDimEmb = options_->get<int>("lemma-dim-emb", 0);
           if ((lemmaDimEmb == -2 || lemmaDimEmb == -3) && g > 0) { // -2/-3 means a gated transformer-like structure (-3 = hard-max)
-            LOG_ONCE(info, "[embedding] using lemma conditioning with gate");
             // this mimics one transformer layer
             //  - attention over two inputs:
             //     - e = current lemma. We use the original embedding vector; specifically, expectation over all lemmas.
@@ -428,14 +425,12 @@ namespace marian {
           // optionally add a soft embedding of lemma back to create some lemma dependency
           // @TODO: if this works, move it into lazyConstruct
           if (lemmaDimEmb == -2 && g == 0) { // -2 means a gated transformer-like structure
-            LOG_ONCE(info, "[embedding] using lemma conditioning with gate, soft-max version");
             // get expected lemma embedding vector
             auto factorLogSoftmax = logsoftmax(factorLogits); // [B... x U] note: with shortlist, this is not the full lemma set
             auto factorSoftmax = exp(factorLogSoftmax);
             inputLemma = dot(factorSoftmax, factorWt, false, /*transB=*/isLegacyUntransposedW ? true : false); // [B... x D]
           }
           else if (lemmaDimEmb == -3 && g == 0) { // same as -2 except with hard max
-            LOG_ONCE(info, "[embedding] using lemma conditioning with gate, hard-max version");
             // get max-lemma embedding vector
             auto maxVal = max(factorLogits, -1); // [B... x U] note: with shortlist, this is not the full lemma set
             auto factorHardmax = eq(factorLogits, maxVal);
@@ -443,13 +438,11 @@ namespace marian {
           }
           else if (lemmaDimEmb == -1 && g == 0) { // -1 means learn a lemma-dependent bias
             ABORT_IF(shortlist_, "Lemma-dependent bias with short list is not yet implemented");
-            LOG_ONCE(info, "[embedding] using lemma-dependent bias");
             auto factorLogSoftmax = logsoftmax(factorLogits); // (we do that again later, CSE will kick in)
             auto z = /*stopGradient*/(factorLogSoftmax);
             Plemma = exp(z); // [B... x U]
           }
           else if (lemmaDimEmb > 0 && g == 0) { // > 0 means learn a re-embedding matrix
-            LOG_ONCE(info, "[embedding] enabled re-embedding of lemma, at dim {}", lemmaDimEmb);
             // compute softmax. We compute logsoftmax() separately because this way, computation will be reused later via CSE
             auto factorLogSoftmax = logsoftmax(factorLogits);
             auto factorSoftmax = exp(factorLogSoftmax);
@@ -457,7 +450,6 @@ namespace marian {
             bool hardmax = (lemmaDimEmb & 1) != 0; // odd value triggers hardmax for now (for quick experimentation)
             if (hardmax) {
               lemmaDimEmb = lemmaDimEmb & 0xfffffffe;
-              LOG_ONCE(info, "[embedding] HARDMAX_HACK enabled. Actual dim is {}", lemmaDimEmb);
               auto maxVal = max(factorSoftmax, -1);
               factorSoftmax = eq(factorSoftmax, maxVal);
             }
@@ -496,7 +488,6 @@ namespace marian {
     factoredVocab_ = FactoredVocab::tryCreateAndLoad(options_->get<std::string>("vocab", ""));
     if (factoredVocab_) {
       dimVoc = (int)factoredVocab_->factorVocabSize();
-      LOG_ONCE(info, "[embedding] Factored embeddings enabled");
     }
 
     // Embedding layer initialization should depend only on embedding size, hence fanIn=false

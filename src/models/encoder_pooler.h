@@ -174,7 +174,6 @@ public:
   void save(Ptr<ExpressionGraph> graph,
             const std::string& name,
             bool /*saveModelConfig*/) override {
-    LOG(info, "Saving model weights and runtime parameters to {}", name);
     graph->save(name , getModelParametersAsString());
   }
 

@@ -3,7 +3,7 @@
 #include "common/definitions.h"
 #include "3rd_party/any_type.h"
 #include "3rd_party/phf/phf.h"
-#include "3rd_party/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 
 // This file contains code to create a fast access option class, 
 // meant as a replacment/supplement to YAML::Node.
@@ -60,6 +60,7 @@ public:
    : PerfectHash(v.data(), v.size()) { }
 
   ~PerfectHash() {
+    PHF::fuck();
     PHF::destroy(&phf_);
   }
 

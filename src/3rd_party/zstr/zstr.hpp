@@ -12,7 +12,7 @@
 #include <cassert>
 #include <fstream>
 #include <sstream>
-#include "3rd_party/zlib/zlib.h"
+#include "zlib.h"
 #include "strict_fstream.hpp"
 
 namespace zstr

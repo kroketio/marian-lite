@@ -7,6 +7,7 @@
 #include "common/regex.h"
 #include "data/factored_vocab.h"
 #include <set>
+#include <mutex>
 
 // @TODO: review all comments and clarify nomenclature:
 // * factor type (e.g. caps: |c* ); currently called a "group"
@@ -27,7 +28,6 @@ namespace marian {
     //LOG(info, "[vocab] Attempting to load model a second time; skipping (assuming shared vocab)");
     return size();
   }
-  LOG(info, "[vocab] Loading vocab spec file {}", modelPath);
 
   // load factor-vocab file and parse it
   std::vector<std::vector<std::string>> factorMapTokenized;
@@ -187,23 +187,18 @@ namespace marian {
     // add to vocab (the wordIndex are not dense, so the vocab will have holes)
     // for now add what we get, and then expand more below
     auto wordString = word2string(word);
-    if (tokens.front() != wordString) // order may differ, since we formed the input based on the factors in the user file, which may be in any order
-      LOG_ONCE(info, "[vocab] Word name in vocab file {} differs from canonical form {} (this warning is only shown once)", tokens.front(), wordString);
+
     vocab_.add(wordString, word.toWordIndex());
     numTotalFactors += tokens.size() - 1;
   }
-  LOG(info, "[vocab] Factored-embedding map read with total/unique of {}/{} factors from {} example words (in space of {})",
-      numTotalFactors, factorVocabSize(), vocab_.size()/*numValid()*/, utils::withCommas(virtualVocabSize()));
   //vocab_.dumpToFile(modelPath + "_examples");
 
   // enumerate all valid combinations of factors for each lemma and add them to vocab_
   // Having vocab_ makes life easier, although it is not strictly needed. Typical expanded valid vocabs
   // are on the order of 200k entries. If we ever go much larger, we'd want to elimimate vocab_
   // and fully virtualize its function.
-  LOG(info, "[vocab] Expanding all valid vocab entries out of {}...", utils::withCommas(virtualVocabSize()));
   std::vector<size_t> factorIndices(getNumGroups());
   rCompleteVocab(factorIndices, /*g=*/0);
-  LOG(info, "[vocab] Completed, total {} valid combinations", vocab_.size()/*numValid()*/);
   //vocab_.dumpToFile(modelPath + "_expanded");
 
 #ifdef FACTOR_FULL_EXPANSION
@@ -254,8 +249,6 @@ void FactoredVocab::constructGroupInfoFromFactorVocab() {
     for (WordIndex u = 0; u < factorVocabSize; u++)
       if (utils::beginsWith(factorVocab_[u], groupPrefix)) {
         //ABORT_IF(factorGroups_[u] != 0, "Factor {} matches multiple groups, incl. {}", factorVocab_[u], groupPrefix);
-        if(factorGroups_[u] != 0)
-          LOG(info, "Factor {} matches multiple groups, incl. {}, using {}", factorVocab_[u], groupPrefixes_[factorGroups_[u]], groupPrefix);
         factorGroups_[u] = g;
       }
   }
@@ -271,7 +264,6 @@ void FactoredVocab::constructGroupInfoFromFactorVocab() {
     groupCounts[g]++;
   }
   for (size_t g = 0; g < numGroups; g++) { // detect non-overlapping groups
-    LOG(info, "[vocab] Factor group '{}' has {} members", groupPrefixes_[g], groupCounts[g]);
     if (groupCounts[g] == 0) { // factor group is unused  --@TODO: once this is not hard-coded, this is an error condition
       groupRanges_[g].first = g > 0 ? groupRanges_[g-1].second : 0; // fix up the entry
       groupRanges_[g].second = groupRanges_[g].first;
@@ -419,7 +411,6 @@ Word FactoredVocab::string2word(const std::string& w) const {
       static int logs = 100;
       if (logs > 0) {
         logs--;
-        LOG(info, "WARNING: Unknown factor '{}' in '{}'; mapping to '{}'", parts[i], w, word2string(getUnkId()));
       }
       return getUnkId();
     }
@@ -762,7 +753,6 @@ Ptr<IVocab> createFactoredVocab(const std::string& vocabPath) {
     static std::map<std::string, Ptr<IVocab>> s_cache;
     auto iter = s_cache.find(vocabPath);
     if (iter != s_cache.end()) {
-      LOG_ONCE(info, "[vocab] Reusing existing vocabulary object in memory (vocab size {})", iter->second->size());
       return iter->second;
     }
     auto vocab = New<FactoredVocab>();

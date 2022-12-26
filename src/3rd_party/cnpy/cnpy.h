@@ -6,7 +6,7 @@
 #define LIBCNPY_H_
 
 #if !defined(WASM_COMPATIBLE_SOURCE)
-#include "3rd_party/zlib/zlib.h"
+#include <zlib.h>
 #endif
 
 #include<string>

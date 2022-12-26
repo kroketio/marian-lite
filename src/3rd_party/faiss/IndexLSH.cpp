@@ -7,15 +7,15 @@
 
 // -*- c++ -*-
 
-#include <faiss/IndexLSH.h>
+#include "IndexLSH.h"
 
 #include <cstdio>
 #include <cstring>
 
 #include <algorithm>
 
-#include <faiss/utils/hamming.h>
-#include "common/logging.h"
+#include "utils/hamming.h"
+#include "logging.h"
 
 
 namespace faiss {

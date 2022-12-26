@@ -3,6 +3,7 @@
 #include "common/shape.h"
 #include "common/types.h"
 
+#include <cmath>
 #include <string>
 
 namespace marian {

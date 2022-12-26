@@ -353,7 +353,6 @@ protected:
       
       Expr ce = cross_entropy(logits, indices, inFactor ? 0.f : labelSmoothing_, Type::float32);
       if (inFactor && factorWeight_ != 1.0f) {
-        LOG_ONCE(info, "scaling factor losses with weight {}", factorWeight_);
         ce = ce * factorWeight_;
       }
       inFactor = true;
@@ -400,7 +399,7 @@ protected:
                        Expr mask = nullptr, Expr labelWeights = nullptr) override {
     auto ce = CrossEntropyLoss::compute(logits, labels, mask, /*labelWeights=*/nullptr); // don't pass label-weights to CE
     if(!labelWeights)
-      return ce; // for validation, @TODO: maybe put rather abort or LOG_ONCE(warn, ...)?
+      return ce; // for validation, @TODO: maybe put rather abort or LOG(warn, ...)?
 
     // We currently do not know how to use target factors and word-level label weights together
     ABORT_IF(logits.getNumFactorGroups() > 1, "Unlikelihood loss is not implemented for factors");

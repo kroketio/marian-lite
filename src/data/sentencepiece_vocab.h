@@ -6,8 +6,8 @@
 
 #pragma warning(disable : 4100)
 
-#include "sentencepiece/src/sentencepiece_processor.h"
-#include "sentencepiece/src/sentencepiece_trainer.h"
+#include <sentencepiece_processor.h>
+#include <sentencepiece_trainer.h>
 
 /* https://github.com/google/googletest/issues/1063#issuecomment-332518392 */	
 #if __GNUC__ >= 5	
@@ -19,7 +19,7 @@
 /* Current inclusion of SentencePiece structures assume builtin-protobuf hard. 
  * Future TODO: Make it work with standard protobuf as well.
  * */
-#include "sentencepiece/src/builtin_pb/sentencepiece.pb.h"	
+#include "sentencepiece.pb.h"
 
 #if __GNUC__ >= 5	
 # pragma GCC diagnostic pop	

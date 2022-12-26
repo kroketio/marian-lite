@@ -83,8 +83,6 @@ static void logQuantization(Tensor data, Tensor res, int numCenters, float S, fl
 void ModelQuantizer::quantize(Ptr<ExpressionGraph> graph) {
   // lazily allocate tensor for error feedback mechanism
   if(!errorResidual_) {
-    LOG(info, "Quantizing the model to {}-bits", bits_);
-
     int numElements = (int)graph->params()->vals()->size();
     auto allocator = New<TensorAllocator>(graph->getBackend());
     allocator->reserveExact(graph->params()->vals()->memory()->size());

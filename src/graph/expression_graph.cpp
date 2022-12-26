@@ -116,28 +116,11 @@ void ExpressionGraph::forward(std::list<Expr>& forwardTape, bool finalPass) {
     if(v->trainable() && throwNaN_) {
       bool isNaN = false, isInf = false;
       checkNaN(v->val(), isNaN, isInf);
-      if(isNaN || isInf) {
-        LOG(critical, "Detected NaN ({}) or Inf ({}) in value (forward pass)", isNaN, isInf);
-        LOG(critical, "\tType: {}, Shape: {}, Name: {}, Id: {}, Hash: {}",
-            v->type(), v->shape(), v->name(), v->getId(), v->hash());
-        LOG(critical, "Children: {}", v->children().size());
-        for(auto&& child : v->children()) {
-          LOG(critical, "\tType: {}, Shape: {}, Name: {}, Id: {}, Hash: {}",
-            child->type(), child->shape(), child->name(), child->getId(), child->hash());
-        }
-      }
     }
 
     if(v->marked_for_debug()) {
-      Logger log = spdlog::get("general");
-      if(log) {
-        LOG(info, "Debug: {} op={}", v->debug_message(), v->type());
-        LOG(info, v->val()->debug());
-      }
-      else {
-        std::cerr << "Debug: " << v->debug_message() << " op=" << v->type() << std::endl;
-        std::cerr << v->val()->debug() << std::endl;
-      }
+      std::cerr << "Debug: " << v->debug_message() << " op=" << v->type() << std::endl;
+      std::cerr << v->val()->debug() << std::endl;
     }
 
     if(inferenceOnly_)
@@ -158,17 +141,7 @@ void ExpressionGraph::forward(std::list<Expr>& forwardTape, bool finalPass) {
 
 void ExpressionGraph::backward(bool reset, float clipValue) {
   if(topNodes_.size() > 1) {
-    LOG(info, "There are more ({}) than one top most nodes for backward pass:", topNodes_.size());
-    for(auto node : topNodes_) {
-      LOG(info,
-          "\tType: {}, Shape: {}, Name: {}, Id: {}, Hash: {}",
-          node->type(),
-          node->shape(),
-          node->name(),
-          node->getId(),
-          node->hash());
-    }
-    ABORT("Aborting");
+    ABORT("Aborting")
   }
 
   for(auto kvParams : paramsByElementType_) {
@@ -197,11 +170,6 @@ void ExpressionGraph::backward(bool reset, float clipValue) {
       forward(*v->getSubtape(), /*finalPass=*/true);
     }
 
-    if(v->trainable() && v->marked_for_debug()) {
-      LOG(info, "Debug Grad: {} op={}", v->debug_message(), v->type());
-      LOG(info, v->grad()->debug());
-    }
-
     if(v->trainable() && clipValue != 0) {
       using namespace functional;
       Element(_1 = clip(_1, clipValue), v->grad());
@@ -216,11 +184,7 @@ void ExpressionGraph::backward(bool reset, float clipValue) {
           bool isNaN = false, isInf = false;
           checkNaN(child->grad(), isNaN, isInf);
           if(isNaN) {
-            LOG(critical, "Detected NaN ({}) or Inf ({}) in gradient (backward pass) of child node", isNaN, isInf);
-            LOG(critical, "Child - Type: {}, Shape: {}, Name: {}, Id: {}, Hash: {}",
-                child->type(), child->shape(), child->name(), child->getId(), child->hash());
-            LOG(critical, "Parent - Type: {}, Shape: {}, Name: {}, Id: {}, Hash: {}",
-                v->type(), v->shape(), v->name(), v->getId(), v->hash());
+
             firstNaN = false;
           }
         }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "3rd_party/yaml-cpp/yaml.h"
+#include <yaml-cpp/yaml.h>
 #include "common/cli_wrapper.h"
 #include "common/definitions.h"
 
@@ -40,9 +40,7 @@ public:
   ConfigParser(cli::mode mode);
 
   ConfigParser(int argc, char** argv, cli::mode mode, bool validate = false)
-    : ConfigParser(mode) {
-    parseOptions(argc, argv, validate);
-  }
+    : ConfigParser(mode) {}
 
   template<typename T>
   ConfigParser&
@@ -99,7 +97,6 @@ public:
    * @return (YAML::Node const&)config_
    */
 
-  Ptr<Options> parseOptions(int argc, char** argv, bool validate);
   YAML::Node const& getConfig() const;
   cli::mode getMode() const;
   std::string const& cmdLine() const;

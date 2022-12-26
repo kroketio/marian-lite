@@ -36,13 +36,9 @@ protected:
   }
 
 public:
-  Parameters(Type acceptedType) : acceptedElementType_(acceptedType) {
-    LOG(debug, "Created parameter object of type {}", acceptedElementType_);
-  }
+  Parameters(Type acceptedType) : acceptedElementType_(acceptedType) {}
 
-  virtual ~Parameters() {
-    LOG(debug, "Destroyed parameter object of type {}", acceptedElementType_);
-  }
+  virtual ~Parameters() {}
 
   auto begin() -> decltype(params_.begin()) { return params_.begin(); }
 
@@ -62,8 +58,6 @@ public:
   size_t size() { return params_.size(); }
 
   void add(Expr p, const std::string& name) {
-    LOG(debug, "Adding parameter {} to parameter object of type {}", name, acceptedElementType_);
-
     ABORT_IF(named_.count(name), "Parameter '{}' already exists", name);
     ABORT_IF(p->value_type() != acceptedElementType_,
              "Requested parameter type ({}) is different from chosen parameter type ({})",
@@ -130,9 +124,7 @@ private:
   Ptr<Backend> backend_;
 
 public:
-  MappedParameters(Type acceptedElementType) : Parameters(acceptedElementType) {
-    LOG(debug, "Created mapped parameter object of type {}", acceptedElementType);
-  }
+  MappedParameters(Type acceptedElementType) : Parameters(acceptedElementType) {}
 
   virtual void init(Ptr<Backend> backend) override { backend_ = backend; }
   virtual void init(Ptr<Backend> backend, Ptr<Device>) override { init(backend); }
