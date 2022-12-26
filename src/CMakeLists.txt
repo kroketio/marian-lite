@@ -69,8 +69,21 @@ foreach(_BUILD_TYPE STATIC SHARED)
             ${SENTENCEPIECE_LIBRARY_DIRS}
             )
 
+    install(TARGETS ${_TARGET}
+            EXPORT ${PROJECT_NAME}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            )
+
     list(APPEND _TARGETS "${_TARGET}")
 endforeach()
+
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/src/"
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/include/marian-lite"
+        FILES_MATCHING
+        PATTERN "*.h"
+        PATTERN "SQLiteCpp" EXCLUDE
+        )
 
 message(STATUS "=========================================== marian-lite: ${CMAKE_PROJECT_VERSION}")
 message(STATUS "SHARED: ${SHARED} | STATIC: ${STATIC}")
