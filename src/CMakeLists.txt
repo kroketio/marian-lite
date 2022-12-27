@@ -1,17 +1,15 @@
 add_subdirectory(3rd_party)
 
 file(GLOB_RECURSE SRCS *.cpp *.cc *.cp)  # rly
-file(GLOB_RECURSE HDRS *.h *.hpp)
+file(GLOB_RECURSE HDRS *.h *.hpp *.inl)
 
 # filter some files from the glob recurse
 list(FILTER SRCS EXCLUDE REGEX "SQLiteCpp/")
 list(FILTER HDRS EXCLUDE REGEX "SQLiteCpp/")
-list(FILTER SRCS EXCLUDE REGEX "sentencepiece/")
-list(FILTER HDRS EXCLUDE REGEX "sentencepiece/")
+list(FILTER SRCS EXCLUDE REGEX "proto/")
+list(FILTER HDRS EXCLUDE REGEX "proto/")
 list(FILTER SRCS EXCLUDE REGEX "faiss/")
 list(FILTER HDRS EXCLUDE REGEX "faiss/")
-list(FILTER SRCS EXCLUDE REGEX "intgemm/")
-list(FILTER HDRS EXCLUDE REGEX "intgemm/")
 
 # define CMake library target(s)
 # compile both static, shared based on -DSTATIC, -DSHARED options
@@ -24,7 +22,10 @@ foreach(_BUILD_TYPE STATIC SHARED)
     add_library(${_TARGET} ${_BUILD_TYPE} ${SRCS} ${HDRS})
     set_target_properties(${_TARGET} PROPERTIES
             OUTPUT_NAME ${PROJECT_NAME}
-            CXX_STANDARD 17)
+            CXX_STANDARD 17
+            VERSION "${CMAKE_PROJECT_VERSION_MAJOR}.${CMAKE_PROJECT_VERSION_MINOR}.${CMAKE_PROJECT_VERSION_PATCH}"
+            SOVERSION "${CMAKE_PROJECT_VERSION_MAJOR}"
+            )
 
     target_compile_definitions(${_TARGET} PRIVATE
             COMPILE_CPU=1
@@ -34,7 +35,6 @@ foreach(_BUILD_TYPE STATIC SHARED)
             )
 
     target_link_libraries(${_TARGET} PRIVATE
-            ${YAMLCPP_LIBRARY}
             ${SQLite3_LIBRARIES}
             ZLIB::ZLIB
             sqlite3
@@ -44,10 +44,12 @@ foreach(_BUILD_TYPE STATIC SHARED)
             BLAS::BLAS
             #        CLI11::CLI11
             proto
-            protobuf::libprotobuf-lite
             ${PCRE2_LIBRARIES}
             ${SENTENCEPIECE_LIBRARIES}
+            protobuf::libprotobuf-lite
             ${PATHIE_LIBRARY}
+            ${YAMLCPP_LIBRARY}
+            ${INTGEMM_LIBRARY}
             )
 
     target_link_libraries(${_TARGET} PUBLIC faiss proto)
@@ -66,7 +68,8 @@ foreach(_BUILD_TYPE STATIC SHARED)
             ${SQLite3_INCLUDE_DIRS}
             ${PCRE2_INCLUDE_DIRS}
             ${PATHIE_INCLUDE_DIR}
-            ${SENTENCEPIECE_LIBRARY_DIRS}
+            ${INTGEMM_INCLUDE_DIR}
+            ${SENTENCEPIECE_INCLUDE_DIRS}
             )
 
     install(TARGETS ${_TARGET}
@@ -82,6 +85,8 @@ install(DIRECTORY "${CMAKE_SOURCE_DIR}/src/"
         DESTINATION "${CMAKE_INSTALL_PREFIX}/include/marian-lite"
         FILES_MATCHING
         PATTERN "*.h"
+        PATTERN "*.hpp"
+        PATTERN "*.inl"
         PATTERN "SQLiteCpp" EXCLUDE
         )
 
@@ -93,5 +98,7 @@ message(STATUS "sqlite3 ${SQLite3_LIBRARIES}")
 message(STATUS "BLAS: ${BLAS_LIBRARIES}")
 message(STATUS "zlib: ${ZLIB_LIBRARIES}")
 message(STATUS "sentencepiece: ${SENTENCEPIECE_LIBRARIES}")
+message(STATUS "pathie: ${PATHIE_LIBRARY}")
+message(STATUS "intgemm: ${INTGEMM_LIBRARY}")
 message(STATUS "target(s): ${_TARGETS}")
 message(STATUS "===========================================")

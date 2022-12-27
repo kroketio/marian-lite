@@ -8,7 +8,7 @@
 
 #if defined(WASM)
 
-#include "3rd_party/intgemm/intgemm/intgemm.h"
+#include "intgemm/intgemm/intgemm.h"
 #include "common/logging.h"
 #include "wasm_intgemm_interface.h"
 

@@ -1,4 +1,4 @@
-#include "rnn/cells.h"
+#include "3rd_party/rnn/cells.h"
 
 #include "graph/node_operators_binary.h"
 #include "tensors/tensor_operators.h"

@@ -1,4 +1,3 @@
-add_subdirectory(intgemm)
 add_subdirectory(faiss)
-add_subdirectory(SQLiteCpp)
+add_subdirectory(SQLiteCpp EXCLUDE_FROM_ALL)
 add_subdirectory(proto)

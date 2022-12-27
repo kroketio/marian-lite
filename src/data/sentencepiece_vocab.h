@@ -6,8 +6,8 @@
 
 #pragma warning(disable : 4100)
 
-#include <sentencepiece_processor.h>
-#include <sentencepiece_trainer.h>
+#include <sentencepiece-browsermt/sentencepiece_processor.h>
+#include <sentencepiece-browsermt/sentencepiece_trainer.h>
 
 /* https://github.com/google/googletest/issues/1063#issuecomment-332518392 */	
 #if __GNUC__ >= 5	
@@ -20,7 +20,7 @@
  * Future TODO: Make it work with standard protobuf as well.
  * */
 #include "sentencepiece.pb.h"
-
+#include "sentencepiece_model.pb.h"
 #if __GNUC__ >= 5	
 # pragma GCC diagnostic pop	
 #endif	

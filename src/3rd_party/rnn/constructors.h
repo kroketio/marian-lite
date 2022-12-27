@@ -2,7 +2,7 @@
 
 #include "layers/factory.h"
 #include "marian.h"
-#include "rnn/rnn.h"
+#include "3rd_party/rnn/rnn.h"
 
 namespace marian {
 namespace rnn {

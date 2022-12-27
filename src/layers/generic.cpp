@@ -4,7 +4,7 @@
 #include "layers/constructors.h"
 #include "layers/loss.h"
 #include "data/factored_vocab.h"
-#include "rnn/types.h"     // for State::select()
+#include "3rd_party/rnn/types.h"     // for State::select()
 #include "models/states.h" // for EncoderState
 #include "layers/lsh.h"
 #include "tensors/cpu/intgemm_interface.h"

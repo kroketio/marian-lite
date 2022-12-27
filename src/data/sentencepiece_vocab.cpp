@@ -125,49 +125,49 @@ public:
   void create(const std::string& vocabPath,
               const std::vector<std::string>& trainPaths,
               size_t maxSize) override {
-
-    size_t defaultMaxSize = 32000;
-    size_t maxLines = options_->get<size_t>("sentencepiece-max-lines");
-    size_t maxBytes = 2048;
-
-    if(maxSize == 0) {
-      maxSize = defaultMaxSize;
-    }
-
-    // Create temporary file to hold the sample for the SentencePiece trainer
-    io::TemporaryFile temp(options_->get<std::string>("tempdir"), false);
-    std::string tempFileName = temp.getFileName();
-
-    size_t seenLines = 0;
-    if(maxLines == 0)
-      seenLines = dumpAll(temp, trainPaths, maxBytes);
-    else
-      seenLines = reservoirSamplingAll(temp, trainPaths, maxLines, maxBytes);
-
-    // Compose the SentencePiece training command from filenames and parameters0
-    std::stringstream command;
-    command
-      << " --bos_id=-1 --eos_id=0 --unk_id=1" // these should not be changed as they match Marian defaults
-      << " --input="               << tempFileName
-      << " --model_prefix="        << vocabPath
-      << " --vocab_size="          << maxSize
-      << " --max_sentence_length=" << maxBytes
-      << " --input_sentence_size=" << seenLines
-      << " " << options_->get<std::string>("sentencepiece-options"); // these are SentencePiece command line options
-
-    // Train the SentencePiece model
-    const auto status = sentencepiece::SentencePieceTrainer::Train(command.str());
-    ABORT_IF(!status.ok(),
-             "SentencePiece vocabulary error: {}",
-             status.ToString());
-
-    ABORT_IF(remove((vocabPath + ".vocab").c_str()) != 0,
-             "Could not remove {}",
-             vocabPath + ".vocab");
-
-    ABORT_IF(rename((vocabPath + ".model").c_str(), vocabPath.c_str()) != 0,
-             "Could not rename {} to {}",
-             vocabPath + ".model", vocabPath);
+      ABORT("oof");
+//    size_t defaultMaxSize = 32000;
+//    size_t maxLines = options_->get<size_t>("sentencepiece-max-lines");
+//    size_t maxBytes = 2048;
+//
+//    if(maxSize == 0) {
+//      maxSize = defaultMaxSize;
+//    }
+//
+//    // Create temporary file to hold the sample for the SentencePiece trainer
+//    io::TemporaryFile temp(options_->get<std::string>("tempdir"), false);
+//    std::string tempFileName = temp.getFileName();
+//
+//    size_t seenLines = 0;
+//    if(maxLines == 0)
+//      seenLines = dumpAll(temp, trainPaths, maxBytes);
+//    else
+//      seenLines = reservoirSamplingAll(temp, trainPaths, maxLines, maxBytes);
+//
+//    // Compose the SentencePiece training command from filenames and parameters0
+//    std::stringstream command;
+//    command
+//      << " --bos_id=-1 --eos_id=0 --unk_id=1" // these should not be changed as they match Marian defaults
+//      << " --input="               << tempFileName
+//      << " --model_prefix="        << vocabPath
+//      << " --vocab_size="          << maxSize
+//      << " --max_sentence_length=" << maxBytes
+//      << " --input_sentence_size=" << seenLines
+//      << " " << options_->get<std::string>("sentencepiece-options"); // these are SentencePiece command line options
+//
+//    // Train the SentencePiece model
+//    const auto status = sentencepiece::SentencePieceTrainer::Train(command.str());
+//    ABORT_IF(!status.ok(),
+//             "SentencePiece vocabulary error: {}",
+//             status.ToString());
+//
+//    ABORT_IF(remove((vocabPath + ".vocab").c_str()) != 0,
+//             "Could not remove {}",
+//             vocabPath + ".vocab");
+//
+//    ABORT_IF(rename((vocabPath + ".model").c_str(), vocabPath.c_str()) != 0,
+//             "Could not rename {} to {}",
+//             vocabPath + ".model", vocabPath);
   }
 
   void createFake() override {

@@ -2,8 +2,8 @@
 
 #include "layers/generic.h"
 #include "marian.h"
-#include "rnn/cells.h"
-#include "rnn/types.h"
+#include "3rd_party/rnn/cells.h"
+#include "3rd_party/rnn/types.h"
 
 #include <algorithm>
 #include <chrono>

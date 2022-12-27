@@ -6,7 +6,7 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wint-in-bool-context" // gcc-7 introduces this warning, triggered in 3rd-party code
 #endif
-#include "half_float/umHalf.h"
+#include "3rd_party/half_float/umHalf.h"
 #if __GNUC__ >= 7
 #pragma GCC diagnostic pop
 #endif

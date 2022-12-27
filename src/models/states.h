@@ -2,7 +2,7 @@
 
 #include "marian.h"
 #include "layers/generic.h" // @HACK: for factored embeddings only so far
-#include "rnn/types.h"
+#include "3rd_party/rnn/types.h"
 
 namespace marian {
 

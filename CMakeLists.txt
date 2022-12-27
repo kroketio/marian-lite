@@ -36,8 +36,12 @@ set(BLA_VENDOR "OpenBLAS")
 find_package(BLAS REQUIRED)
 find_package(ZLIB)
 
-pkg_check_modules(SENTENCEPIECE REQUIRED sentencepiece)
-find_library(PATHIE_LIBRARY NAMES pathie REQUIRED)
+pkg_check_modules(SENTENCEPIECE REQUIRED sentencepiece-browsermt)
+
+find_library(PATHIE_LIBRARY NAMES pathie-cpp REQUIRED)
 find_path(PATHIE_INCLUDE_DIR NAMES "pathie/pathie.hpp" REQUIRED)
+
+find_library(INTGEMM_LIBRARY NAMES intgemm REQUIRED)
+find_path(INTGEMM_INCLUDE_DIR NAMES "intgemm/intgemm.h" REQUIRED)
 
 add_subdirectory(src)

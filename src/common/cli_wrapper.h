@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CLI/CLI.hpp"
-#include "CLI/TypeTools.hpp"
+#include "3rd_party/CLI/CLI.hpp"
+#include "3rd_party/CLI/TypeTools.hpp"
 #include "3rd_party/any_type.h"
 #include <yaml-cpp/yaml.h>
 #include "common/definitions.h"

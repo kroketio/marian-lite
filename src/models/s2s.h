@@ -3,8 +3,8 @@
 #include "marian.h"
 
 #include "layers/constructors.h"
-#include "rnn/attention_constructors.h"
-#include "rnn/constructors.h"
+#include "3rd_party/rnn/attention_constructors.h"
+#include "3rd_party/rnn/constructors.h"
 
 namespace marian {
 

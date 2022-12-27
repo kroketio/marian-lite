@@ -7,7 +7,7 @@
  * dependency. 
  */
 
-#include <sentencepiece_processor.h>
+#include <sentencepiece-browsermt/sentencepiece_processor.h>
 
 #include <cstdint>
 #include <cstdlib>

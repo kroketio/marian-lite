@@ -10,7 +10,7 @@
 #include "models/encoder.h"
 #include "models/states.h"
 #include "models/transformer_factory.h"
-#include "rnn/constructors.h"
+#include "3rd_party/rnn/constructors.h"
 #define _USE_MATH_DEFINES  // enables math constants. We need M_PI_2
 #include <math.h>
 
