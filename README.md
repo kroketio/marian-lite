@@ -16,6 +16,63 @@ Our fork of [browsermt/marian-dev](https://github.com/browsermt/marian-dev) made
 - Removed support for Apple, Microsoft, WASM
 - 100% FOSS
 
+### Requirements
+
+Some dependencies that marian-lite links against:
+
+- https://github.com/kroketio/intgemm/
+- https://github.com/kroketio/pathie-cpp/
+- https://github.com/kroketio/sentencepiece-browsermt/
+
+And others:
+
+```bash
+sudo apt install -y \
+    cmake \
+    ccache \
+    pkg-config \
+    libopenblas-dev \
+    libyaml-cpp-dev \
+    libprotobuf-lite* \
+    protobuf-compiler \
+    libsqlite3-dev \
+    libpcre2-dev \
+    zlib1g-dev
+```
+
+### Building
+
+Some CMake options available:
+
+- `STATIC` - Produce static binary
+- `SHARED` - Produce shared binary
+
+Example:
+
+```bash
+cmake -DSTATIC=OFF -DSHARED=ON -Bbuild .
+make -Cbuild -j6
+sudo make -Cbuild install  # install into /usr/local/...
+```
+
+Linking against marian-lite in another (CMake) program:
+
+```cmake
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(MARIAN-LITE REQUIRED marian-lite)
+
+message(STATUS "marian-lite libraries: ${MARIAN-LITE_LIBRARIES}")
+message(STATUS "marian-lite include dirs: ${MARIAN-LITE_INCLUDE_DIRS}")
+
+target_link_libraries(myapp PUBLIC
+        ${MARIAN-LITE_LIBRARIES}
+        )
+
+target_include_directories(myapp PUBLIC
+        ${MARIAN-LITE_INCLUDE_DIRS}
+        )
+```
+
 # Credits
 
 Named in honour of Marian Rejewski, a Polish mathematician and cryptologist.

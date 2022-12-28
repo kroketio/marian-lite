@@ -2,5 +2,5 @@ libmarian-lite (0.1) unstable; urgency=medium
 
   * Initial debian packaging
 
- -- Sander <sander@kroket.io>  Sat, 26 Dec 2022 20:33:36 +0100
+ -- Sander <code@kroket.io>  Mon, 26 Dec 2022 20:33:36 +0100
 

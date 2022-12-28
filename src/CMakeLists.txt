@@ -90,6 +90,11 @@ install(DIRECTORY "${CMAKE_SOURCE_DIR}/src/"
         PATTERN "SQLiteCpp" EXCLUDE
         )
 
+configure_file("${PROJECT_SOURCE_DIR}/marian-lite.pc.in" "marian-lite.pc" @ONLY)
+if (NOT MSVC)
+    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/marian-lite.pc" DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+endif()
+
 message(STATUS "=========================================== marian-lite: ${CMAKE_PROJECT_VERSION}")
 message(STATUS "SHARED: ${SHARED} | STATIC: ${STATIC}")
 message(STATUS "yaml-cpp: ${YAMLCPP_LIBRARY}")

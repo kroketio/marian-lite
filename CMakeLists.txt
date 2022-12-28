@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.17)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-project(marian-lite VERSION 0.0.1)
+project(marian-lite
+        VERSION 0.0.1
+        DESCRIPTION "Compact version of browsermt/marian-dev"
+        HOMEPAGE_URL https://github.com/kroketio/marian-lite
+        LANGUAGES CXX C)
 set(CMAKE_CXX_STANDARD 17)
 
 # initializes ${CMAKE_INSTALL_*DIR} to sane defaults

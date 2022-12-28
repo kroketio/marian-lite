@@ -1,7 +1,7 @@
 Source: libmarian-lite
-Section: x11
+Section: libs
 Priority: extra
-Maintainer: Sander <sander@kroket.io>
+Maintainer: Sander <code@kroket.io>
 Build-Depends: debhelper (>= 10),
     cmake,
     ccache,
@@ -14,7 +14,7 @@ Build-Depends: debhelper (>= 10),
     libsqlite3-dev,
     protobuf-compiler,
     libpcre2-dev,
-    libsentencepiece-dev,
+    libsentencepiece-browsermt,
     zlib1g-dev,
 Homepage: https://github.com/maemo-leste/marian-lite
 XSBC-Bugtracker: https://github.com/maemo-leste/marian-lite/issues
@@ -30,7 +30,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
     libpathie-cpp,
     libprotobuf-lite23,
     libsqlite3-dev,
-    libsentencepiece0,
-    libpcre2,
+    libsentencepiece-browsermt,
+    libpcre2-32-0,
     zlib1g,
 Description: Small C++ library for cross-platform Unicode path management
