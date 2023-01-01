@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/definitions.h"
-#include "common/file_stream.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/file_stream.h"
 
 #include <mutex>
 #include <iostream>

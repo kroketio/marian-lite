@@ -1,6 +1,6 @@
 #pragma once
 
-#include "functional/defs.h"
+#include "marian-lite/functional/defs.h"
 #include <limits>
 #include <string>
 

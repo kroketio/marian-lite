@@ -1,5 +1,5 @@
-#include "layers/convolution.h"
-#include "graph/node_operators_binary.h"
+#include "marian-lite/layers/convolution.h"
+#include "marian-lite/graph/node_operators_binary.h"
 
 namespace marian {
 

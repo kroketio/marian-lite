@@ -1,11 +1,11 @@
-#include "tensors/backend.h"
+#include "marian-lite/tensors/backend.h"
 
 #ifdef CUDA_FOUND
-#include "tensors/gpu/backend.h"
+#include "marian-lite/tensors/gpu/backend.h"
 #pragma warning(disable:4505) // "unreferenced local function has been removed" in cuda\v9.2\include\cuda_fp16.hpp
 #endif
 
-#include "tensors/cpu/backend.h"
+#include "marian-lite/tensors/cpu/backend.h"
 
 namespace marian {
 

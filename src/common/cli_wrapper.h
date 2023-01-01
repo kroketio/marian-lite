@@ -1,10 +1,10 @@
 #pragma once
 
-#include "3rd_party/CLI/CLI.hpp"
-#include "3rd_party/CLI/TypeTools.hpp"
-#include "3rd_party/any_type.h"
+#include "marian-lite/3rd_party/CLI/CLI.hpp"
+#include "marian-lite/3rd_party/CLI/TypeTools.hpp"
+#include "marian-lite/3rd_party/any_type.h"
 #include <yaml-cpp/yaml.h>
-#include "common/definitions.h"
+#include "marian-lite/common/definitions.h"
 
 #include <iostream>
 #include <map>

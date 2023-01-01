@@ -1,13 +1,13 @@
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "layers/generic.h"
-#include "layers/constructors.h"
-#include "layers/loss.h"
-#include "data/factored_vocab.h"
-#include "3rd_party/rnn/types.h"     // for State::select()
-#include "models/states.h" // for EncoderState
-#include "layers/lsh.h"
-#include "tensors/cpu/intgemm_interface.h"
+#include "marian-lite/layers/generic.h"
+#include "marian-lite/layers/constructors.h"
+#include "marian-lite/layers/loss.h"
+#include "marian-lite/data/factored_vocab.h"
+#include "marian-lite/3rd_party/rnn/types.h"     // for State::select()
+#include "marian-lite/models/states.h" // for EncoderState
+#include "marian-lite/layers/lsh.h"
+#include "marian-lite/tensors/cpu/intgemm_interface.h"
 
 
 namespace marian {

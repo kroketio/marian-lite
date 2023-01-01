@@ -1,10 +1,10 @@
 #pragma once
 
-#include "common/definitions.h"
-#include "common/options.h"
-#include "data/batch.h"
-#include "data/rng_engine.h"
-#include "data/vocab.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/data/batch.h"
+#include "marian-lite/data/rng_engine.h"
+#include "marian-lite/data/vocab.h"
 //#include "training/training_state.h"
 
 namespace marian {

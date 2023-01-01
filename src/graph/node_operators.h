@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graph/node.h"
-#include "graph/node_initializers.h"
-#include "tensors/tensor.h"
+#include "marian-lite/graph/node.h"
+#include "marian-lite/graph/node_initializers.h"
+#include "marian-lite/tensors/tensor.h"
 
 namespace marian {
 

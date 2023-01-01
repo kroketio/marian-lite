@@ -38,7 +38,7 @@ This source code has been modified to have optional bounded size.
 #include <functional>
 #include <stdexcept>
 
-#include "common/logging.h"
+#include "marian-lite/common/logging.h"
 
 namespace marian {
 

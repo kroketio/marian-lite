@@ -3,7 +3,7 @@
 #include <random>
 #include <sstream>
 
-#include "common/config.h"
+#include "marian-lite/common/config.h"
 
 namespace marian {
 namespace data {

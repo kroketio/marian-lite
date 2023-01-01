@@ -1,6 +1,6 @@
 #include "packed_gemm.h"
-#include "tensors/tensor_allocator.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/tensors/tensor_allocator.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 #include <emmintrin.h>
 #include <immintrin.h>
@@ -27,9 +27,9 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
-#include "3rd_party/fbgemm/include/fbgemm/FbgemmFP16.h"
-#include "3rd_party/fbgemm/include/fbgemm/QuantUtils.h"
-#include "3rd_party/fbgemm/include/fbgemm/Fbgemm.h"
+#include "marian-lite/3rd_party/fbgemm/include/fbgemm/FbgemmFP16.h"
+#include "marian-lite/3rd_party/fbgemm/include/fbgemm/QuantUtils.h"
+#include "marian-lite/3rd_party/fbgemm/include/fbgemm/Fbgemm.h"
 #ifdef __GNUC__
 #pragma GCC diagnostic pop
 #endif

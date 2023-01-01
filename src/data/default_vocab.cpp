@@ -1,10 +1,10 @@
-#include "data/vocab_base.h"
+#include "marian-lite/data/vocab_base.h"
 
 #include <yaml-cpp/yaml.h>
-#include "common/logging.h"
-#include "common/regex.h"
-#include "common/utils.h"
-#include "common/filesystem.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/regex.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/common/filesystem.h"
 
 #include <algorithm>
 #include <fstream>

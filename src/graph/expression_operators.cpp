@@ -1,14 +1,14 @@
-#include "graph/expression_operators.h"
-#include "layers/constructors.h"
+#include "marian-lite/graph/expression_operators.h"
+#include "marian-lite/layers/constructors.h"
 
-#include "graph/node_operators.h"
-#include "graph/node_operators_binary.h"
-#include "graph/node_operators_unary.h"
-#include "graph/node_operators_tuple.h"
+#include "marian-lite/graph/node_operators.h"
+#include "marian-lite/graph/node_operators_binary.h"
+#include "marian-lite/graph/node_operators_unary.h"
+#include "marian-lite/graph/node_operators_tuple.h"
 
-#include "graph/auto_tuner.h"
-#include "tensors/cpu/intgemm_interface.h"
-#include "tensors/cpu/fbgemm/expanded_gemm.h"
+#include "marian-lite/graph/auto_tuner.h"
+#include "marian-lite/tensors/cpu/intgemm_interface.h"
+#include "marian-lite/tensors/cpu/fbgemm/expanded_gemm.h"
 
 #if USE_FBGEMM
 #include "fbgemm/Utils.h"

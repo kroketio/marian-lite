@@ -1,11 +1,11 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "models/encoder.h"
-#include "models/pooler.h"
-#include "models/model_base.h"
-#include "models/states.h"
+#include "marian-lite/models/encoder.h"
+#include "marian-lite/models/pooler.h"
+#include "marian-lite/models/model_base.h"
+#include "marian-lite/models/states.h"
 
 // @TODO: this introduces functionality to use LASER in Marian for the filtering workflow or for use in MS-internal 
 // COSMOS server-farm. There is a lot of code duplication with Classifier and EncoderDecoder and this needs to be fixed. 

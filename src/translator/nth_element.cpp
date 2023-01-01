@@ -3,7 +3,7 @@
  *   SPDX-License-Identifier: MIT
  */
 
-#include "translator/nth_element.h"
+#include "marian-lite/translator/nth_element.h"
 #include <algorithm>
 #include <iterator>
 #include <limits>

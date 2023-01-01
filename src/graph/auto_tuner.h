@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/timer.h"
+#include "marian-lite/common/timer.h"
 
 #include <chrono>
 #include <functional>

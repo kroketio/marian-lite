@@ -1,6 +1,6 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
 namespace marian {
 

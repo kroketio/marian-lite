@@ -1,5 +1,5 @@
-#include "tensors/tensor_operators.h"
-#include "tensors/allocator.h"
+#include "marian-lite/tensors/tensor_operators.h"
+#include "marian-lite/tensors/allocator.h"
 #include <numeric>
 
 // CPU implementation of proper Marian top-k operator for TopkNodeOp

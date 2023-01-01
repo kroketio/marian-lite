@@ -1,15 +1,15 @@
-#include "common/authors.h"
-#include "common/build_info.h"
-#include "common/cli_helper.h"
-#include "common/config.h"
-#include "common/config_parser.h"
-#include "common/config_validator.h"
-#include "common/definitions.h"
-#include "common/file_stream.h"
-#include "common/logging.h"
-#include "common/options.h"
-#include "common/regex.h"
-#include "common/utils.h"
+#include "marian-lite/common/authors.h"
+#include "marian-lite/common/build_info.h"
+#include "marian-lite/common/cli_helper.h"
+#include "marian-lite/common/config.h"
+#include "marian-lite/common/config_parser.h"
+#include "marian-lite/common/config_validator.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/common/regex.h"
+#include "marian-lite/common/utils.h"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
@@ -19,7 +19,7 @@
 #include <mkl.h>
 #elif BLAS_FOUND
   #if WASM_COMPATIBLE_BLAS
-    #include "3rd_party/onnxjs/src/wasm-ops/gemm.h"
+    #include "marian-lite/3rd_party/onnxjs/src/wasm-ops/gemm.h"
   #else
     #include <cblas.h>
   #endif // WASM_COMPATIBLE_BLAS

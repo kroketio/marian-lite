@@ -1,7 +1,7 @@
-#include "node_operators.h"
-#include "expression_graph.h"
+#include "marian-lite/graph/node_operators.h"
+#include "marian-lite/graph/expression_graph.h"
 
-#include "tensors/tensor_operators.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 namespace marian {
 

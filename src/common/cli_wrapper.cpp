@@ -1,10 +1,10 @@
-#include "common/cli_wrapper.h"
-#include "common/cli_helper.h"
-#include "common/logging.h"
-#include "common/options.h"
-#include "common/timer.h"
-#include "common/utils.h"
-#include "common/version.h"
+#include "marian-lite/common/cli_wrapper.h"
+#include "marian-lite/common/cli_helper.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/common/timer.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/common/version.h"
 
 namespace marian {
 namespace cli {

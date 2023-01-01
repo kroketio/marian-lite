@@ -1,9 +1,9 @@
 #pragma once
 
-#include "layers/generic.h"
-#include "marian.h"
-#include "3rd_party/rnn/cells.h"
-#include "3rd_party/rnn/types.h"
+#include "marian-lite/layers/generic.h"
+#include "marian-lite/marian.h"
+#include "marian-lite/3rd_party/rnn/cells.h"
+#include "marian-lite/3rd_party/rnn/types.h"
 
 #include <algorithm>
 #include <chrono>

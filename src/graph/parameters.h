@@ -4,9 +4,9 @@
 #include <map>
 #include <unordered_set>
 
-#include "common/definitions.h"
-#include "graph/chainable.h"
-#include "tensors/tensor_allocator.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/graph/chainable.h"
+#include "marian-lite/tensors/tensor_allocator.h"
 
 namespace marian {
 

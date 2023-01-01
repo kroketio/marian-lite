@@ -1,9 +1,9 @@
-#include "translator/beam_search.h"
+#include "marian-lite/translator/beam_search.h"
 
-#include "data/factored_vocab.h"
-#include "translator/helpers.h"
-#include "translator/nth_element.h"
-#include "data/shortlist.h"
+#include "marian-lite/data/factored_vocab.h"
+#include "marian-lite/translator/helpers.h"
+#include "marian-lite/translator/nth_element.h"
+#include "marian-lite/data/shortlist.h"
 
 namespace marian {
 

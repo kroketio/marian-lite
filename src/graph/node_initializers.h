@@ -1,9 +1,9 @@
 // TODO: move to backend, into graph/
 #pragma once
 
-#include "common/config.h"
-#include "tensors/tensor.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/common/config.h"
+#include "marian-lite/tensors/tensor.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 #include <functional>
 #include <random>

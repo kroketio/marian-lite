@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "absl/strings/string_view.h"
+#include "marian-lite/3rd_party/absl/strings/string_view.h"
 
 #ifndef ABSL_HAVE_STD_STRING_VIEW
 

@@ -1,7 +1,7 @@
-#include "graph/node.h"
-#include "graph/auto_tuner.h"
-#include "graph/expression_graph.h"
-#include "tensors/backend.h"
+#include "marian-lite/graph/node.h"
+#include "marian-lite/graph/auto_tuner.h"
+#include "marian-lite/graph/expression_graph.h"
+#include "marian-lite/tensors/backend.h"
 
 namespace marian {
 

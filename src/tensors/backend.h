@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common/definitions.h"
-#include "common/options.h"
-#include "tensors/rand.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/tensors/rand.h"
 
 namespace marian {
 

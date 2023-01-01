@@ -1,6 +1,6 @@
-#include "tensors/rand.h"
-#include "tensors/tensor.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/tensors/rand.h"
+#include "marian-lite/tensors/tensor.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 #ifdef CUDA_FOUND
 #include "gpu/cuda_helpers.h"

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "common/config.h"
-#include "common/definitions.h"
-#include "common/file_stream.h"
-#include "data/corpus_base.h"
-#include "data/types.h"
-#include "3rd_party/mio/mio.hpp"
+#include "marian-lite/common/config.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/data/corpus_base.h"
+#include "marian-lite/data/types.h"
+#include "marian-lite/3rd_party/mio/mio.hpp"
 
 #include <random>
 #include <unordered_map>

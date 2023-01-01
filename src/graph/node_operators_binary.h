@@ -2,13 +2,13 @@
 
 #include <thread>
 
-#include "common/hash.h"
-#include "functional/functional.h"
-#include "graph/node.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/common/hash.h"
+#include "marian-lite/functional/functional.h"
+#include "marian-lite/graph/node.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 #ifdef CUDNN
-#include "tensors/gpu/cudnn_wrappers.h"
+#include "marian-lite/tensors/gpu/cudnn_wrappers.h"
 #endif
 
 namespace marian {

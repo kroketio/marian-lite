@@ -3,14 +3,14 @@
  *   SPDX-License-Identifier: MIT
  */
 
-#include "tensors/tensor_operators.h"
-#include "tensors/cpu/backend.h"
-#include "tensors/allocator.h"
+#include "marian-lite/tensors/tensor_operators.h"
+#include "marian-lite/tensors/cpu/backend.h"
+#include "marian-lite/tensors/allocator.h"
 
-#include "functional/approx.h"
-#include "functional/functional.h"
-#include "functional/tensor.h"
-#include "functional/operators.h"
+#include "marian-lite/functional/approx.h"
+#include "marian-lite/functional/functional.h"
+#include "marian-lite/functional/tensor.h"
+#include "marian-lite/functional/operators.h"
 
 #if MKL_FOUND
 #include <mkl.h>

@@ -3,8 +3,8 @@
 #include <functional>
 #include <random>
 
-#include "common/config.h"
-#include "tensors/backend.h"
+#include "marian-lite/common/config.h"
+#include "marian-lite/tensors/backend.h"
 
 namespace marian {
 namespace cpu {

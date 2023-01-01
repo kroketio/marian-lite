@@ -17,14 +17,14 @@
 #include <vector>
 
 // CLI Library includes
-#include "CLI/ConfigFwd.hpp"
-#include "CLI/Error.hpp"
-#include "CLI/FormatterFwd.hpp"
-#include "CLI/Macros.hpp"
-#include "CLI/Option.hpp"
-#include "CLI/Split.hpp"
-#include "CLI/StringTools.hpp"
-#include "CLI/TypeTools.hpp"
+#include "marian-lite/3rd_party/CLI/ConfigFwd.hpp"
+#include "marian-lite/3rd_party/CLI/Error.hpp"
+#include "marian-lite/3rd_party/CLI/FormatterFwd.hpp"
+#include "marian-lite/3rd_party/CLI/Macros.hpp"
+#include "marian-lite/3rd_party/CLI/Option.hpp"
+#include "marian-lite/3rd_party/CLI/Split.hpp"
+#include "marian-lite/3rd_party/CLI/StringTools.hpp"
+#include "marian-lite/3rd_party/CLI/TypeTools.hpp"
 
 namespace CLI {
 

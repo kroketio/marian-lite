@@ -1,20 +1,20 @@
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "models/model_factory.h"
-#include "models/encoder_decoder.h"
-#include "models/encoder_classifier.h"
-#include "models/bert.h"
+#include "marian-lite/models/model_factory.h"
+#include "marian-lite/models/encoder_decoder.h"
+#include "marian-lite/models/encoder_classifier.h"
+#include "marian-lite/models/bert.h"
 
-#include "models/costs.h"
+#include "marian-lite/models/costs.h"
 
-#include "models/amun.h"
-#include "models/nematus.h"
-#include "models/s2s.h"
-#include "models/laser.h"
-#include "models/transformer_factory.h"
+#include "marian-lite/models/amun.h"
+#include "marian-lite/models/nematus.h"
+#include "marian-lite/models/s2s.h"
+#include "marian-lite/models/laser.h"
+#include "marian-lite/models/transformer_factory.h"
 
 #ifdef CUDNN
-#include "models/char_s2s.h"
+#include "marian-lite/models/char_s2s.h"
 #endif
 
 #ifdef COMPILE_EXAMPLES

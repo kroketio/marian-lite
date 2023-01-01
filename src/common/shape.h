@@ -8,8 +8,8 @@
 #include <vector>
 #include <climits>
 
-#include "common/hash.h"
-#include "common/logging.h"
+#include "marian-lite/common/hash.h"
+#include "marian-lite/common/logging.h"
 
 namespace marian {
 

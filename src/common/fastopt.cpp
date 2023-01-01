@@ -1,4 +1,4 @@
-#include "common/fastopt.h"
+#include "marian-lite/common/fastopt.h"
 
 #include <utility>
 

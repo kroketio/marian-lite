@@ -5,11 +5,11 @@
 
 #pragma once
 
-#include "functional/functional.h"
-#include "functional/shape.h"
-#include "functional/tensor.h"
-#include "functional/tmp.h"
-#include "tensors/tensor.h"
+#include "marian-lite/functional/functional.h"
+#include "marian-lite/functional/shape.h"
+#include "marian-lite/functional/tensor.h"
+#include "marian-lite/functional/tmp.h"
+#include "marian-lite/tensors/tensor.h"
 
 namespace marian {
 

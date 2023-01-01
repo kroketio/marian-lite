@@ -1,7 +1,7 @@
 #pragma once
 
-#include "marian.h"
-#include "models/states.h"
+#include "marian-lite/marian.h"
+#include "marian-lite/models/states.h"
 
 namespace marian {
 

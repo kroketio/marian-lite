@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/definitions.h"
+#include "marian-lite/common/definitions.h"
 
 /* absl::string_view is a type used within the generic vocab implementation.
  * However, currently included from within sentencepiece to avoid an extra

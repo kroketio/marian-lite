@@ -1,8 +1,8 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "common/logging.h"
+#include "marian-lite/common/logging.h"
 
 #include <fstream>
 #include <string>

@@ -1,4 +1,4 @@
-#include "layers/weight.h"
+#include "marian-lite/layers/weight.h"
 
 namespace marian {
 

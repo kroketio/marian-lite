@@ -3,7 +3,7 @@
 #include <cmath>
 #include <cstdint>
 
-#include "common/definitions.h"
+#include "marian-lite/common/definitions.h"
 
 namespace marian {
 

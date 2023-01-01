@@ -1,15 +1,15 @@
 #pragma once
 
-#include "common/definitions.h"
-#include "common/file_stream.h"
-#include "common/options.h"
-#include "common/utils.h"
-#include "data/alignment.h"
-#include "data/iterator_facade.h"
-#include "data/batch.h"
-#include "data/dataset.h"
-#include "data/rng_engine.h"
-#include "data/vocab.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/data/alignment.h"
+#include "marian-lite/data/iterator_facade.h"
+#include "marian-lite/data/batch.h"
+#include "marian-lite/data/dataset.h"
+#include "marian-lite/data/rng_engine.h"
+#include "marian-lite/data/vocab.h"
 
 namespace marian {
 namespace data {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "marian.h"
-#include "translator/history.h"
-#include "translator/scorers.h"
+#include "marian-lite/marian.h"
+#include "marian-lite/translator/history.h"
+#include "marian-lite/translator/scorers.h"
 
 namespace marian {
 

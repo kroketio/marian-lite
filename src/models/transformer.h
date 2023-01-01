@@ -3,14 +3,14 @@
 
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "layers/constructors.h"
-#include "models/decoder.h"
-#include "models/encoder.h"
-#include "models/states.h"
-#include "models/transformer_factory.h"
-#include "3rd_party/rnn/constructors.h"
+#include "marian-lite/layers/constructors.h"
+#include "marian-lite/models/decoder.h"
+#include "marian-lite/models/encoder.h"
+#include "marian-lite/models/states.h"
+#include "marian-lite/models/transformer_factory.h"
+#include "marian-lite/3rd_party/rnn/constructors.h"
 #define _USE_MATH_DEFINES  // enables math constants. We need M_PI_2
 #include <math.h>
 

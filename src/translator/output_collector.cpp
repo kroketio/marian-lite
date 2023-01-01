@@ -1,6 +1,6 @@
 #include "output_collector.h"
-#include "common/file_stream.h"
-#include "common/logging.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/common/logging.h"
 
 #include <cassert>
 

@@ -1,5 +1,5 @@
-#include "common/cli_helper.h"
-#include "common/filesystem.h"
+#include "marian-lite/common/cli_helper.h"
+#include "marian-lite/common/filesystem.h"
 
 namespace marian {
 namespace cli {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "layers/factory.h"
-#include "marian.h"
-#include "3rd_party/rnn/rnn.h"
+#include "marian-lite/layers/factory.h"
+#include "marian-lite/marian.h"
+#include "marian-lite/3rd_party/rnn/rnn.h"
 
 namespace marian {
 namespace rnn {

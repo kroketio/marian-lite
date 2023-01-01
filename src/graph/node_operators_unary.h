@@ -1,14 +1,14 @@
 #pragma once
 
-#include "tensors/backend.h"
-#include "tensors/tensor.h"
+#include "marian-lite/tensors/backend.h"
+#include "marian-lite/tensors/tensor.h"
 
-#include "functional/functional.h"
-#include "graph/node.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/functional/functional.h"
+#include "marian-lite/graph/node.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 #ifdef CUDNN
-#include "tensors/gpu/cudnn_wrappers.h"
+#include "marian-lite/tensors/gpu/cudnn_wrappers.h"
 #endif
 
 namespace marian {

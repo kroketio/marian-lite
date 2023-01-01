@@ -1,4 +1,4 @@
-#include "common/types.h"
+#include "marian-lite/common/types.h"
 
 namespace marian {
 

@@ -1,12 +1,12 @@
-#include "data/corpus.h"
+#include "marian-lite/data/corpus.h"
 
 #include <numeric>
 #include <random>
 
-#include "common/utils.h"
-#include "common/filesystem.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/common/filesystem.h"
 
-#include "data/corpus.h"
+#include "marian-lite/data/corpus.h"
 
 namespace marian {
 namespace data {

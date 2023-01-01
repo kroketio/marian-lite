@@ -1,11 +1,11 @@
 // This is the main implementation of factored models, which are driven by the vocabulary.
 // Decoding, embedding, and output layer call into the vocab to drive their behavior.
 
-#include "data/vocab_base.h"
-#include "common/definitions.h"
-#include "data/types.h"
-#include "common/regex.h"
-#include "data/factored_vocab.h"
+#include "marian-lite/data/vocab_base.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/data/types.h"
+#include "marian-lite/common/regex.h"
+#include "marian-lite/data/factored_vocab.h"
 #include <set>
 #include <mutex>
 

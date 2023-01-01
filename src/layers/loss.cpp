@@ -1,4 +1,4 @@
-#include "layers/loss.h"
+#include "marian-lite/layers/loss.h"
 
 namespace marian {
 

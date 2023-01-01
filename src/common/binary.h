@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/io_item.h"
+#include "marian-lite/common/io_item.h"
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
-#include "common/file_utils.h"
-#include "common/utils.h"
+#include "marian-lite/common/file_utils.h"
+#include "marian-lite/common/utils.h"
 
 namespace marian {
 namespace fileutils {

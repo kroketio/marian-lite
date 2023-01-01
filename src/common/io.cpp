@@ -1,11 +1,11 @@
-#include "common/io.h"
+#include "marian-lite/common/io.h"
 
-#include "3rd_party/cnpy/cnpy.h"
-#include "common/shape.h"
-#include "common/types.h"
+#include "marian-lite/3rd_party/cnpy/cnpy.h"
+#include "marian-lite/common/shape.h"
+#include "marian-lite/common/types.h"
 
-#include "common/binary.h"
-#include "common/io_item.h"
+#include "marian-lite/common/binary.h"
+#include "marian-lite/common/io_item.h"
 
 namespace marian {
 namespace io {

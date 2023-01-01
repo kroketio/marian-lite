@@ -2,24 +2,24 @@
 
 #include <string>
 
-#include "data/batch_generator.h"
-#include "data/corpus.h"
-#include "data/shortlist.h"
-#include "data/text_input.h"
+#include "marian-lite/data/batch_generator.h"
+#include "marian-lite/data/corpus.h"
+#include "marian-lite/data/shortlist.h"
+#include "marian-lite/data/text_input.h"
 
 #if USE_PTHREADS
-#include "3rd_party/threadpool.h"
+#include "marian-lite/3rd_party/threadpool.h"
 #endif
 
-#include "translator/history.h"
-#include "translator/output_collector.h"
-#include "translator/output_printer.h"
+#include "marian-lite/translator/history.h"
+#include "marian-lite/translator/output_collector.h"
+#include "marian-lite/translator/output_printer.h"
 
-#include "models/model_task.h"
-#include "translator/scorers.h"
+#include "marian-lite/models/model_task.h"
+#include "marian-lite/translator/scorers.h"
 
 // currently for diagnostics only, will try to mmap files ending in *.bin suffix when enabled.
-#include "3rd_party/mio/mio.hpp"
+#include "marian-lite/3rd_party/mio/mio.hpp"
 
 namespace marian {
 

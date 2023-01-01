@@ -3,7 +3,7 @@
 // Distributed under the 3-Clause BSD License.  See accompanying
 // file LICENSE or https://github.com/CLIUtils/CLI11 for details.
 
-#include "CLI/TypeTools.hpp"
+#include "marian-lite/3rd_party/CLI/TypeTools.hpp"
 
 #include <functional>
 #include <iostream>

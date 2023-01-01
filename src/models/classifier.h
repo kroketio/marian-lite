@@ -1,9 +1,9 @@
 #pragma once
 
-#include "marian.h"
-#include "models/states.h"
-#include "layers/constructors.h"
-#include "layers/factory.h"
+#include "marian-lite/marian.h"
+#include "marian-lite/models/states.h"
+#include "marian-lite/layers/constructors.h"
+#include "marian-lite/layers/factory.h"
 
 namespace marian {
 

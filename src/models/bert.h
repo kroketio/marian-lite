@@ -1,9 +1,9 @@
 #pragma once
 
-#include "data/corpus_base.h"
-#include "models/encoder_classifier.h"
-#include "models/transformer.h"   // @BUGBUG: transformer.h is large and was meant to be compiled separately
-#include "data/rng_engine.h"
+#include "marian-lite/data/corpus_base.h"
+#include "marian-lite/models/encoder_classifier.h"
+#include "marian-lite/models/transformer.h"   // @BUGBUG: transformer.h is large and was meant to be compiled separately
+#include "marian-lite/data/rng_engine.h"
 
 namespace marian {
 

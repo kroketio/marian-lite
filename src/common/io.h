@@ -1,7 +1,7 @@
 #pragma once
 
 #include <yaml-cpp/yaml.h>
-#include "common/io_item.h"
+#include "marian-lite/common/io_item.h"
 
 #include <string>
 #include <vector>

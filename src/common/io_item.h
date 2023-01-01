@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/shape.h"
-#include "common/types.h"
+#include "marian-lite/common/shape.h"
+#include "marian-lite/common/types.h"
 
 #include <cmath>
 #include <string>

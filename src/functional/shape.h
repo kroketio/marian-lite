@@ -3,9 +3,9 @@
 #include <cstdint>
 #include <string>
 
-#include "common/shape.h"
+#include "marian-lite/common/shape.h"
 
-#include "functional/array.h"
+#include "marian-lite/functional/array.h"
 
 namespace marian {
 

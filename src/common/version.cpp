@@ -1,4 +1,4 @@
-#include "common/version.h"
+#include "marian-lite/common/version.h"
 
 namespace marian {
 

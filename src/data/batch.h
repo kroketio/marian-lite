@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "common/definitions.h"
+#include "marian-lite/common/definitions.h"
 
 namespace marian {
 namespace data {

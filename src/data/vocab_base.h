@@ -1,9 +1,9 @@
 #pragma once
 
-#include "data/types.h"
-#include "common/definitions.h"
-#include "common/utils.h"
-#include "common/file_stream.h"
+#include "marian-lite/data/types.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/common/file_stream.h"
 
 namespace marian {
 

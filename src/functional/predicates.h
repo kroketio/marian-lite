@@ -1,7 +1,7 @@
 #pragma once
 
-#include "functional/defs.h"
-#include "functional/operands.h"
+#include "marian-lite/functional/defs.h"
+#include "marian-lite/functional/operands.h"
 
 namespace marian {
 namespace functional {

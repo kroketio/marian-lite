@@ -1,7 +1,7 @@
 #pragma once
 
-#include "layers/generic.h"
-#include "marian.h"
+#include "marian-lite/layers/generic.h"
+#include "marian-lite/marian.h"
 
 #include <string>
 

@@ -5,9 +5,9 @@
 
 #include <limits>
 
-#include "data/types.h"
-#include "tensors/tensor.h"
-#include "translator/helpers.h"
+#include "marian-lite/data/types.h"
+#include "marian-lite/tensors/tensor.h"
+#include "marian-lite/translator/helpers.h"
 
 namespace marian {
 

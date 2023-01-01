@@ -1,10 +1,10 @@
 #pragma once
 
-#include "common/options.h"
-#include "graph/expression_graph.h"
-#include "optimizers/clippers.h"
-#include "tensors/backend.h"
-#include "tensors/tensor.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/graph/expression_graph.h"
+#include "marian-lite/optimizers/clippers.h"
+#include "marian-lite/tensors/backend.h"
+#include "marian-lite/tensors/tensor.h"
 //#include "training/training_state.h"
 
 #include <algorithm>

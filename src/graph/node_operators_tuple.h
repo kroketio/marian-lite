@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graph/node_operators_unary.h"
+#include "marian-lite/graph/node_operators_unary.h"
 
 namespace marian {
 

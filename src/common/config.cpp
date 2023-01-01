@@ -1,11 +1,11 @@
-#include "common/config.h"
-#include "common/config_parser.h"
-#include "common/file_stream.h"
-#include "common/logging.h"
-#include "common/options.h"
-#include "common/regex.h"
-#include "common/utils.h"
-#include "common/version.h"
+#include "marian-lite/common/config.h"
+#include "marian-lite/common/config_parser.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/common/regex.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/common/version.h"
 
 #include <algorithm>
 #include <set>

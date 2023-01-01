@@ -6,30 +6,30 @@
 // CLI Library includes
 // Order is important for combiner script
 
-#include "CLI/Version.hpp"
+#include "marian-lite/3rd_party/CLI/Version.hpp"
 
-#include "CLI/Macros.hpp"
+#include "marian-lite/3rd_party/CLI/Macros.hpp"
 
-#include "CLI/Optional.hpp"
+#include "marian-lite/3rd_party/CLI/Optional.hpp"
 
-#include "CLI/StringTools.hpp"
+#include "marian-lite/3rd_party/CLI/StringTools.hpp"
 
-#include "CLI/Error.hpp"
+#include "marian-lite/3rd_party/CLI/Error.hpp"
 
-#include "CLI/TypeTools.hpp"
+#include "marian-lite/3rd_party/CLI/TypeTools.hpp"
 
-#include "CLI/Split.hpp"
+#include "marian-lite/3rd_party/CLI/Split.hpp"
 
-#include "CLI/ConfigFwd.hpp"
+#include "marian-lite/3rd_party/CLI/ConfigFwd.hpp"
 
-#include "CLI/Validators.hpp"
+#include "marian-lite/3rd_party/CLI/Validators.hpp"
 
-#include "CLI/FormatterFwd.hpp"
+#include "marian-lite/3rd_party/CLI/FormatterFwd.hpp"
 
-#include "CLI/Option.hpp"
+#include "marian-lite/3rd_party/CLI/Option.hpp"
 
-#include "CLI/App.hpp"
+#include "marian-lite/3rd_party/CLI/App.hpp"
 
-#include "CLI/Config.hpp"
+#include "marian-lite/3rd_party/CLI/Config.hpp"
 
-#include "CLI/Formatter.hpp"
+#include "marian-lite/3rd_party/CLI/Formatter.hpp"

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "common/options.h"
-#include "functional/functional.h"
-#include "graph/expression_graph.h"
-#include "tensors/backend.h"
-#include "tensors/tensor.h"
-#include "tensors/tensor_allocator.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/functional/functional.h"
+#include "marian-lite/graph/expression_graph.h"
+#include "marian-lite/tensors/backend.h"
+#include "marian-lite/tensors/tensor.h"
+#include "marian-lite/tensors/tensor_allocator.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 namespace marian {
 

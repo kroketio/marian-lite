@@ -1,5 +1,5 @@
-#include "tensors/device.h"
-#include "tensors/cpu/aligned.h"
+#include "marian-lite/tensors/device.h"
+#include "marian-lite/tensors/cpu/aligned.h"
 #include <iostream>
 namespace marian {
 namespace cpu {

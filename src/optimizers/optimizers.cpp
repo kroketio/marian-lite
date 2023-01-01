@@ -1,7 +1,7 @@
-#include "optimizers.h"
+#include "marian-lite/optimizers/optimizers.h"
 
-#include "common/io.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/common/io.h"
+#include "marian-lite/tensors/tensor_operators.h"
 #include <array>
 
 namespace marian {

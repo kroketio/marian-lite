@@ -1,6 +1,6 @@
 #pragma once
 
-#include "tensors/tensor.h"
+#include "marian-lite/tensors/tensor.h"
 
 namespace marian {
 namespace cpu {

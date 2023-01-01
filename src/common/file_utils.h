@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "common/file_stream.h"
+#include "marian-lite/common/file_stream.h"
 
 namespace marian {
 namespace fileutils {

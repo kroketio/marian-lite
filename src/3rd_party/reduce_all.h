@@ -26,7 +26,7 @@
  */
 
 
-#include "functional/tmp.h"
+#include "marian-lite/functional/tmp.h"
 #include <cooperative_groups.h>
 
 namespace marian {

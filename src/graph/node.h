@@ -4,11 +4,11 @@
 #include <memory>
 #include <thread>
 
-#include "common/hash.h"
-#include "tensors/backend.h"
-#include "tensors/tensor.h"
+#include "marian-lite/common/hash.h"
+#include "marian-lite/tensors/backend.h"
+#include "marian-lite/tensors/tensor.h"
 
-#include "graph/chainable.h"
+#include "marian-lite/graph/chainable.h"
 
 namespace marian {
 

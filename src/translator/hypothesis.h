@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 
-#include "common/definitions.h"
-#include "data/alignment.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/data/alignment.h"
 
 namespace marian {
 

@@ -12,11 +12,11 @@
 #include <utility>
 #include <vector>
 
-#include "CLI/Error.hpp"
-#include "CLI/Macros.hpp"
-#include "CLI/Split.hpp"
-#include "CLI/StringTools.hpp"
-#include "CLI/Validators.hpp"
+#include "marian-lite/3rd_party/CLI/Error.hpp"
+#include "marian-lite/3rd_party/CLI/Macros.hpp"
+#include "marian-lite/3rd_party/CLI/Split.hpp"
+#include "marian-lite/3rd_party/CLI/StringTools.hpp"
+#include "marian-lite/3rd_party/CLI/Validators.hpp"
 
 namespace CLI {
 

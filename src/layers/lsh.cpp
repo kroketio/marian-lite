@@ -1,9 +1,9 @@
-#include "layers/lsh.h"
-#include "graph/expression_operators.h"
-#include "tensors/cpu/prod_blas.h"
+#include "marian-lite/layers/lsh.h"
+#include "marian-lite/graph/expression_operators.h"
+#include "marian-lite/tensors/cpu/prod_blas.h"
 
 #if BLAS_FOUND
-#include "3rd_party/faiss/IndexLSH.h"
+#include "marian-lite/3rd_party/faiss/IndexLSH.h"
 #endif
 
 namespace marian {

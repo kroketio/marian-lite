@@ -1,9 +1,9 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "data/shortlist.h"
-#include "layers/factory.h"
+#include "marian-lite/data/shortlist.h"
+#include "marian-lite/layers/factory.h"
 
 namespace marian { namespace mlp {
   /**

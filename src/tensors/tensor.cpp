@@ -1,6 +1,6 @@
-#include "tensors/tensor.h"
-#include "tensors/tensor_operators.h"
-#include "common/io.h"
+#include "marian-lite/tensors/tensor.h"
+#include "marian-lite/tensors/tensor_operators.h"
+#include "marian-lite/common/io.h"
 
 namespace marian {
 

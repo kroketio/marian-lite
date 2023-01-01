@@ -5,10 +5,10 @@
 
 #include <iostream>
 
-#include "translator/nth_element.h"
+#include "marian-lite/translator/nth_element.h"
 
 #include <cuda.h>
-#include "tensors/gpu/cuda_helpers.h"
+#include "marian-lite/tensors/gpu/cuda_helpers.h"
 
 namespace marian {
 

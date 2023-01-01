@@ -1,7 +1,7 @@
 #pragma once
 
-#include "data/iterator_facade.h"
-#include "data/corpus.h"
+#include "marian-lite/data/iterator_facade.h"
+#include "marian-lite/data/corpus.h"
 
 namespace marian {
 namespace data {

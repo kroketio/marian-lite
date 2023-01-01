@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common/logging.h"
-#include "common/shape.h"
-#include "common/intrusive_ptr.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/shape.h"
+#include "marian-lite/common/intrusive_ptr.h"
 
 #include <functional>
 #include <iostream>

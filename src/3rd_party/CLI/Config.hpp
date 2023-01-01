@@ -8,9 +8,9 @@
 #include <iostream>
 #include <string>
 
-#include "CLI/App.hpp"
-#include "CLI/ConfigFwd.hpp"
-#include "CLI/StringTools.hpp"
+#include "marian-lite/3rd_party/CLI/App.hpp"
+#include "marian-lite/3rd_party/CLI/ConfigFwd.hpp"
+#include "marian-lite/3rd_party/CLI/StringTools.hpp"
 
 namespace CLI {
 

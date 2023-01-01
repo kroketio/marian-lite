@@ -1,10 +1,10 @@
 #include <cmath>
 
-#include "optimizers/quantizer.h"
-#include "tensors/tensor_allocator.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/optimizers/quantizer.h"
+#include "marian-lite/tensors/tensor_allocator.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
-#include "functional/functional.h"
+#include "marian-lite/functional/functional.h"
 
 namespace marian {
 

@@ -1,7 +1,7 @@
-#include "models/encoder_decoder.h"
-#include "common/cli_helper.h"
-#include "common/filesystem.h"
-#include "common/version.h"
+#include "marian-lite/models/encoder_decoder.h"
+#include "marian-lite/common/cli_helper.h"
+#include "marian-lite/common/filesystem.h"
+#include "marian-lite/common/version.h"
 
 namespace marian {
 

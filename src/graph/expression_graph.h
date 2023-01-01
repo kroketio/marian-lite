@@ -1,15 +1,15 @@
 #pragma once
 
-#include "common/config.h"
-#include "common/definitions.h"
+#include "marian-lite/common/config.h"
+#include "marian-lite/common/definitions.h"
 
-#include "tensors/backend.h"
-#include "tensors/tensor_allocator.h"
+#include "marian-lite/tensors/backend.h"
+#include "marian-lite/tensors/tensor_allocator.h"
 
-#include "graph/chainable.h"
-#include "graph/node_initializers.h"
-#include "graph/node_operators.h"
-#include "graph/parameters.h"
+#include "marian-lite/graph/chainable.h"
+#include "marian-lite/graph/node_initializers.h"
+#include "marian-lite/graph/node_operators.h"
+#include "marian-lite/graph/parameters.h"
 
 #include <map>
 #include <unordered_set>

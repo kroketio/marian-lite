@@ -1,6 +1,6 @@
-#include "logging.h"
-#include "common/config.h"
-#include "3rd_party/ExceptionWithCallStack.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/config.h"
+#include "marian-lite/3rd_party/ExceptionWithCallStack.h"
 
 #include <ctime>
 #include <cstdlib>

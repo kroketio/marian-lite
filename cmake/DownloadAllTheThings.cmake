@@ -2,7 +2,7 @@ include(ExternalProject)
 include(FetchContent)
 
 set(THREADS "12")
-message(STATUS "VENDORED_LIBS-2 VENDORED_LIBS-2 VENDORED_LIBS-2")
+message(STATUS "Vendoring libs for marian-lite")
 
 FetchContent_Declare(intgemm
     GIT_REPOSITORY https://github.com/kroketio/intgemm.git
@@ -19,6 +19,7 @@ FetchContent_Declare(pathie
         GIT_PROGRESS   TRUE
         )
 FetchContent_MakeAvailable(pathie)
+FetchContent_GetProperties(pathie)
 
 FetchContent_Declare(sentencepiece-browsermt
         GIT_REPOSITORY https://github.com/kroketio/sentencepiece-browsermt.git

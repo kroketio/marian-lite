@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/definitions.h"
+#include "marian-lite/common/definitions.h"
 #include <stdlib.h>
 #ifdef _WIN32
 #include <malloc.h>

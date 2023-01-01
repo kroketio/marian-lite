@@ -1,9 +1,9 @@
 #pragma once
 
 #include <string>
-#include "marian.h"
-#include "layers/loss.h"
-#include "layers/generic.h"
+#include "marian-lite/marian.h"
+#include "marian-lite/layers/loss.h"
+#include "marian-lite/layers/generic.h"
 
 namespace marian {
 namespace models {

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "common/options.h"
-#include "common/signal_handling.h"
-#include "data/batch_stats.h"
-#include "data/rng_engine.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/common/signal_handling.h"
+#include "marian-lite/data/batch_stats.h"
+#include "marian-lite/data/rng_engine.h"
 //#include "training/training_state.h"
-#include "data/iterator_facade.h"
-#include "3rd_party/threadpool.h"
+#include "marian-lite/data/iterator_facade.h"
+#include "marian-lite/3rd_party/threadpool.h"
 
 #include <condition_variable>
 #include <deque>

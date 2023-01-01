@@ -1,9 +1,9 @@
-#include "common/binary.h"
-#include "common/definitions.h"
-#include "common/file_stream.h"
-#include "common/io_item.h"
-#include "common/types.h"
-#include "tensors/cpu/integer_common.h"
+#include "marian-lite/common/binary.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/common/io_item.h"
+#include "marian-lite/common/types.h"
+#include "marian-lite/tensors/cpu/integer_common.h"
 
 #include <string>
 

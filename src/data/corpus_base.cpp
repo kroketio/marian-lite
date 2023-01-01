@@ -1,8 +1,8 @@
 #include <random>
 
-#include "common/file_utils.h"
-#include "data/corpus.h"
-#include "data/factored_vocab.h"
+#include "marian-lite/common/file_utils.h"
+#include "marian-lite/data/corpus.h"
+#include "marian-lite/data/factored_vocab.h"
 
 namespace marian {
 namespace data {

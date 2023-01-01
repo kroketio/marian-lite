@@ -1,12 +1,12 @@
 #pragma once
 
-#include "layers/generic.h"
-#include "layers/guided_alignment.h"
-#include "layers/loss.h"
-#include "layers/weight.h"
-#include "models/encoder_decoder.h"
-#include "models/encoder_classifier.h"
-#include "models/encoder_pooler.h"
+#include "marian-lite/layers/generic.h"
+#include "marian-lite/layers/guided_alignment.h"
+#include "marian-lite/layers/loss.h"
+#include "marian-lite/layers/weight.h"
+#include "marian-lite/models/encoder_decoder.h"
+#include "marian-lite/models/encoder_classifier.h"
+#include "marian-lite/models/encoder_pooler.h"
 
 namespace marian {
 namespace models {

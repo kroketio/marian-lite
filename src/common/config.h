@@ -1,10 +1,10 @@
 #pragma once
 
 #include <yaml-cpp/yaml.h>
-#include "common/cli_helper.h"
-#include "common/config_parser.h"
-#include "common/io.h"
-#include "common/options.h"
+#include "marian-lite/common/cli_helper.h"
+#include "marian-lite/common/config_parser.h"
+#include "marian-lite/common/io.h"
+#include "marian-lite/common/options.h"
 
 // TODO: why are these needed by a config parser? Can they be removed for Linux as well?
 #ifndef _WIN32

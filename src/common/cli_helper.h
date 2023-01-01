@@ -4,7 +4,7 @@
 #include <functional>
 
 #include <yaml-cpp/yaml.h>
-#include "common/logging.h"
+#include "marian-lite/common/logging.h"
 
 namespace marian {
 namespace cli {

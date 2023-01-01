@@ -1,6 +1,6 @@
-#include "graph/node_initializers.h"
-#include "layers/word2vec_reader.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/graph/node_initializers.h"
+#include "marian-lite/layers/word2vec_reader.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 #include <stdint.h>
 #include <algorithm>

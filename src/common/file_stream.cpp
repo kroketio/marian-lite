@@ -1,5 +1,5 @@
-#include "common/file_stream.h"
-#include "common/utils.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/common/utils.h"
 
 #include <streambuf>
 #include <string>

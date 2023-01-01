@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "functional/array.h"
-#include "functional/defs.h"
-#include "functional/tensor.h"
+#include "marian-lite/functional/array.h"
+#include "marian-lite/functional/defs.h"
+#include "marian-lite/functional/tensor.h"
 
 namespace marian {
 namespace functional {

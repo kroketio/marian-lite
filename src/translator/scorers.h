@@ -1,10 +1,10 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "data/shortlist.h"
-#include "models/model_factory.h"
-#include "3rd_party/mio/mio.hpp"
+#include "marian-lite/data/shortlist.h"
+#include "marian-lite/models/model_factory.h"
+#include "marian-lite/3rd_party/mio/mio.hpp"
 
 namespace marian {
 

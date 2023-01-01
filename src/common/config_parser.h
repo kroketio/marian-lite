@@ -1,8 +1,8 @@
 #pragma once
 
 #include <yaml-cpp/yaml.h>
-#include "common/cli_wrapper.h"
-#include "common/definitions.h"
+#include "marian-lite/common/cli_wrapper.h"
+#include "marian-lite/common/definitions.h"
 
 // TODO: why are these needed by a config parser? Can they be removed for Linux
 // as well?

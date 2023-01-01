@@ -1,5 +1,5 @@
-#include "translator/scorers.h"
-#include "common/io.h"
+#include "marian-lite/translator/scorers.h"
+#include "marian-lite/common/io.h"
 
 namespace marian {
 

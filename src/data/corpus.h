@@ -4,14 +4,14 @@
 #include <iostream>
 #include <random>
 
-#include "common/definitions.h"
-#include "common/file_stream.h"
-#include "common/options.h"
-#include "data/alignment.h"
-#include "data/batch.h"
-#include "data/corpus_base.h"
-#include "data/dataset.h"
-#include "data/vocab.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/file_stream.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/data/alignment.h"
+#include "marian-lite/data/batch.h"
+#include "marian-lite/data/corpus_base.h"
+#include "marian-lite/data/dataset.h"
+#include "marian-lite/data/vocab.h"
 
 namespace marian {
 namespace data {

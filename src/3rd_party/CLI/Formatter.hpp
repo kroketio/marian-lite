@@ -5,8 +5,8 @@
 
 #include <string>
 
-#include "CLI/App.hpp"
-#include "CLI/Formatter.hpp"
+#include "marian-lite/3rd_party/CLI/App.hpp"
+#include "marian-lite/3rd_party/CLI/Formatter.hpp"
 
 namespace CLI {
 

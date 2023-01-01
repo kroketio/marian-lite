@@ -1,9 +1,9 @@
 #pragma once
 
-#include "tensors/tensor_allocator.h"
-#include "tensors/tensor_operators.h"
-#include "tensors/cpu/aligned.h"
-#include "common/io_item.h"
+#include "marian-lite/tensors/tensor_allocator.h"
+#include "marian-lite/tensors/tensor_operators.h"
+#include "marian-lite/tensors/cpu/aligned.h"
+#include "marian-lite/common/io_item.h"
 #include "intgemm/intgemm.h"
 #if defined(WASM)
 #include "wasm_intgemm_interface.h"

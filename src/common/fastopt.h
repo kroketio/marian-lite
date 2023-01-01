@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common/definitions.h"
-#include "3rd_party/any_type.h"
-#include "3rd_party/phf/phf.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/3rd_party/any_type.h"
+#include "marian-lite/3rd_party/phf/phf.h"
 #include <yaml-cpp/yaml.h>
 
 // This file contains code to create a fast access option class, 

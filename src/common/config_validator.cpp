@@ -1,8 +1,8 @@
-#include "common/config_validator.h"
-#include "common/logging.h"
-#include "common/regex.h"
-#include "common/utils.h"
-#include "common/filesystem.h"
+#include "marian-lite/common/config_validator.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/regex.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/common/filesystem.h"
 
 namespace marian {
 

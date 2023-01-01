@@ -1,6 +1,6 @@
-#include "common/utils.h"
-#include "data/vocab.h"
-#include "data/vocab_base.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/data/vocab.h"
+#include "marian-lite/data/vocab_base.h"
 
 namespace marian {
 

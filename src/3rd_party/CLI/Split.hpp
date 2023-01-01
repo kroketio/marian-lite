@@ -7,8 +7,8 @@
 #include <tuple>
 #include <vector>
 
-#include "CLI/Error.hpp"
-#include "CLI/StringTools.hpp"
+#include "marian-lite/3rd_party/CLI/Error.hpp"
+#include "marian-lite/3rd_party/CLI/StringTools.hpp"
 
 namespace CLI {
 namespace detail {

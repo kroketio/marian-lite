@@ -1,11 +1,11 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "layers/factory.h"
-#include "3rd_party/rnn/attention.h"
-#include "3rd_party/rnn/constructors.h"
-#include "3rd_party/rnn/types.h"
+#include "marian-lite/layers/factory.h"
+#include "marian-lite/3rd_party/rnn/attention.h"
+#include "marian-lite/3rd_party/rnn/constructors.h"
+#include "marian-lite/3rd_party/rnn/types.h"
 
 namespace marian {
 namespace rnn {

@@ -1,5 +1,5 @@
-#include "data/alignment.h"
-#include "common/utils.h"
+#include "marian-lite/data/alignment.h"
+#include "marian-lite/common/utils.h"
 
 #include <algorithm>
 

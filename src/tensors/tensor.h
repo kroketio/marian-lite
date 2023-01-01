@@ -1,12 +1,12 @@
 #pragma once
 
-#include "common/definitions.h"
-#include "common/shape.h"
-#include "common/types.h"
-#include "tensors/backend.h"
-#include "tensors/memory_piece.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/shape.h"
+#include "marian-lite/common/types.h"
+#include "marian-lite/tensors/backend.h"
+#include "marian-lite/tensors/memory_piece.h"
 #ifdef CUDA_FOUND
-#include "tensors/gpu/algorithm.h"
+#include "marian-lite/tensors/gpu/algorithm.h"
 #endif
 
 #include <algorithm>

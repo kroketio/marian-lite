@@ -1,7 +1,7 @@
 #pragma once
 
-#include "graph/node.h"
-#include "graph/node_operators_unary.h"
+#include "marian-lite/graph/node.h"
+#include "marian-lite/graph/node_operators_unary.h"
 #include "integer_common.h"
 
 namespace marian {

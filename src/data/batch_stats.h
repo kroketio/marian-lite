@@ -3,8 +3,8 @@
 #include <deque>
 #include <queue>
 
-#include "data/corpus.h"
-#include "data/vocab.h"
+#include "marian-lite/data/corpus.h"
+#include "marian-lite/data/vocab.h"
 
 namespace marian {
 namespace data {

@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include <iostream>
-#include "common/logging.h"
+#include "marian-lite/common/logging.h"
 
 // Smart pointer class for small objects with reference counting but no thread-safety.
 // Inspired by boost::intrusive_ptr<T>.

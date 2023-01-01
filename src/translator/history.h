@@ -1,6 +1,6 @@
 #pragma once
 
-#include "data/types.h"
+#include "marian-lite/data/types.h"
 #include "hypothesis.h"
 
 #include <cmath>

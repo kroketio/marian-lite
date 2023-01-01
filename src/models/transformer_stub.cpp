@@ -1,4 +1,4 @@
-#include "models/transformer.h"
+#include "marian-lite/models/transformer.h"
 
 namespace marian {
 // factory functions

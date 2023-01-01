@@ -1,11 +1,11 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "models/decoder.h"
-#include "models/encoder.h"
-#include "models/model_base.h"
-#include "models/states.h"
+#include "marian-lite/models/decoder.h"
+#include "marian-lite/models/encoder.h"
+#include "marian-lite/models/model_base.h"
+#include "marian-lite/models/states.h"
 
 namespace marian {
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/definitions.h"
+#include "marian-lite/common/definitions.h"
 
 #include <iostream>
 

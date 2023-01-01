@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/types.h"
+#include "marian-lite/common/types.h"
 #include <cmath>
 
 namespace marian {
@@ -213,7 +213,7 @@ struct Ops<double> {
 // __CUDA_ARCH__ is defined when compiling device (GPU) code
 #ifndef __CUDACC__
 
-#include "3rd_party/sse_mathfun.h"
+#include "marian-lite/3rd_party/sse_mathfun.h"
 
 namespace marian {
 namespace functional {
@@ -343,7 +343,7 @@ struct Ops<float32x4> {
 } // end namespace functional
 } // end namespace marian
 #ifdef __AVX__
-#include "3rd_party/avx_mathfun.h"
+#include "marian-lite/3rd_party/avx_mathfun.h"
 
 namespace marian {
 namespace functional {
@@ -584,8 +584,8 @@ struct Ops<half> {
 
 //*******************************************************************************************
 
-#include "functional/defs.h"
-#include "functional/predicates.h"
+#include "marian-lite/functional/defs.h"
+#include "marian-lite/functional/predicates.h"
 
 namespace marian {
 namespace functional {

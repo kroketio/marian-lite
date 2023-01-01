@@ -8,10 +8,10 @@
 #include <unordered_set>
 #include <vector>
 
-#include "common/definitions.h"
-#include "common/types.h"
-#include "tensors/device.h"
-#include "tensors/memory_piece.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/types.h"
+#include "marian-lite/tensors/device.h"
+#include "marian-lite/tensors/memory_piece.h"
 
 namespace marian {
 

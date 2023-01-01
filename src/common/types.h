@@ -1,12 +1,12 @@
 #pragma once
-#include "common/logging.h" // for ABORT and ABORT_IF
-#include "common/shape.h"
+#include "marian-lite/common/logging.h" // for ABORT and ABORT_IF
+#include "marian-lite/common/shape.h"
 
 #if __GNUC__ >= 7
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wint-in-bool-context" // gcc-7 introduces this warning, triggered in 3rd-party code
 #endif
-#include "3rd_party/half_float/umHalf.h"
+#include "marian-lite/3rd_party/half_float/umHalf.h"
 #if __GNUC__ >= 7
 #pragma GCC diagnostic pop
 #endif

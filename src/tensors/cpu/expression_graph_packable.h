@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graph/expression_graph.h"
+#include "marian-lite/graph/expression_graph.h"
 #include "fbgemm/packed_gemm.h"
-#include "tensors/cpu/integer_common.h"
+#include "marian-lite/tensors/cpu/integer_common.h"
 
 namespace { //Temporary annonymous transposition, until we figure out how to access the proper one
 inline void transpose4x4_SSE(const float* A,

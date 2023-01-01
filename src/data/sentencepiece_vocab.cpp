@@ -1,10 +1,10 @@
-#include "data/sentencepiece_vocab.h"
-#include "data/vocab_base.h"
-#include "common/config.h"
-#include "common/options.h"
-#include "common/logging.h"
-#include "common/filesystem.h"
-#include "common/regex.h"
+#include "marian-lite/data/sentencepiece_vocab.h"
+#include "marian-lite/data/vocab_base.h"
+#include "marian-lite/common/config.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/common/filesystem.h"
+#include "marian-lite/common/regex.h"
 
 #include <sstream>
 #include <random>

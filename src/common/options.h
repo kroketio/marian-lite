@@ -5,11 +5,11 @@
 
 #include <sstream>
 #include <string>
-#include "common/definitions.h"
+#include "marian-lite/common/definitions.h"
 #include <yaml-cpp/yaml.h>
 
 #ifdef FASTOPT
-#include "common/fastopt.h"
+#include "marian-lite/common/fastopt.h"
 #endif
 
 #define YAML_REGISTER_TYPE(registered, type)                \

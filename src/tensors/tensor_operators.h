@@ -1,24 +1,24 @@
 #pragma once
 
-#include "common/definitions.h"
-#include "tensors/allocator.h"
-#include "tensors/tensor.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/tensors/allocator.h"
+#include "marian-lite/tensors/tensor.h"
 
-#include "tensors/dispatch.h"
+#include "marian-lite/tensors/dispatch.h"
 
-#include "functional/shape.h"
-#include "functional/tensor.h"
-#include "functional/tmp.h"
+#include "marian-lite/functional/shape.h"
+#include "marian-lite/functional/tensor.h"
+#include "marian-lite/functional/tmp.h"
 
 #ifdef CUDA_FOUND
-#include "tensors/gpu/add.h"
-#include "tensors/gpu/algorithm.h"
-#include "tensors/gpu/element.h"
-#include "tensors/gpu/prod.h"
+#include "marian-lite/tensors/gpu/add.h"
+#include "marian-lite/tensors/gpu/algorithm.h"
+#include "marian-lite/tensors/gpu/element.h"
+#include "marian-lite/tensors/gpu/prod.h"
 #endif
 
-#include "tensors/cpu/add.h"
-#include "tensors/cpu/element.h"
+#include "marian-lite/tensors/cpu/add.h"
+#include "marian-lite/tensors/cpu/element.h"
 
 #include <algorithm>
 

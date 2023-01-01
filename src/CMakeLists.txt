@@ -20,6 +20,15 @@ if(STATIC)
     add_library(marian-lite-STATIC STATIC ${SRCS} ${HDRS})
 endif()
 
+if(VENDORED_LIBS)
+    # copy header files to 'include/marian-lite/' in the build dir, so we can do $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include> for in-tree builds
+    execute_process(COMMAND bash -c "find '${CMAKE_CURRENT_SOURCE_DIR}' -type f -printf '%P\\n' | grep -E 'h$|hpp$|inl$' | cpio -pvd '${CMAKE_CURRENT_BINARY_DIR}/include/marian-lite/'"
+            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+            RESULT_VARIABLE copyHeadersResult
+            OUTPUT_QUIET
+            ERROR_QUIET)
+endif()
+
 foreach(_BUILD_TYPE STATIC SHARED)
     if(NOT "${${_BUILD_TYPE}}")
         continue()
@@ -73,10 +82,9 @@ foreach(_BUILD_TYPE STATIC SHARED)
 
     target_include_directories(${_TARGET} PUBLIC
             $<BUILD_INTERFACE:${ProtobufIncludePath}>
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}>
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/3rd_party>
-            #$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/3rd_party/proto>
-            $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/3rd_party/faiss>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
+            $<BUILD_INTERFACE:${pathie_SOURCE_DIR}/include>
+            $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/marian-lite/3rd_party>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
             )
 
@@ -141,7 +149,7 @@ if (NOT MSVC)
 endif()
 
 # print some linked libs and their paths for informational purposes
-message(STATUS "=========================================== marian-lite: ${CMAKE_PROJECT_VERSION}")
+message(STATUS "=========================================== marian-lite")
 message(STATUS "SHARED: ${SHARED} | STATIC: ${STATIC} | VENDORED: ${VENDORED_LIBS}")
 message(STATUS "yaml-cpp: ${YAML_CPP_LIBRARIES}")
 message(STATUS "pcre2: ${PCRE2_LIBRARIES}")
@@ -164,4 +172,3 @@ message(STATUS "zlib ${ZLIB_VERSION_STRING}: ${ZLIB_LIBRARIES}")
 #message(STATUS "pathie (r): ${INTGEMM_LIB_LOCATION_RELEASE} (d): ${INTGEMM_LIB_LOCATION_DEBUG} (n): ${INTGEMM_LIB_LOCATION}")
 
 message(STATUS "target(s): ${_TARGETS}")
-message(STATUS "===========================================")

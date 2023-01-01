@@ -5,10 +5,10 @@
 
 #pragma once
 
-#include "common/definitions.h"
-#include "data/types.h"
-#include "data/vocab_base.h"
-#include "common/logging.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/data/types.h"
+#include "marian-lite/data/vocab_base.h"
+#include "marian-lite/common/logging.h"
 
 #undef FACTOR_FULL_EXPANSION // define this to get full expansion. @TODO: infeasible for many factors; just delete this
 

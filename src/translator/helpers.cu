@@ -6,11 +6,11 @@
 #include <cuda.h>
 #include <limits>
 
-#include "data/types.h"
-#include "tensors/tensor.h"
-#include "translator/helpers.h"
+#include "marian-lite/data/types.h"
+#include "marian-lite/tensors/tensor.h"
+#include "marian-lite/translator/helpers.h"
 
-#include "tensors/gpu/cuda_helpers.h"
+#include "marian-lite/tensors/gpu/cuda_helpers.h"
 
 namespace marian {
 

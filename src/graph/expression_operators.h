@@ -1,6 +1,6 @@
 #pragma once
-#include "graph/expression_graph.h"
-#include "graph/node_initializers.h"
+#include "marian-lite/graph/expression_graph.h"
+#include "marian-lite/graph/node_initializers.h"
 
 namespace marian {
 

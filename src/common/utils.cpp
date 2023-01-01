@@ -1,6 +1,6 @@
-#include "common/utils.h"
-#include "common/logging.h"
-#include "3rd_party/CLI/StringTools.hpp"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/common/logging.h"
+#include "marian-lite/3rd_party/CLI/StringTools.hpp"
 
 #include <stdio.h>
 #include <map>

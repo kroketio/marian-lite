@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "tensors/tensor.h"
+#include "marian-lite/tensors/tensor.h"
 #include <vector>
 
 namespace marian {

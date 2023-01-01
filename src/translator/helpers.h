@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "graph/expression_graph.h"
+#include "marian-lite/graph/expression_graph.h"
 
 namespace marian {
 

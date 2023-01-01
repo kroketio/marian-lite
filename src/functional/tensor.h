@@ -1,8 +1,8 @@
 #pragma once
 
-#include "functional/array.h"
-#include "functional/shape.h"
-#include "tensors/tensor.h"
+#include "marian-lite/functional/array.h"
+#include "marian-lite/functional/shape.h"
+#include "marian-lite/tensors/tensor.h"
 
 namespace marian {
 namespace functional {

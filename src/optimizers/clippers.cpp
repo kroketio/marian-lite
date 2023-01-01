@@ -1,7 +1,7 @@
 #include "clippers.h"
 
-#include "functional/functional.h"
-#include "tensors/tensor_operators.h"
+#include "marian-lite/functional/functional.h"
+#include "marian-lite/tensors/tensor_operators.h"
 
 namespace marian {
 void Elementwise::clip(Tensor t) {

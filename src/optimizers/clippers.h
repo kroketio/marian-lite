@@ -3,7 +3,7 @@
 #include <map>
 #include <memory>
 
-#include "tensors/tensor.h"
+#include "marian-lite/tensors/tensor.h"
 
 namespace marian {
 

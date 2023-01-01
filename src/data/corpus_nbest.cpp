@@ -1,7 +1,7 @@
 #include <random>
 
-#include "common/utils.h"
-#include "data/corpus_nbest.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/data/corpus_nbest.h"
 
 namespace marian {
 namespace data {

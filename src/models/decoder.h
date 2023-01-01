@@ -1,11 +1,11 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 #include "states.h"
 
-#include "data/shortlist.h"
-#include "layers/constructors.h"
-#include "layers/generic.h"
+#include "marian-lite/data/shortlist.h"
+#include "marian-lite/layers/constructors.h"
+#include "marian-lite/layers/generic.h"
 
 namespace marian {
 

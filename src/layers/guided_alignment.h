@@ -1,7 +1,7 @@
 #pragma once
 
-#include "layers/loss.h"
-#include "common/logging.h"
+#include "marian-lite/layers/loss.h"
+#include "marian-lite/common/logging.h"
 
 namespace marian {
 

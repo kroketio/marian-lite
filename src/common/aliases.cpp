@@ -1,5 +1,5 @@
-#include "common/config_parser.h"
-#include "common/definitions.h"
+#include "marian-lite/common/config_parser.h"
+#include "marian-lite/common/definitions.h"
 
 namespace marian {
 

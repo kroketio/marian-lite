@@ -2,12 +2,12 @@
 
 #include <vector>
 
-#include "common/options.h"
-#include "common/utils.h"
-#include "data/alignment.h"
-#include "data/vocab.h"
-#include "translator/history.h"
-#include "translator/hypothesis.h"
+#include "marian-lite/common/options.h"
+#include "marian-lite/common/utils.h"
+#include "marian-lite/data/alignment.h"
+#include "marian-lite/data/vocab.h"
+#include "marian-lite/translator/history.h"
+#include "marian-lite/translator/hypothesis.h"
 
 namespace marian {
 

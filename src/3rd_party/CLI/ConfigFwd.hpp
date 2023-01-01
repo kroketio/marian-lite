@@ -8,7 +8,7 @@
 #include <iostream>
 #include <string>
 
-#include "CLI/StringTools.hpp"
+#include "marian-lite/3rd_party/CLI/StringTools.hpp"
 
 namespace CLI {
 

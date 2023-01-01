@@ -1,8 +1,8 @@
 #pragma once
 
-#include "marian.h"
+#include "marian-lite/marian.h"
 
-#include "models/s2s.h"
+#include "marian-lite/models/s2s.h"
 
 namespace marian {
 

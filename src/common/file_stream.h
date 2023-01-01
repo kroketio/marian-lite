@@ -3,9 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
-#include "common/definitions.h"
-#include "common/filesystem.h"
-#include "common/logging.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/common/filesystem.h"
+#include "marian-lite/common/logging.h"
 
 // Even when compiling with clang, __GNUC__ may be defined, so
 // we need to add some extra checks to avoid compile errors with
@@ -27,7 +27,7 @@
 #pragma warning(disable : 4101)
 #endif
 #ifndef WASM_COMPATIBLE_SOURCE
-#include "3rd_party/zstr/zstr.hpp"
+#include "marian-lite/3rd_party/zstr/zstr.hpp"
 #endif
 #ifdef _MSC_VER
 #pragma warning(pop)

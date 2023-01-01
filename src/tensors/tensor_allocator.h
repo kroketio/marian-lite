@@ -3,9 +3,9 @@
 #include <deque>
 #include <set>
 
-#include "common/definitions.h"
-#include "tensors/allocator.h"
-#include "tensors/tensor.h"
+#include "marian-lite/common/definitions.h"
+#include "marian-lite/tensors/allocator.h"
+#include "marian-lite/tensors/tensor.h"
 
 namespace marian {
 

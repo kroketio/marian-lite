@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graph/node.h"
+#include "marian-lite/graph/node.h"
 #include "packed_gemm.h"
-#include "tensors/cpu/integer_common.h"
+#include "marian-lite/tensors/cpu/integer_common.h"
 
 #if USE_FBGEMM
 #ifdef __GNUC__
@@ -10,7 +10,7 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #endif
 
-#include "3rd_party/fbgemm/include/fbgemm/FbgemmFP16.h"
+#include "marian-lite/3rd_party/fbgemm/include/fbgemm/FbgemmFP16.h"
 
 #ifdef __GNUC__
 #pragma GCC diagnostic pop

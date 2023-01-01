@@ -1,7 +1,7 @@
 #pragma once
 
 #include <yaml-cpp/yaml.h>
-#include "common/config_parser.h"
+#include "marian-lite/common/config_parser.h"
 
 namespace marian {
 

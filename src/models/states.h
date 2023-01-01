@@ -1,8 +1,8 @@
 #pragma once
 
-#include "marian.h"
-#include "layers/generic.h" // @HACK: for factored embeddings only so far
-#include "3rd_party/rnn/types.h"
+#include "marian-lite/marian.h"
+#include "marian-lite/layers/generic.h" // @HACK: for factored embeddings only so far
+#include "marian-lite/3rd_party/rnn/types.h"
 
 namespace marian {
 
