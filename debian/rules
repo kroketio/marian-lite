@@ -1,9 +1,10 @@
 #!/usr/bin/make -f
 
 %:
-	dh $@
+	dh $@ --buildsystem=cmake
 
 override_dh_auto_configure:
 	dh_auto_configure -- \
+	-DCMAKE_BUILD_TYPE=Release \
 	-DSTATIC=OFF \
 	-DSHARED=ON
