@@ -20,14 +20,12 @@ if(STATIC)
     add_library(marian-lite-STATIC STATIC ${SRCS} ${HDRS})
 endif()
 
-if(VENDORED_LIBS)
-    # copy header files to 'include/marian-lite/' in the build dir, so we can do $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include> for in-tree builds
-    execute_process(COMMAND bash -c "find '${CMAKE_CURRENT_SOURCE_DIR}' -type f -printf '%P\\n' | grep -E 'h$|hpp$|inl$' | cpio -pvd '${CMAKE_CURRENT_BINARY_DIR}/include/marian-lite/'"
-            WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-            RESULT_VARIABLE copyHeadersResult
-            OUTPUT_QUIET
-            ERROR_QUIET)
-endif()
+# copy header files to specific path in the build dir, so we can do "#include 'marian-lite/foo.h'" in the codebase
+execute_process(COMMAND bash -c "find '${CMAKE_CURRENT_SOURCE_DIR}' -type f -printf '%P\\n' | grep -E 'h$|hpp$|inl$' | cpio -pvd '${CMAKE_CURRENT_BINARY_DIR}/include/marian-lite/'"
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        RESULT_VARIABLE copyHeadersResult
+        OUTPUT_QUIET
+        ERROR_QUIET)
 
 foreach(_BUILD_TYPE STATIC SHARED)
     if(NOT "${${_BUILD_TYPE}}")
@@ -135,6 +133,12 @@ install(EXPORT marian-liteTargets
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/marian-lite
         )
 
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/"
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/marian-lite/modules/"
+        FILES_MATCHING
+        PATTERN "*.cmake"
+        )
+
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/../Config.cmake.in
         "${CMAKE_CURRENT_BINARY_DIR}/marian-liteConfig.cmake"
         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/marian-lite
@@ -151,11 +155,6 @@ install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/marian-liteConfigVersion.cmake"
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/marian-lite
         )
-
-configure_file("${PROJECT_SOURCE_DIR}/marian-lite.pc.in" "marian-lite.pc" @ONLY)
-if (NOT MSVC)
-    install(FILES "${CMAKE_CURRENT_BINARY_DIR}/marian-lite.pc" DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
-endif()
 
 # print some linked libs and their paths for informational purposes
 message(STATUS "=========================================== marian-lite")

@@ -23,7 +23,7 @@ FetchContent_GetProperties(pathie)
 
 FetchContent_Declare(sentencepiece-browsermt
         GIT_REPOSITORY https://github.com/kroketio/sentencepiece-browsermt.git
-        GIT_TAG "0.1.96"
+        GIT_TAG "0.1.97"
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
         )

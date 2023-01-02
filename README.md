@@ -59,19 +59,8 @@ sudo make -Cbuild install  # install into /usr/local/...
 Linking against marian-lite in another (CMake) program:
 
 ```cmake
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(MARIAN-LITE REQUIRED marian-lite)
-
-message(STATUS "marian-lite libraries: ${MARIAN-LITE_LIBRARIES}")
-message(STATUS "marian-lite include dirs: ${MARIAN-LITE_INCLUDE_DIRS}")
-
-target_link_libraries(myapp PUBLIC
-        ${MARIAN-LITE_LIBRARIES}
-        )
-
-target_include_directories(myapp PUBLIC
-        ${MARIAN-LITE_INCLUDE_DIRS}
-        )
+find_package(marian-lite REQUIRED)
+target_link_libraries(my_target PRIVATE marian-lite::marian-lite-SHARED)  # or '-STATIC'
 ```
 
 # Credits
