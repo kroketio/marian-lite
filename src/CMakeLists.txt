@@ -50,13 +50,18 @@ foreach(_BUILD_TYPE STATIC SHARED)
             _USE_TF_STRING_VIEW=1
             )
 
+    # remove this when minimal CMake version >= 3.18 (ubuntu 20 still on 3.16)
+    if(${CMAKE_VERSION} VERSION_GREATER "3.18.0")
+        target_link_libraries(${_TARGET} PRIVATE BLAS::BLAS)
+    else()
+        target_link_libraries(${_TARGET} PRIVATE ${BLAS_LIBRARIES})
+    endif()
+
     target_link_libraries(${_TARGET} PRIVATE
             SQLiteCpp
             ZLIB::ZLIB
             pthread
             dl
-            BLAS::BLAS
-            #        CLI11::CLI11
             proto
             ${PCRE2_LIBRARIES}
             protobuf::libprotobuf-lite

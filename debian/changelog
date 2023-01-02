@@ -1,3 +1,9 @@
+libmarian-lite (0.1.2) unstable; urgency=medium
+
+  * CMake: support version 3.16
+
+ -- Sander <code@kroket.io>  Mon, 2 Jan 2022 18:33:36 +0100
+
 libmarian-lite (0.1.1) unstable; urgency=medium
 
   * Generate CMake config, support vendored libs
