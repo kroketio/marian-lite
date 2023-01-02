@@ -76,6 +76,10 @@ foreach(_BUILD_TYPE STATIC SHARED)
                 sentencepiece-browsermt
                 sentencepiece_train-browsermt
                 )
+
+        target_include_directories(${_TARGET} PUBLIC
+                $<BUILD_INTERFACE:${sentencepiece-browsermt_SOURCE_DIR}/src/include>
+                )
     else()
         target_link_libraries(${_TARGET} PRIVATE
                 sentencepiece-browsermt::sentencepiece-browsermt

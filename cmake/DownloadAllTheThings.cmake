@@ -28,3 +28,4 @@ FetchContent_Declare(sentencepiece-browsermt
         GIT_PROGRESS   TRUE
         )
 FetchContent_MakeAvailable(sentencepiece-browsermt)
+FetchContent_GetProperties(sentencepiece-browsermt)

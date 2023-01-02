@@ -1,3 +1,9 @@
+libmarian-lite (0.1.3) unstable; urgency=medium
+
+  * CMake: make sentencepiece include dir available through the build interface for vendored installs
+
+ -- Sander <code@kroket.io>  Mon, 2 Jan 2022 18:34:36 +0100
+
 libmarian-lite (0.1.2) unstable; urgency=medium
 
   * CMake: support version 3.16
