@@ -1,4 +1,7 @@
 FILE(GLOB FaissSources *.cpp *.h utils/*.cpp utils/*.h)
 add_library(faiss OBJECT ${FaissSources})
 target_compile_definitions(faiss PRIVATE FINTEGER=uint64_t)
+if(ARM_FOUND)
+    target_compile_definitions(faiss PRIVATE ARM=1)
+endif()
 target_include_directories(faiss PRIVATE ${CMAKE_CURRENT_LIST_DIR})

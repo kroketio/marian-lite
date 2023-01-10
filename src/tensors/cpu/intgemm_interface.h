@@ -1,7 +1,4 @@
 #pragma once
-
-#include "marian-lite/graph/node.h"
-#include "marian-lite/graph/node_operators_unary.h"
 #include "integer_common.h"
 
 namespace marian {
@@ -42,7 +39,7 @@ bool shifted_;
                   rows(child(0)->val()),
                   cols(child(0)->val()),
                   val_->data<int8_t>() /*output*/);
-  #else
+  #elif defined(USE_INTGEMM)
     typedef typename intgemm_<vtype>::type Integer;
       auto input = child(0)->val();
       if (!shifted_) {
@@ -259,8 +256,8 @@ struct QuantMultNodeOp : public UnaryNodeOp {
 #pragma warning(push)
 #pragma warning(disable: 4127) //VSCODE thinks line 222 is constant conditional expression, which it is only after the template resolution, not before.
   NodeOps forwardOps() override {
-#ifdef COMPILE_CPU
-    return {NodeOp(
+    return  {[=](){
+    #ifdef COMPILE_CPU
       if (vtype == Type::int16) {
         *val_->data() = 1024.0f;
       } else if (child(0)->type() == "intgemmSelectColumnsB") {
@@ -270,18 +267,20 @@ struct QuantMultNodeOp : public UnaryNodeOp {
         *val_->data() = *(reinterpret_cast<float *>(reinterpret_cast<Integer *>(child(0)->val()->data()) + child(0)->val()->shape().elements()));
       } else {
         if (child(0)->graph()->getBackend()->DumpQuantMult()) {
+          #if defined(USE_INTGEMM)
           intgemm::MeanStd meanstd = intgemm::GetVectorMeanStd(child(0)->val()->data(), child(0)->val()->data() + child(0)->val()->shape().elements(), true);
           intgemm::MeanStd meanstd2 = intgemm::GetVectorMeanStd(child(0)->val()->data(), child(0)->val()->data() + child(0)->val()->shape().elements());
           std::cerr << "Name: " << name() << " MeanAbs: " << meanstd.mean << " stddevAbs: " << meanstd.stddev << " Mean: " << meanstd2.mean << " stddev: "
           << meanstd2.stddev << " MaxAbs: " << intgemm::MaxAbsolute(child(0)->val()->data(), child(0)->val()->data() + child(0)->val()->shape().elements()) << std::endl;
+          #endif
         }
         auto input = child(0)->val();
-        *val_->data() = 127.0f / intgemm::MaxAbsolute(input->data(), input->data() + input->size());
+        #if defined(USE_INTGEMM)
+          *val_->data() = 127.0f / intgemm::MaxAbsolute(input->data(), input->data() + input->size());
+        #endif
       }
-    )};
-#else
-    return {NodeOp()};
-#endif
+    #endif // COMPILE_CPU
+    }};
   }
 #pragma warning(pop)
   NodeOps backwardOps() override {
@@ -347,9 +346,11 @@ public:
         float scale_a = *quant_mult_a->data();
         float scale_b = *quant_mult_b->data();
         int8PrepareBias((const int8_t *)b->data(), scale_a, 0.0 /*zero_point_a*/, scale_b, 0.0 /*zero_point_b*/, rows(b), cols(b), bias->data(), val_->data());
-    #else
+    #elif defined(USE_INTGEMM)
         float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
         intgemm::Int8Shift::PrepareBias((const int8_t *)b->data(), rows(b), cols(b), intgemm::callbacks::UnquantizeAndAddBiasAndWrite(unquant_mult, bias->data(), val_->data()));
+    #else
+        ABORT("PrepareBias should not be called on ARM");
     #endif
       }
     }};
@@ -384,9 +385,11 @@ public:
     float scale_a = *quant_mult_a->data();
     float scale_b = *quant_mult_b->data();
     int8PrepareBias((const int8_t *)b->data(), scale_a, 0.0 /*zero_point_a*/, scale_b, 0.0 /*zero_point_b*/, rows(b), cols(b), nullptr/*input_bias*/, val_->data());
-  #else
+  #elif defined(USE_INTGEMM)
     float unquant_mult = (-1)*((127.0f / *quant_mult_a->data())*(127.0f / *quant_mult_b->data()))/(127.0f); //Minus one to invert add_ps later on
     intgemm::Int8Shift::PrepareBias((const int8_t *)b->data(), rows(b), cols(b), intgemm::callbacks::UnquantizeAndWrite(unquant_mult, val_->data()));
+  #else
+    // Not sure what's going on here. 
   #endif
     }};
 #else
@@ -435,7 +438,7 @@ public:
               "Int16::Multiply is not implemented for wasm.");
           ABORT_IF(intgemm_<vtype>::intgemmType == Type::intgemm8,
               "Int8::Multiply is not implemented for wasm.");
-      #else
+      #elif defined(USE_INTGEMM)
           typedef typename intgemm_<vtype>::type Integer;
           intgemm_<vtype>::width::Multiply(reinterpret_cast<Integer *>(child(0)->val()->data()), /*A*/
                                            reinterpret_cast<Integer *>(child(1)->val()->data()), /*B*/
@@ -509,7 +512,7 @@ public:
                                 cols(child(0)->val()),
                                 cols(child(1)->val()),
                                 val_->data());
-      #else
+      #elif defined(USE_INTGEMM)
           typedef typename intgemm_<vtype>::type Integer;
           if (!shifted_) {
             intgemm_<vtype>::width::Multiply(reinterpret_cast<Integer *>(child(0)->val()->data()), /*A*/
@@ -560,44 +563,6 @@ template<Type vtype>
 static inline Expr selectColumnsB(Expr b, const std::vector<uint_least32_t> &cols, float clipValue) {
   return Expression<SelectColumnsBNodeOp<vtype > >(b, cols, clipValue);
 }
-
-class fetchAlphaFromModelNodeOp : public UnaryNodeOp {
-public:
-  fetchAlphaFromModelNodeOp(Expr b)
-      : UnaryNodeOp(b, Shape({1}), Type::float32) {
-
-    std::string bname = b->name();
-    std::string aQuantKey = b->name() + "_QuantMultA";
-    //Very Hacky Bit. Unnamed matrix is notpart of the F0 parameter namespace
-    if (aQuantKey.at(0) != 'F') {
-      aQuantKey = "F0::" + aQuantKey;
-    }
-    set_name(aQuantKey);
-  }
-
-  NodeOps forwardOps() override {
-    return {NodeOp(
-      auto map = child(0)->graph()->params()->getMap();
-      const auto mapiter = map.find(name());
-      if (mapiter != map.end()) {
-        val_ = mapiter->second->val();
-      } else {
-        ABORT("We did not find an alpha in the model named: {}.", name());
-      }
-    )};
-  }
-
-  bool equal(Expr node) override {
-    if(hash() == node->hash()) return true;
-    return false;
-  }
-
-  size_t hash() override {
-    return std::hash<std::string>{}(name());
-  }
-
-  const std::string type() override { return "alphaNodeOp"; }
-};
 
 template<Type vtype>
 static inline Expr affine(Expr a, Expr b, Expr bias, bool transA, bool transB, float scale, float /* clipValue currently unused */ = 0.0f, bool shiftedBias=false) {

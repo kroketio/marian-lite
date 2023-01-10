@@ -7,8 +7,11 @@
 #include "marian-lite/graph/node_operators_tuple.h"
 
 #include "marian-lite/graph/auto_tuner.h"
+#ifdef ARM
+#include "marian-lite/tensors/cpu/ruy_interface.h"
+#else
 #include "marian-lite/tensors/cpu/intgemm_interface.h"
-#include "marian-lite/tensors/cpu/fbgemm/expanded_gemm.h"
+#endif
 
 #if USE_FBGEMM
 #include "fbgemm/Utils.h"
@@ -26,12 +29,12 @@ Expr checkpoint(Expr a) {
   return a;
 }
 
-Expr lambda(const std::vector<Expr>& nodes, Shape shape, Type type, 
+Expr lambda(const std::vector<Expr>& nodes, Shape shape, Type type,
             LambdaNodeFunctor fwd) {
   return Expression<LambdaNodeOp>(nodes, shape, type, fwd);
 }
 
-Expr lambda(const std::vector<Expr>& nodes, Shape shape, Type type, 
+Expr lambda(const std::vector<Expr>& nodes, Shape shape, Type type,
             LambdaNodeFunctor fwd, LambdaNodeFunctor bwd) {
   return Expression<LambdaNodeOp>(nodes, shape, type, fwd, bwd);
 }
@@ -423,7 +426,7 @@ Expr std(Expr a, int ax) {
   return Expression<ReduceNodeOp>(a - mean(a, ax), ax, ReduceNodeOpCode::rms);
 }
 
-Expr var(Expr a, int ax) { 
+Expr var(Expr a, int ax) {
   if(a->shape()[ax] == 1) // nothing to reduce, var(a) = 0
     return a - a;
   return Expression<ReduceNodeOp>(a - mean(a, ax), ax, ReduceNodeOpCode::meanSqr);
@@ -475,25 +478,32 @@ Expr dot(Expr a, Expr b, bool transA, bool transB, float scale) {
   // --optimize --cpu-thread=N with N > 0 are set.
   if(device == DeviceType::cpu) {
     if(isFloat(aElementType) && (isFloat(bElementType) || isIntgemm(bElementType))) {
+#ifdef ARM
+      if (a->graph()->getBackend()->isInt8() || matchType<intgemm8>(bElementType)) {
+        return cpu::integer::affineOrDotRUI(a, b, nullptr, transA, transB, clipValue);
+      }
+#else
       if(a->graph()->getBackend()->isInt8() || matchType<intgemm8>(bElementType)) {
         bool shiftedAll = a->graph()->getBackend()->isShiftedAll(); //@TODO
         return cpu::integer::dot<Type::int8>(
-          a,
-          b,
-          transA,
-          transB,
-          scale,
-          shiftedAll);
+            a,
+            b,
+            transA,
+            transB,
+            scale,
+            shiftedAll);
       } else if(a->graph()->getBackend()->isInt16() || matchType<intgemm16>(bElementType)) {
         return cpu::integer::dot<Type::int16>(
-          a,
-          b,
-          transA,
-          transB,
-          scale);
-      } else {
+            a,
+            b,
+            transA,
+            transB,
+            scale);
+      }
+#endif
+      else {
         return Expression<DotNodeOp>(
-          clip(a, clipValue), clip(b, clipValue), transA, transB, scale);
+            clip(a, clipValue), clip(b, clipValue), transA, transB, scale);
       }
     } else if(isFloat(aElementType) && isPacked(bElementType)) {
 #if USE_FBGEMM
@@ -541,12 +551,12 @@ static Expr affineDefault(Expr a, Expr b, Expr bias, bool transA, bool transB, f
   int rows = a->shape().elements() / a->shape()[-1];
   Expr ones = a->graph()->ones({ rows, 1 });
   std::vector<Expr> nodes
-    = { clip(a, clipValue), clip(b, clipValue), bias, ones };
+      = { clip(a, clipValue), clip(b, clipValue), bias, ones };
   return Expression<AffineNodeOp>(nodes, transA, transB, scale);
 }
 
-// This operation used to implement auto-tuning. We have removed it for now due to complexity, but plan to revisit it in the future. 
-// The last branch with auto-tuner is: 
+// This operation used to implement auto-tuning. We have removed it for now due to complexity, but plan to revisit it in the future.
+// The last branch with auto-tuner is:
 // youki/packed-model-pr-backup1031
 // https://machinetranslation.visualstudio.com/Marian/_git/marian-dev?version=GByouki%2Fpacked-model-pr-backup1031
 // SHA: 3456a7ed1d1608cfad74cd2c414e7e8fe141aa52
@@ -556,30 +566,36 @@ Expr affine(Expr a, Expr b, Expr bias, bool transA, bool transB, float scale) {
   float clipValue = a->graph()->getBackend()->getClip();
   Type aElementType = a->value_type();
   Type bElementType = b->value_type();
-
   if(device == DeviceType::cpu) {
     if(isFloat(aElementType) && (isFloat(bElementType) || isIntgemm(bElementType))) {
+#ifdef ARM
+      if (a->graph()->getBackend()->isInt8() || matchType<intgemm8>(bElementType)) {
+        return cpu::integer::affineOrDotRUI(a, b, bias, transA, transB, clipValue);
+      }
+#else
       if(a->graph()->getBackend()->isInt8()  || matchType<intgemm8>(bElementType) ) {
         bool shiftedBias = a->graph()->getBackend()->isShifted();
         return cpu::integer::affine<Type::int8>(
-          a,
-          b,
-          bias,
-          transA,
-          transB,
-          scale,
-          clipValue,
-          shiftedBias);
+            a,
+            b,
+            bias,
+            transA,
+            transB,
+            scale,
+            clipValue,
+            shiftedBias);
       } else if(a->graph()->getBackend()->isInt16()  || matchType<intgemm16>(bElementType) ) {
         return cpu::integer::affine<Type::int16>(
-          a,
-          b,
-          bias,
-          transA,
-          transB,
-          scale,
-          clipValue);
-      } else {
+            a,
+            b,
+            bias,
+            transA,
+            transB,
+            scale,
+            clipValue);
+      }
+#endif
+      else {
         return affineDefault(a, b, bias, transA, transB, scale);
       }
     } else if(isFloat(aElementType) && isPacked(bElementType)) {

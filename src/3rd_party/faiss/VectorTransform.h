@@ -10,6 +10,15 @@
 #ifndef FAISS_VECTOR_TRANSFORM_H
 #define FAISS_VECTOR_TRANSFORM_H
 
+#ifdef ARM
+    #define SIMDE_ENABLE_NATIVE_ALIASES
+    #include <simde/x86/sse.h>
+    #include <simde/x86/sse2.h>
+    #include <simde/x86/avx.h>
+    #include <simde/x86/avx2.h>
+    #define __SSE__ 1
+#endif
+
 /** Defines a few objects that apply transformations to a set of
  * vectors Often these are pre-processing steps.
  */

@@ -78,14 +78,25 @@ public:
   void setInt8(bool optimize) override { int8_ = optimize; }
   bool isInt8() override { return int8_; }
 
-  void setShifted(bool shifted) override { shifted_ = shifted; }
+  void setShifted(bool shifted) override { 
+#if (defined(__arm__) || defined(__aarch64__))
+      shifted_ = false;
+#else
+      shifted_ = shifted; 
+#endif
+  }
   bool isShifted() override { return shifted_; }
 
   void setShiftedAll(bool shiftedAll) override {
+#if (defined(__arm__) || defined(__aarch64__))
+      shiftedAll_ = false;
+      shifted_ = false;
+#else
     shiftedAll_ = shiftedAll;
     if (shiftedAll_) {
       shifted_ = true;
     }
+#endif
   }
 
   bool isShiftedAll() override {

@@ -8,13 +8,11 @@
 #include "marian-lite/tensors/tensor_allocator.h"
 
 #if MKL_FOUND
-#include <mkl.h>
+  #include <mkl.h>
 #elif BLAS_FOUND
-  #if WASM_COMPATIBLE_BLAS
-    #include "marian-lite/3rd_party/onnxjs/src/wasm-ops/gemm.h"
-  #else
-    #include <cblas.h>
-  #endif // WASM_COMPATIBLE_BLAS
+   #include <cblas.h>
+#elif USE_ONNX_SGEMM
+  #include "3rd_party/onnxjs/src/wasm-ops/gemm.h"
 #endif
 
 #include "integer_common.h"
@@ -32,7 +30,7 @@ void Prod(marian::Tensor C,
           bool transB,
           float beta,
           float scalar) {
-#if BLAS_FOUND
+#if BLAS_FOUND || USE_RUY_SGEMM
   float alpha = scalar;
 
   int m = A->shape().elements() / A->shape()[-1];
@@ -79,7 +77,6 @@ void ProdBatchedOld(marian::Tensor C,
                  bool transB,
                  float beta,
                  float scalar) {
-#if BLAS_FOUND
   float alpha = scalar;
 
   size_t batchA = A->shape().elements() / (A->shape()[-1] * A->shape()[-2]);
@@ -182,10 +179,6 @@ void ProdBatchedOld(marian::Tensor C,
           C->data() + i * strideC,
           (int)ldc);
   }
-#endif
-#else
-  C; A; B; transA; transB; beta; scalar;
-  ABORT("You need to compile with MKL in order to use the CPU version");
 #endif
 }
 

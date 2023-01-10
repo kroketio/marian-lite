@@ -1,7 +1,7 @@
 #pragma once
 
 #include "marian-lite/graph/expression_graph.h"
-#include "fbgemm/packed_gemm.h"
+//#include "fbgemm/packed_gemm.h"
 #include "marian-lite/tensors/cpu/integer_common.h"
 
 namespace { //Temporary annonymous transposition, until we figure out how to access the proper one
@@ -209,7 +209,7 @@ public:
         if (gemmElementType == Type::intgemm8) {
 #if defined(WASM)
           ABORT("Int8::PrepareA is not implemented for wasm.");
-#else
+#elif defined(USE_INTGEMM)
           float quantMult = 127.0f / intgemm::MaxAbsolute(val->data(), val->data() + val->shape().elements());
           intgemm::Int8::PrepareA(tmp->data(), /*input*/
                                 paramMat->data<int8_t>(), /*output*/
@@ -218,11 +218,13 @@ public:
                                 cols(val));
           //Put the quantMult at the back of the tensor
           *(reinterpret_cast<float *>(paramMat->data<int8_t>() + val->shape().elements())) = quantMult;
+#else
+    ABORT("Int8::PrepareA not implemented yet for ruy");
 #endif
         } else {
 #if defined(WASM)
           ABORT("Int16::PrepareA is not implemented for wasm.");
-#else
+#elif defined(USE_INTGEMM)
           float quantMult = 1024.0f;
           intgemm::Int16::PrepareA(tmp->data(), /*input*/
                                 paramMat->data<int16_t>(), /*output*/
@@ -231,6 +233,8 @@ public:
                                 cols(val));
           //Put the quantMult at the back of the tensor
           *(reinterpret_cast<float *>(paramMat->data<int16_t>() + val->shape().elements())) = quantMult;
+#else
+      ABORT("Int16::PrepareA is not implemented for wasm.");
 #endif
         }
 

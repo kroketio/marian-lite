@@ -1,3 +1,9 @@
+libmarian-lite (0.1.5) unstable; urgency=medium
+
+  * ARM backend
+
+ -- Sander <code@kroket.io>  Tue, 11 Jan 2022 02:14:36 +0100
+
 libmarian-lite (0.1.4) unstable; urgency=medium
 
   * Copy FindXxx.cmake scripts to cmake dir, add to CMAKE_MODULE_PATH in Config

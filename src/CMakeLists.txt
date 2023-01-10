@@ -10,6 +10,11 @@ list(FILTER SRCS EXCLUDE REGEX "proto/")
 list(FILTER HDRS EXCLUDE REGEX "proto/")
 list(FILTER SRCS EXCLUDE REGEX "faiss/")
 list(FILTER HDRS EXCLUDE REGEX "faiss/")
+if(USE_RUY)
+    list(FILTER HDRS EXCLUDE REGEX "intgemm_interface.h")
+else()
+    list(FILTER HDRS EXCLUDE REGEX "ruy_interface.h")
+endif()
 
 # define CMake library target(s)
 # compile both static, shared based on -DSTATIC, -DSHARED options
@@ -44,9 +49,33 @@ foreach(_BUILD_TYPE STATIC SHARED)
     target_compile_definitions(${_TARGET} PRIVATE
             COMPILE_CPU=1
             USE_SENTENCEPIECE=1
-            BLAS_FOUND=1
             _USE_TF_STRING_VIEW=1
             )
+
+    if(ARM_FOUND)
+        target_compile_definitions(${_TARGET} PUBLIC
+                __ARM_NEON__=1)
+    else()
+        target_compile_definitions(${_TARGET} PUBLIC
+                BLAS_FOUND=1)
+    endif()
+
+    # Which matrix multiplication target to use?
+    set(MATRIX_LIBRARY "intgemm")
+    if(ARM_FOUND)
+        set(MATRIX_LIBRARY "ruy")
+    endif()
+    if(NOT VENDORED_LIBS)
+        set(MATRIX_LIBRARY "${MATRIX_LIBRARY}::${MATRIX_LIBRARY}")
+    endif()
+
+#    # some ARM specifics
+#    if(ARM_FOUND)
+#        target_compile_definitions(${_TARGET} PRIVATE
+#                ARM=1
+#
+#                )
+#    endif()
 
     # remove this when minimal CMake version >= 3.18 (ubuntu 20 still on 3.16)
     if(${CMAKE_VERSION} VERSION_GREATER "3.18.0")
@@ -65,12 +94,14 @@ foreach(_BUILD_TYPE STATIC SHARED)
             protobuf::libprotobuf-lite
             ${YAMLCPP_LIBRARY}
             faiss
+            ${MATRIX_LIBRARY}
+            ruy::ruy
+            ruy::ruy_platform
             )
 
     if(VENDORED_LIBS)
         target_link_libraries(${_TARGET} PRIVATE
                 pathie
-                intgemm
                 sentencepiece-browsermt
                 sentencepiece_train-browsermt
                 )
@@ -83,7 +114,6 @@ foreach(_BUILD_TYPE STATIC SHARED)
                 sentencepiece-browsermt::sentencepiece-browsermt
                 sentencepiece-browsermt::sentencepiece_train-browsermt
                 pathie::pathie
-                intgemm::intgemm
                 )
     endif()
 
@@ -139,11 +169,17 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../cmake/"
         PATTERN "*.cmake"
         )
 
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/../Config.cmake.in
+# [...]/cmake/marian-lite/marian-liteConfig.cmake
+set(CMAKE_CONFIG_FILE "Config.amd64.cmake.in")
+if(ARM_FOUND)
+    set(CMAKE_CONFIG_FILE "Config.arm.cmake.in")
+endif()
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/../${CMAKE_CONFIG_FILE}
         "${CMAKE_CURRENT_BINARY_DIR}/marian-liteConfig.cmake"
         INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/marian-lite
         )
 
+# [...]/cmake/marian-lite/marian-liteConfigVersion.cmake
 write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/marian-liteConfigVersion.cmake"
         VERSION "${CMAKE_PROJECT_VERSION}"

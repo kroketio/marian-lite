@@ -133,7 +133,16 @@ const float *fvecs_maybe_subsample(
   return x_subset;
 }
 
-#if 1 // def __SSE__
+float fvec_norm_L2sqr_ref(const float *x, size_t d)
+{
+  size_t i;
+  double res = 0;
+  for (i = 0; i < d; i++)
+    res += x[i] * x[i];
+  return res;
+}
+
+#ifdef __SSE__
 // reads 0 <= d < 4 floats as __m128
 static inline __m128 masked_read(int d, const float *x)
 {

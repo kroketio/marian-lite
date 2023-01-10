@@ -8,8 +8,8 @@
 
 #if defined(WASM)
 
-#include "intgemm/intgemm/intgemm.h"
-#include "marian-lite/common/logging.h"
+#include "3rd_party/intgemm/intgemm/intgemm.h"
+#include "common/logging.h"
 #include "wasm_intgemm_interface.h"
 
 extern "C" void int8PrepareAFallback(const float* input_A,

@@ -15,16 +15,6 @@
 #include <stdexcept>
 #include <string>
 
-#if MKL_FOUND
-#include <mkl.h>
-#elif BLAS_FOUND
-  #if WASM_COMPATIBLE_BLAS
-    #include "marian-lite/3rd_party/onnxjs/src/wasm-ops/gemm.h"
-  #else
-    #include <cblas.h>
-  #endif // WASM_COMPATIBLE_BLAS
-#endif
-
 namespace marian {
 
 // TODO: Move this to CLIWrapper and allow to mark options as paths in the same place they are

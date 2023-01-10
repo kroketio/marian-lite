@@ -1,8 +1,6 @@
 #pragma once
 
 // @TODO: to be removed when sure it works
-#define FASTOPT 1 // for diagnostics, 0 reverts to old behavior
-
 #include <sstream>
 #include <string>
 #include "marian-lite/common/definitions.h"

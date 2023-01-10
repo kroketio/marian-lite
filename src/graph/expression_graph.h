@@ -317,7 +317,7 @@ private:
       name = namespace_ + "::" + name;
 
     Expr p; Ptr<Parameters> params; std::tie
-    (p, params) = findParams(name, elementType, typeSpecified);
+        (p, params) = findParams(name, elementType, typeSpecified);
 
     if(!params) {
       params = New<Parameters>(elementType);
@@ -429,7 +429,7 @@ public:
     if(!namespace_.empty())
       name = namespace_ + "::" + name;
     Expr p; Ptr<Parameters> params; std::tie
-    (p, params) = findParams(name, defaultElementType_, /*specifiedType=*/false);
+        (p, params) = findParams(name, defaultElementType_, /*specifiedType=*/false);
     return p;
   }
 
@@ -437,7 +437,7 @@ public:
     if(!namespace_.empty())
       name = namespace_ + "::" + name;
     Expr p; Ptr<Parameters> params; std::tie
-    (p, params) = findParams(name, specifiedElementType, /*specifiedType=*/true);
+        (p, params) = findParams(name, specifiedElementType, /*specifiedType=*/true);
     return p;
   }
 

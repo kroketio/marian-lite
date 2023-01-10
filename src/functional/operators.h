@@ -1,6 +1,7 @@
 #pragma once
 
 #include "marian-lite/common/types.h"
+#include "marian-lite/functional/defs.h"
 #include <cmath>
 
 namespace marian {
