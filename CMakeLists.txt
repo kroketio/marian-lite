@@ -47,6 +47,7 @@ if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "arm*")
 
 else()
     set(USE_INTGEMM TRUE)
+    add_compile_definitions(USE_INTGEMM=1)
 endif()
 
 if(STATIC)

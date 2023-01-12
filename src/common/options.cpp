@@ -90,7 +90,10 @@ bool Options::has(const char* const key) const {
   lazyRebuild();
   return fastOptions_.has(key);
 #else
-  return options_[key];
+  if(options_[key]) {
+    return true;
+  }
+  return false;
 #endif
 }
 
