@@ -68,14 +68,9 @@ foreach(_BUILD_TYPE STATIC SHARED)
     if(NOT VENDORED_LIBS)
         set(MATRIX_LIBRARY "${MATRIX_LIBRARY}::${MATRIX_LIBRARY}")
     endif()
-
-#    # some ARM specifics
-#    if(ARM_FOUND)
-#        target_compile_definitions(${_TARGET} PRIVATE
-#                ARM=1
-#
-#                )
-#    endif()
+    if(ARM_FOUND)
+        list(APPEND MATRIX_LIBRARY "ruy::ruy_platform") 
+    endif()
 
     # remove this when minimal CMake version >= 3.18 (ubuntu 20 still on 3.16)
     if(${CMAKE_VERSION} VERSION_GREATER "3.18.0")
@@ -95,8 +90,6 @@ foreach(_BUILD_TYPE STATIC SHARED)
             ${YAMLCPP_LIBRARY}
             faiss
             ${MATRIX_LIBRARY}
-            ruy::ruy
-            ruy::ruy_platform
             )
 
     if(VENDORED_LIBS)
