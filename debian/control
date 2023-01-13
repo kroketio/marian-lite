@@ -16,6 +16,7 @@ Build-Depends: debhelper (>= 10),
     libpcre2-dev,
     libsentencepiece-browsermt,
     zlib1g-dev,
+    cpio
 Homepage: https://github.com/maemo-leste/marian-lite
 XSBC-Bugtracker: https://github.com/maemo-leste/marian-lite/issues
 Vcs-Git: https://github.com/maemo-leste/marian-lite/

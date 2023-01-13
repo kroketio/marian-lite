@@ -26,6 +26,10 @@ if(STATIC)
 endif()
 
 # copy header files to specific path in the build dir, so we can do "#include 'marian-lite/foo.h'" in the codebase
+find_program(CPIO "cpio")
+IF(NOT CPIO)
+    message(FATAL_ERROR "missing program 'cpio' - install it")
+ENDIF()
 execute_process(COMMAND bash -c "find '${CMAKE_CURRENT_SOURCE_DIR}' -type f -printf '%P\\n' | grep -E 'h$|hpp$|inl$' | cpio -pvd '${CMAKE_CURRENT_BINARY_DIR}/include/marian-lite/'"
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         RESULT_VARIABLE copyHeadersResult
