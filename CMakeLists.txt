@@ -79,7 +79,7 @@ else()
 endif()
 
 # system deps
-find_package(Yaml-Cpp REQUIRED)
+find_package(YamlCpp REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(PCRE2 REQUIRED)
 find_package(Protobuf REQUIRED)

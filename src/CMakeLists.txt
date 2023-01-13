@@ -123,7 +123,7 @@ foreach(_BUILD_TYPE STATIC SHARED)
             )
 
     target_include_directories(${_TARGET} PRIVATE
-            ${YAML_CPP_INCLUDE_DIR}
+            ${YAMLCPP_INCLUDE_DIR}
             ${PCRE2_INCLUDE_DIRS}
             ${ZLIB_INCLUDE_DIRS}
             )
@@ -192,7 +192,7 @@ install(FILES
 # print some linked libs and their paths for informational purposes
 message(STATUS "=========================================== marian-lite")
 message(STATUS "SHARED: ${SHARED} | STATIC: ${STATIC} | VENDORED: ${VENDORED_LIBS}")
-message(STATUS "yaml-cpp: ${YAML_CPP_LIBRARIES}")
+message(STATUS "yaml-cpp: ${YAMLCPP_LIBRARY}")
 message(STATUS "pcre2: ${PCRE2_LIBRARIES}")
 message(STATUS "BLAS: ${BLAS_LIBRARIES}")
 message(STATUS "zlib ${ZLIB_VERSION_STRING}: ${ZLIB_LIBRARIES}")
