@@ -1,3 +1,11 @@
+libmarian-lite (0.1.9) unstable; urgency=medium
+
+  * Change some ARM compilation flags
+  * ccache support via FindCcache.cmake
+  * support for vrndnq_f32() on v7 A32 via SIMDE
+
+ -- Sander <code@kroket.io>  Tue, 13 Jan 2022 02:14:36 +0100
+
 libmarian-lite (0.1.8) unstable; urgency=medium
 
   * Link against protobuf for proto target

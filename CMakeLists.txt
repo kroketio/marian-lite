@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(marian-lite
-        VERSION 0.1.8
+        VERSION 0.1.9
         DESCRIPTION "Compact version of browsermt/marian-dev"
         HOMEPAGE_URL https://github.com/kroketio/marian-lite
         LANGUAGES CXX C)
@@ -25,6 +25,8 @@ set(BUILD_ARCH native CACHE STRING "Compile for this CPU architecture.")
 option(USE_INTGEMM "intgemm" OFF)  # will be set to 'ON' when using x86_64
 option(USE_RUY "Google Ruy" OFF)  # will be set to 'ON' when using ARM
 option(USE_SIMD_UTILS "Enable simde to target instruction sets" OFF)  # will be set to 'ON' when using ARM
+
+include(FindCcache)
 
 if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "arm*")
     # using ARM

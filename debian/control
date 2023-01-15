@@ -15,6 +15,7 @@ Build-Depends: debhelper (>= 10),
     protobuf-compiler,
     libpcre2-dev,
     libsentencepiece-browsermt,
+    libsimde-dev,
     zlib1g-dev,
     cpio
 Homepage: https://github.com/maemo-leste/marian-lite

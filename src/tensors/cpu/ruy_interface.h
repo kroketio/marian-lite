@@ -19,10 +19,14 @@
 #if RUY_PLATFORM_NEON
 #include <arm_neon.h>
 
-#if defined(__GNUC__) && !defined(__clang__) && (__ARM_ARCH >= 8)
+#if defined(__GNUC__) && !defined(__clang__)
+#if (__ARM_ARCH == 7)
+  #include "simde/arm/neon/rndn.h"
+  #define vrndnq_f32(a) simde_vrndnq_f32(a)
+#endif
+
 // polyfill from https://github.com/google/XNNPACK/blob/694d2524757f9040e65a02c374e152a462fe57eb/src/xnnpack/intrinsics-polyfill.h#L134-L147
-static
-    int32x4_t vcvtnq_s32_f32(float32x4_t v) {
+static int32x4_t vcvtnq_s32_f32(float32x4_t v) {
   return vcvtq_s32_f32(vrndnq_f32(v));
 }
 #endif  // AArch32 GCC targeting ARMv8 NEON
