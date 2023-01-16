@@ -6,8 +6,6 @@ file(GLOB_RECURSE HDRS *.h *.hpp *.inl)
 # filter some files from the glob recurse
 list(FILTER SRCS EXCLUDE REGEX "SQLiteCpp/")
 list(FILTER HDRS EXCLUDE REGEX "SQLiteCpp/")
-list(FILTER SRCS EXCLUDE REGEX "proto/")
-list(FILTER HDRS EXCLUDE REGEX "proto/")
 list(FILTER SRCS EXCLUDE REGEX "faiss/")
 list(FILTER HDRS EXCLUDE REGEX "faiss/")
 if(USE_RUY)
@@ -88,12 +86,12 @@ foreach(_BUILD_TYPE STATIC SHARED)
             ZLIB::ZLIB
             pthread
             dl
-            proto
             ${PCRE2_LIBRARIES}
             protobuf::libprotobuf-lite
             ${YAMLCPP_LIBRARY}
             faiss
             ${MATRIX_LIBRARY}
+            CLI11::CLI11
             )
 
     if(VENDORED_LIBS)
@@ -115,7 +113,6 @@ foreach(_BUILD_TYPE STATIC SHARED)
     endif()
 
     target_include_directories(${_TARGET} PUBLIC
-            $<BUILD_INTERFACE:${ProtobufIncludePath}>
             $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
             $<BUILD_INTERFACE:${pathie_SOURCE_DIR}/include>
             $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include/marian-lite/3rd_party>
@@ -131,8 +128,7 @@ foreach(_BUILD_TYPE STATIC SHARED)
     list(APPEND _TARGETS "${_TARGET}")
 endforeach()
 
-list(APPEND _TARGETS 
-    proto
+list(APPEND _TARGETS
     faiss
     SQLiteCpp
 )

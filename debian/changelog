@@ -1,3 +1,11 @@
+libmarian-lite (0.2.0) unstable; urgency=medium
+
+* Remove vendored CLI11, link against system CLI11
+* But we'll support vendoring CLI11 from the interwebs
+* Remove protobuf models, now supplied exclusively by sentencepiece-browsermt
+
+ -- Sander <code@kroket.io>  Tue, 13 Jan 2022 02:14:36 +0100
+
 libmarian-lite (0.1.9) unstable; urgency=medium
 
   * Change some ARM compilation flags

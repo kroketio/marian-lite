@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(marian-lite
-        VERSION 0.1.9
+        VERSION 0.2.0
         DESCRIPTION "Compact version of browsermt/marian-dev"
         HOMEPAGE_URL https://github.com/kroketio/marian-lite
         LANGUAGES CXX C)
@@ -67,6 +67,7 @@ include(CompilerStuff)
 if(NOT VENDORED_LIBS)
     # https://github.com/kroketio/pathie-cpp/
     # https://github.com/kroketio/sentencepiece-browsermt/
+    # https://github.com/kroketio/cli11/
     if(ARM_FOUND)
         # https://github.com/kroketio/ruy/
         find_package(ruy REQUIRED)
@@ -76,6 +77,7 @@ if(NOT VENDORED_LIBS)
     endif()
     find_package(pathie REQUIRED)
     find_package(sentencepiece-browsermt REQUIRED)
+    find_package(CLI11 REQUIRED)
 else()
     include(cmake/DownloadAllTheThings.cmake)
 endif()

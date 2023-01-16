@@ -21,9 +21,18 @@ FetchContent_Declare(pathie
 FetchContent_MakeAvailable(pathie)
 FetchContent_GetProperties(pathie)
 
+FetchContent_Declare(cli11
+        GIT_REPOSITORY https://github.com/kroketio/cli11.git
+        GIT_TAG "2.3.0"
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
+        )
+FetchContent_MakeAvailable(cli11)
+FetchContent_GetProperties(cli11)
+
 FetchContent_Declare(sentencepiece-browsermt
         GIT_REPOSITORY https://github.com/kroketio/sentencepiece-browsermt.git
-        GIT_TAG "0.1.98"
+        GIT_TAG "0.1.99"
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
         )

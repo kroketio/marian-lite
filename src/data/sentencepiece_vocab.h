@@ -19,8 +19,8 @@
 /* Current inclusion of SentencePiece structures assume builtin-protobuf hard. 
  * Future TODO: Make it work with standard protobuf as well.
  * */
-#include "sentencepiece.pb.h"
-#include "sentencepiece_model.pb.h"
+#include <sentencepiece-browsermt/proto/sentencepiece.pb.h>
+#include <sentencepiece-browsermt/proto/sentencepiece_model.pb.h>
 #if __GNUC__ >= 5	
 # pragma GCC diagnostic pop	
 #endif	

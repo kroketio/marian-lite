@@ -1,7 +1,7 @@
 #pragma once
 
-#include "marian-lite/3rd_party/CLI/CLI.hpp"
-#include "marian-lite/3rd_party/CLI/TypeTools.hpp"
+#include "CLI/CLI.hpp"
+#include "CLI/TypeTools.hpp"
 #include "marian-lite/3rd_party/any_type.h"
 #include <yaml-cpp/yaml.h>
 #include "marian-lite/common/definitions.h"
@@ -394,7 +394,7 @@ private:
     if(defaulted)
       opt->default_str(val ? "true" : "false");
     // allow to use the flag without any argument
-    opt->implicit_val("true");
+    opt->default_val("true");
 
     // store option tuple
     option.opt = opt;
