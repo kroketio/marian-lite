@@ -18,7 +18,8 @@ Build-Depends: debhelper (>= 10),
     libsimde-dev,
     zlib1g-dev,
     libcli11-dev,
-    cpio
+    cpio,
+    libcpuinfo-dev
 Homepage: https://github.com/maemo-leste/marian-lite
 XSBC-Bugtracker: https://github.com/maemo-leste/marian-lite/issues
 Vcs-Git: https://github.com/maemo-leste/marian-lite/
@@ -36,4 +37,5 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
     libsentencepiece-browsermt,
     libpcre2-32-0,
     zlib1g,
+    libcpuinfo0,
 Description: Small C++ library for cross-platform Unicode path management
