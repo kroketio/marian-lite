@@ -107,7 +107,7 @@ void ConfigParser::addOptionsGeneral(cli::CLIWrapper& cli) {
     "Print citation and exit");
   cli.add<std::string>("--build-info",
     "Print CMake build options and exit. Set to 'all' to print advanced options")
-    ->default_val("basic");
+    ->default_str("basic");
   cli.add<std::vector<std::string>>("--config,-c",
     "Configuration file(s). If multiple, later overrides earlier");
   cli.add<size_t>("--workspace,-w",
@@ -134,7 +134,7 @@ void ConfigParser::addOptionsGeneral(cli::CLIWrapper& cli) {
     "All paths are relative to the config file location");
   cli.add<std::string>("--dump-config",
     "Dump current (modified) configuration to stdout and exit. Possible values: full, minimal, expand")
-    ->default_val("full");
+    ->default_str("full");
   if(mode_ == cli::mode::training) {
     // --sigterm is deliberately not a boolean, to allow for a consistent
     // pattern of specifying custom signal handling in the future.
@@ -418,7 +418,7 @@ void ConfigParser::addOptionsTraining(cli::CLIWrapper& cli) {
   cli.add<std::string>("--sqlite",
       "Use disk-based sqlite3 database for training corpus storage, default"
       " is temporary with path creates persistent storage")
-    ->default_val("temporary");
+    ->default_str("temporary");
   cli.add<bool>("--sqlite-drop",
       "Drop existing tables in sqlite3 database");
 
@@ -488,7 +488,7 @@ void ConfigParser::addOptionsTraining(cli::CLIWrapper& cli) {
   cli.add<float>("--exponential-smoothing",
      "Maintain smoothed version of parameters for validation and saving with smoothing factor. 0 to disable. "
       "Auto-adjusted to --mini-batch-words-ref if given.",
-     0.f)->default_val("1e-4");
+     0.f)->default_str("1e-4");
   cli.add<std::string>("--guided-alignment",
      "Path to a file with word alignments. Use guided alignment to guide attention or 'none'. "
      "If --tsv it specifies the index of a TSV field that contains the alignments (0-based)",
@@ -527,14 +527,14 @@ void ConfigParser::addOptionsTraining(cli::CLIWrapper& cli) {
   cli.add<std::vector<std::string>>("--cost-scaling",
       "Dynamic cost scaling for mixed precision training: "
       "power of 2, scaling window, scaling factor, tolerance, range, minimum factor")
-    ->default_val("7.f 2000 2.f 0.05f 10 1.f");
+    ->default_str("7.f 2000 2.f 0.05f 10 1.f");
   cli.add<bool>("--normalize-gradient",
       "Normalize gradient by multiplying with no. devices / total labels");
 
   cli.add<std::vector<std::string>>("--train-embedder-rank",
       "Override model configuration and train a embedding similarity ranker with the model encoder, "
       "parameters encode margin and an optional normalization factor")
-    ->default_val("0.3f 0.0f");
+    ->default_str("0.3f 0.0f");
 
   // multi-node training
   cli.add<bool>("--multi-node",
@@ -581,7 +581,7 @@ void ConfigParser::addOptionsValidation(cli::CLIWrapper& cli) {
       12);
   cli.add<float>("--normalize,-n",
       "Divide translation score by pow(translation length, arg)",
-      0)->default_val("1");
+      0)->default_str("1");
   cli.add<float>("--max-length-factor",
       "Maximum target length as source length times factor",
       3);
@@ -643,7 +643,7 @@ void ConfigParser::addOptionsTranslation(cli::CLIWrapper& cli) {
       12);
   cli.add<float>("--normalize,-n",
       "Divide translation score by pow(translation length, arg)",
-      0)->default_val("1");
+      0)->default_str("1");
   cli.add<float>("--max-length-factor",
       "Maximum target length as source length times factor",
       3);
@@ -655,7 +655,7 @@ void ConfigParser::addOptionsTranslation(cli::CLIWrapper& cli) {
       "Generate n-best list");
   cli.add<std::string>("--alignment",
      "Return word alignment. Possible values: 0.0-1.0, hard, soft")
-    ->default_val("1");
+    ->default_str("1");
   cli.add<bool>("--word-scores",
       "Print word-level scores. One score per subword unit, not normalized even if --normalize");
 #ifdef USE_SENTENCEPIECE
@@ -688,7 +688,7 @@ void ConfigParser::addOptionsTranslation(cli::CLIWrapper& cli) {
       false);
   cli.add<std::vector<int>>("--output-approx-knn",
      "Use approximate knn search in output layer (currently only in transformer)")
-     ->default_val("100 1024");
+     ->default_str("100 1024");
 
 #if 0 // @TODO: Ask Hany if there are any decoding-time options
   // add ULR settings
@@ -723,10 +723,10 @@ void ConfigParser::addOptionsScoring(cli::CLIWrapper& cli) {
       "Divide translation score by translation length");
   cli.add<std::string>("--summary",
       "Only print total cost, possible values: cross-entropy (ce-mean), ce-mean-words, ce-sum, perplexity")
-      ->default_val("cross-entropy");
+      ->default_str("cross-entropy");
   cli.add<std::string>("--alignment",
      "Return word alignments. Possible values: 0.0-1.0, hard, soft")
-     ->default_val("1"),
+     ->default_str("1"),
   cli.add<bool>("--word-scores",
       "Print word-level scores. One score per subword unit, not normalized even if --normalize");
 
@@ -800,7 +800,7 @@ void ConfigParser::addSuboptionsDevices(cli::CLIWrapper& cli) {
   cli.add<size_t>("--cpu-threads",
       "Use CPU-based computation with this many independent threads, 0 means GPU-based computation",
       0)
-    ->default_val("1");
+    ->default_str("1");
 #else
   cli.add<size_t>("--cpu-threads",
       "Use CPU-based computation with this many independent threads, 0 means GPU-based computation",

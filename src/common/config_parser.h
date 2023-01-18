@@ -60,9 +60,9 @@ public:
             const std::string& group,
             const std::string& help,
             const T val,
-            const T default_val) {
+            const T implicit_str) {
     std::string previous_group = cli_.switchGroup(group);
-    cli_.add<T>(args,help,val)->default_val(default_val);
+    cli_.add<T>(args,help,val)->default_val(implicit_str);
     cli_.switchGroup(previous_group);
     return *this;
   }

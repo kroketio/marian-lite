@@ -1,3 +1,9 @@
+libmarian-lite (0.2.1) unstable; urgency=medium
+
+* Fix CLI11 dependency and register as dependency inside debian/control
+
+ -- Sander <code@kroket.io>  Tue, 18 Jan 2022 13:14:36 +0100
+
 libmarian-lite (0.2.0) unstable; urgency=medium
 
 * Remove vendored CLI11, link against system CLI11

@@ -394,7 +394,7 @@ private:
     if(defaulted)
       opt->default_str(val ? "true" : "false");
     // allow to use the flag without any argument
-    opt->default_val("true");
+    opt->default_str("true");
 
     // store option tuple
     option.opt = opt;
