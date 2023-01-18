@@ -93,5 +93,6 @@ set(BLA_VENDOR "OpenBLAS")
 find_package(BLAS REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(Threads REQUIRED)
+find_package(SQLiteCpp REQUIRED)
 
 add_subdirectory(src)

@@ -4,8 +4,6 @@ file(GLOB_RECURSE SRCS *.cpp *.cc *.cp)  # rly
 file(GLOB_RECURSE HDRS *.h *.hpp *.inl)
 
 # filter some files from the glob recurse
-list(FILTER SRCS EXCLUDE REGEX "SQLiteCpp/")
-list(FILTER HDRS EXCLUDE REGEX "SQLiteCpp/")
 list(FILTER SRCS EXCLUDE REGEX "faiss/")
 list(FILTER HDRS EXCLUDE REGEX "faiss/")
 if(USE_RUY)
@@ -130,7 +128,6 @@ endforeach()
 
 list(APPEND _TARGETS
     faiss
-    SQLiteCpp
 )
 
 install(TARGETS ${_TARGETS}
@@ -147,7 +144,6 @@ install(DIRECTORY "${CMAKE_SOURCE_DIR}/src/"
         PATTERN "*.h"
         PATTERN "*.hpp"
         PATTERN "*.inl"
-        PATTERN "SQLiteCpp" EXCLUDE
         )
 
 install(EXPORT marian-liteTargets
