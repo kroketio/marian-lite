@@ -1,3 +1,9 @@
+libmarian-lite (0.2.2) unstable; urgency=medium
+
+  * Use debian provided libsqlitecpp-dev
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Wed, 18 Jan 2023 14:27:58 +0100
+
 libmarian-lite (0.2.1) unstable; urgency=medium
 
   * Fix CLI11 dependency and register as dependency inside debian/control
