@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(marian-lite
-        VERSION 0.2.3
+        VERSION 0.2.4
         DESCRIPTION "Compact version of browsermt/marian-dev"
         HOMEPAGE_URL https://github.com/kroketio/marian-lite
         LANGUAGES CXX C)
@@ -29,16 +29,25 @@ option(USE_SIMD_UTILS "Enable simde to target instruction sets" OFF)  # will be 
 include(FindCcache)
 
 if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "arm*")
-    # using ARM
-    add_compile_options("-mfpu=neon")
-    set(NEON_FOUND true CACHE BOOL "NEON available on host")  # we'll assume it
+    if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm.*|ARM.*)")  # 32bit
+        add_compile_options("-mfpu=neon")  # we'll assume it
+        message(STATUS "ARM 32bit, adding -mfpu=neon")
+    elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64.*|AARCH64.*)")  # NEON is implied on aarch64
+        if(NOT "${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
+            message(FATAL_ERROR "invalid pointer size")
+        endif()
+        message(STATUS "AARCH64")
+    else()
+        message(FATAL_ERROR "Unknown ARM processor '${CMAKE_SYSTEM_PROCESSOR}'")
+    endif()
+    set(NEON_FOUND true CACHE BOOL "NEON available on host")
     set(ARM_FOUND true CACHE BOOL "arm")
     set(USE_RUY TRUE)
     set(USE_SIMD_UTILS ON)
 
     find_package(cpuinfo REQUIRED)
-
     add_compile_options(-fno-strict-aliasing -Wno-comment)
+    add_compile_definitions(ARM FMA SSE)
 
     if(APPLE)
         option(USE_RUY_SGEMM "Compile with Ruy SGEMM" OFF)
@@ -46,8 +55,6 @@ if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "arm*")
         option(USE_RUY_SGEMM "Compile with Ruy SGEMM" ON)
         add_compile_definitions(USE_RUY_SGEMM=1 RUY_PLATFORM_NEON=1)
     endif()
-
-    add_compile_definitions(ARM FMA SSE)
 else()
     set(USE_INTGEMM TRUE)
     add_compile_definitions(USE_INTGEMM=1)
