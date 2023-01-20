@@ -23,13 +23,14 @@
 #if (__ARM_ARCH == 7)
   #include "simde/arm/neon/rndn.h"
   #define vrndnq_f32(a) simde_vrndnq_f32(a)
+
+  // https://github.com/google/XNNPACK/blob/694d2524757f9040e65a02c374e152a462fe57eb/src/xnnpack/intrinsics-polyfill.h#L134-L147
+  static int32x4_t vcvtnq_s32_f32(float32x4_t v) {
+    return vcvtq_s32_f32(vrndnq_f32(v));
+  }
 #endif
 
-// polyfill from https://github.com/google/XNNPACK/blob/694d2524757f9040e65a02c374e152a462fe57eb/src/xnnpack/intrinsics-polyfill.h#L134-L147
-static int32x4_t vcvtnq_s32_f32(float32x4_t v) {
-  return vcvtq_s32_f32(vrndnq_f32(v));
-}
-#endif  // AArch32 GCC targeting ARMv8 NEON
+#endif
 #endif
 
 namespace marian {

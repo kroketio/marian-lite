@@ -1,3 +1,9 @@
+libmarian-lite (0.2.5) unstable; urgency=medium
+
+  * Only polyfill on armv7
+
+ -- Sander  <code@kroket.io>  Wed, 20 Jan 2023 16:27:58 +0100
+
 libmarian-lite (0.2.4) unstable; urgency=medium
 
   * Only pass -mfpu=NEON on 32bit ARM
