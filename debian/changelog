@@ -1,3 +1,9 @@
+libmarian-lite (0.2.3) unstable; urgency=medium
+
+  * Remove ARM flag detection, assume -mfpu=neon
+
+ -- Sander  <code@kroket.io>  Wed, 20 Jan 2023 14:27:58 +0100
+
 libmarian-lite (0.2.2) unstable; urgency=medium
 
   * Use debian provided libsqlitecpp-dev

@@ -69,8 +69,17 @@ if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 5.0)
     list(APPEND ALL_WARNINGS -Wsuggest-override -Wno-int-in-bool-context)
 endif()
 
+set(CMAKE_RDYNAMIC_FLAG "-rdynamic")
 set(CMAKE_CXX_FLAGS                 "-std=c++17 -pthread ${CMAKE_GCC_FLAGS} -fPIC ${DISABLE_GLOBALLY} -march=${BUILD_ARCH} ${INTRINSICS} ${BUILD_WIDTH}")
-set(CMAKE_CXX_FLAGS_RELEASE         "-O3 ${BUILD_WIDTH} -funroll-loops")
+
+if(ARM_FOUND)
+    set(CMAKE_CXX_FLAGS_RELEASE       "-O0 ${CMAKE_RDYNAMIC_FLAG}")
+    set(CMAKE_C_FLAGS_RELEASE         "-O0 ${CMAKE_RDYNAMIC_FLAG}")
+else()
+    set(CMAKE_CXX_FLAGS_RELEASE       "-O3 ${BUILD_WIDTH} -funroll-loops")
+    set(CMAKE_C_FLAGS_RELEASE         "-O3 ${BUILD_WIDTH} -funroll-loops")
+endif()
+
 set(CMAKE_CXX_FLAGS_DEBUG           "-O0 -g ${CMAKE_RDYNAMIC_FLAG}")
 set(CMAKE_CXX_FLAGS_SLIM            "-O3 ${BUILD_WIDTH} -funroll-loops -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO  "${CMAKE_CXX_FLAGS_RELEASE} -g ${CMAKE_RDYNAMIC_FLAG}")
@@ -80,7 +89,7 @@ set(CMAKE_CXX_FLAGS_PROFUSE         "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} -fprofile
 
 # these need to be set separately
 set(CMAKE_C_FLAGS                 "-pthread ${CMAKE_GCC_FLAGS} -fPIC ${DISABLE_GLOBALLY} -march=${BUILD_ARCH} ${INTRINSICS}")
-set(CMAKE_C_FLAGS_RELEASE         "-O3 ${BUILD_WIDTH} -funroll-loops")
+
 set(CMAKE_C_FLAGS_DEBUG           "-O0 -g ${CMAKE_RDYNAMIC_FLAG}")
 set(CMAKE_C_FLAGS_SLIM            "-O3 ${BUILD_WIDTH} -funroll-loops -DNDEBUG")
 set(CMAKE_C_FLAGS_RELWITHDEBINFO  "${CMAKE_C_FLAGS_RELEASE} -g ${CMAKE_RDYNAMIC_FLAG}")
