@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(marian-lite
-        VERSION 0.2.8
+        VERSION 0.2.9
         DESCRIPTION "Compact version of browsermt/marian-dev"
         HOMEPAGE_URL https://github.com/kroketio/marian-lite
         LANGUAGES CXX C)
@@ -95,7 +95,6 @@ endif()
 
 # system deps
 find_package(YamlCpp REQUIRED)
-find_package(PkgConfig REQUIRED)
 find_package(PCRE2 REQUIRED)
 find_package(Protobuf REQUIRED)
 #find_package(CLI11 REQUIRED)  # vendored for now...
