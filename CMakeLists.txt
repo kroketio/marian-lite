@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(marian-lite
-        VERSION 0.2.5
+        VERSION 0.2.6
         DESCRIPTION "Compact version of browsermt/marian-dev"
         HOMEPAGE_URL https://github.com/kroketio/marian-lite
         LANGUAGES CXX C)
@@ -76,6 +76,7 @@ if(NOT VENDORED_LIBS)
     # https://github.com/kroketio/pathie-cpp/
     # https://github.com/kroketio/sentencepiece-browsermt/
     # https://github.com/kroketio/cli11/
+    # https://github.com/SRombauts/SQLiteCpp
     if(ARM_FOUND)
         # https://github.com/kroketio/ruy/
         find_package(ruy REQUIRED)
@@ -86,6 +87,7 @@ if(NOT VENDORED_LIBS)
     find_package(pathie REQUIRED)
     find_package(sentencepiece-browsermt REQUIRED)
     find_package(CLI11 REQUIRED)
+    find_package(SQLiteCpp REQUIRED)
 else()
     include(cmake/DownloadAllTheThings.cmake)
 endif()
@@ -101,6 +103,5 @@ set(BLA_VENDOR "OpenBLAS")
 find_package(BLAS REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(Threads REQUIRED)
-find_package(SQLiteCpp REQUIRED)
 
 add_subdirectory(src)

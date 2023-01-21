@@ -32,9 +32,18 @@ FetchContent_GetProperties(cli11)
 
 FetchContent_Declare(sentencepiece-browsermt
         GIT_REPOSITORY https://github.com/kroketio/sentencepiece-browsermt.git
-        GIT_TAG "0.1.99"
+        GIT_TAG "0.2"
         GIT_SHALLOW    TRUE
         GIT_PROGRESS   TRUE
         )
 FetchContent_MakeAvailable(sentencepiece-browsermt)
 FetchContent_GetProperties(sentencepiece-browsermt)
+
+FetchContent_Declare(SQLiteCpp
+        GIT_REPOSITORY https://github.com/SRombauts/SQLiteCpp.git
+        GIT_TAG "3.2.1"
+        GIT_SHALLOW    TRUE
+        GIT_PROGRESS   TRUE
+        )
+FetchContent_MakeAvailable(SQLiteCpp)
+FetchContent_GetProperties(SQLiteCpp)
