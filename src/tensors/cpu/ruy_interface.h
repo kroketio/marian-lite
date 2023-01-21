@@ -20,7 +20,7 @@
 #include <arm_neon.h>
 
 #if defined(__GNUC__) && !defined(__clang__)
-#if (__ARM_ARCH == 7)
+#if defined(armhf)
   #include "simde/arm/neon/rndn.h"
   #define vrndnq_f32(a) simde_vrndnq_f32(a)
 

@@ -1,3 +1,9 @@
+libmarian-lite (0.2.8) unstable; urgency=medium
+
+  * Set compiler preprocessor definition 'armhf' when on arm 32bit
+
+ -- Sander  <code@kroket.io>  Wed, 21 Jan 2023 19:42:50 +0100
+
 libmarian-lite (0.2.7) unstable; urgency=medium
 
   * Fix CLI11 include during -DVENDORED_LIBS

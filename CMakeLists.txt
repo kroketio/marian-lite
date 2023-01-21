@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(marian-lite
-        VERSION 0.2.7
+        VERSION 0.2.8
         DESCRIPTION "Compact version of browsermt/marian-dev"
         HOMEPAGE_URL https://github.com/kroketio/marian-lite
         LANGUAGES CXX C)
@@ -31,6 +31,7 @@ include(FindCcache)
 if(${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "arm*")
     if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(arm.*|ARM.*)")  # 32bit
         add_compile_options("-mfpu=neon")  # we'll assume it
+        add_compile_definitions(armhf)
         message(STATUS "ARM 32bit, adding -mfpu=neon")
     elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "^(aarch64.*|AARCH64.*)")  # NEON is implied on aarch64
         if(NOT "${CMAKE_SIZEOF_VOID_P}" EQUAL "8")
