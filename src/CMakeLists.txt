@@ -101,6 +101,7 @@ foreach(_BUILD_TYPE STATIC SHARED)
 
         target_include_directories(${_TARGET} PUBLIC
                 $<BUILD_INTERFACE:${sentencepiece-browsermt_SOURCE_DIR}/src/include>
+                $<BUILD_INTERFACE:${CLI11_SOURCE_DIR}/include>
                 )
     else()
         target_link_libraries(${_TARGET} PRIVATE

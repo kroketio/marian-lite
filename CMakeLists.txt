@@ -7,7 +7,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 project(marian-lite
-        VERSION 0.2.6
+        VERSION 0.2.7
         DESCRIPTION "Compact version of browsermt/marian-dev"
         HOMEPAGE_URL https://github.com/kroketio/marian-lite
         LANGUAGES CXX C)
